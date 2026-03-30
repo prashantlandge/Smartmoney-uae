@@ -3,10 +3,21 @@ import { useTranslation } from 'next-i18next';
 import { useRemittanceRates } from '@/hooks/useRemittanceRates';
 import ProviderRow from './ProviderRow';
 import MidMarketTooltip from './MidMarketTooltip';
+import CurrencySelector from './CurrencySelector';
+import RateAlertForm from '@/components/rates/RateAlertForm';
+import { trackEvent } from '@/lib/tracker';
+
+const CURRENCY_FLAGS: Record<string, string> = {
+  INR: '🇮🇳',
+  PKR: '🇵🇰',
+  PHP: '🇵🇭',
+  BDT: '🇧🇩',
+};
 
 export default function RemittanceCalculator() {
   const { t } = useTranslation('common');
   const [sendAmount, setSendAmount] = useState<number>(1000);
+  const [receiveCurrency, setReceiveCurrency] = useState('INR');
   const { data, loading, error } = useRemittanceRates(sendAmount);
 
   const bestProvider = data?.providers?.[0];
@@ -15,8 +26,25 @@ export default function RemittanceCalculator() {
     ? bestProvider.recipient_receives_inr - worstProvider.recipient_receives_inr
     : 0;
 
+  const handleAmountChange = (value: number) => {
+    setSendAmount(value);
+    if (value > 0) {
+      trackEvent('compare', { send_amount_aed: value, receive_currency: receiveCurrency });
+    }
+  };
+
+  const handleCurrencyChange = (currency: string) => {
+    setReceiveCurrency(currency);
+    trackEvent('currency_change', { currency });
+  };
+
   return (
     <div className="w-full max-w-3xl mx-auto">
+      {/* Currency Selector */}
+      <div className="flex justify-center mb-3">
+        <CurrencySelector value={receiveCurrency} onChange={handleCurrencyChange} />
+      </div>
+
       {/* Input Section */}
       <div className="card mb-4">
         <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-end">
@@ -33,7 +61,7 @@ export default function RemittanceCalculator() {
               <input
                 type="number"
                 value={sendAmount || ''}
-                onChange={(e) => setSendAmount(Number(e.target.value))}
+                onChange={(e) => handleAmountChange(Number(e.target.value))}
                 placeholder="1000"
                 min={1}
                 max={100000}
@@ -49,22 +77,22 @@ export default function RemittanceCalculator() {
             </svg>
           </div>
 
-          {/* Receive Currency (fixed INR) */}
+          {/* Receive Currency */}
           <div className="flex-1">
             <label className="block text-sm font-medium text-gray-600 mb-1.5">
               {t('receive_amount_label')}
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                <span className="text-lg">🇮🇳</span>
-                <span className="ms-1.5 text-sm font-medium text-gray-500">INR</span>
+                <span className="text-lg">{CURRENCY_FLAGS[receiveCurrency] || '🌍'}</span>
+                <span className="ms-1.5 text-sm font-medium text-gray-500">{receiveCurrency}</span>
               </div>
               <div className="input-field ps-20 bg-gray-50 flex items-center text-gray-700">
                 {loading ? (
                   <span className="text-gray-400">{t('loading')}</span>
                 ) : bestProvider ? (
                   <span className="font-semibold">
-                    ₹{bestProvider.recipient_receives_inr.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
+                    {bestProvider.recipient_receives_inr.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
                   </span>
                 ) : (
                   <span className="text-gray-400">—</span>
@@ -99,7 +127,7 @@ export default function RemittanceCalculator() {
       {loading && !data && (
         <div className="card">
           <div className="animate-pulse space-y-3">
-            {[1, 2, 3, 4, 5].map((i) => (
+            {[1, 2, 3, 4, 5, 6].map((i) => (
               <div key={i} className="h-12 bg-gray-100 rounded" />
             ))}
           </div>
@@ -133,10 +161,16 @@ export default function RemittanceCalculator() {
                     provider={provider}
                     rank={idx + 1}
                     isBest={idx === 0}
+                    sendAmount={sendAmount}
                   />
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* Rate Alert */}
+          <div className="px-4 pb-3">
+            <RateAlertForm currentRate={data.mid_market_rate} />
           </div>
 
           {/* Last updated */}

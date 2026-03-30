@@ -1,10 +1,12 @@
 from pydantic import BaseModel, Field
+from typing import Optional
 from datetime import datetime
 
 
 class RemittanceCompareRequest(BaseModel):
     send_amount_aed: float = Field(gt=0, le=100000, description="Amount to send in AED")
     receive_currency: str = Field(default="INR", pattern="^[A-Z]{3}$")
+    session_id: Optional[str] = None
 
 
 class ProviderResult(BaseModel):
@@ -17,6 +19,8 @@ class ProviderResult(BaseModel):
     cost_vs_mid_market_percent: float
     affiliate_link: str
     savings_vs_worst: float
+    match_score: Optional[int] = None
+    match_reason: Optional[str] = None
 
 
 class RemittanceCompareResponse(BaseModel):

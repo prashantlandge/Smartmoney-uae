@@ -15,12 +15,14 @@ from app.features.remittance.providers.remitly import RemitlyProvider
 from app.features.remittance.providers.western_union import WesternUnionProvider
 from app.features.remittance.providers.al_ansari import AlAnsariProvider
 from app.features.remittance.providers.uae_exchange import UAEExchangeProvider
+from app.features.remittance.providers.lulu_exchange import LuluExchangeProvider
 from app.features.remittance.providers.xe_baseline import XEBaseline
 from app.features.remittance.cache import get_cached_result, set_cached_result
 from app.features.remittance.schemas import (
     ProviderResult,
     RemittanceCompareResponse,
 )
+from app.features.rates.recorder import record_rates
 
 
 PROVIDERS = [
@@ -29,6 +31,7 @@ PROVIDERS = [
     WesternUnionProvider(),
     AlAnsariProvider(),
     UAEExchangeProvider(),
+    LuluExchangeProvider(),
 ]
 
 XE = XEBaseline()
@@ -110,6 +113,13 @@ async def compare_rates(send_amount_aed: float, receive_currency: str = "INR") -
             provider_rates.append(result)
 
     xe_mid_market = results[-1] if isinstance(results[-1], float) else None
+
+    # 2b. Record live rates to history for trend analysis
+    if provider_rates:
+        try:
+            await record_rates(provider_rates, send_amount_aed, "AED", receive_currency)
+        except Exception:
+            pass  # History recording should never block the response
 
     # 3. Fall back to DB if no live rates available
     if not provider_rates:

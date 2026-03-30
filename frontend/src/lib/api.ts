@@ -10,6 +10,8 @@ export interface ProviderResult {
   cost_vs_mid_market_percent: number;
   affiliate_link: string;
   savings_vs_worst: number;
+  match_score?: number | null;
+  match_reason?: string | null;
 }
 
 export interface RemittanceCompareResponse {

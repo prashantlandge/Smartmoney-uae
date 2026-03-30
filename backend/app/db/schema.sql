@@ -106,10 +106,15 @@ CREATE TABLE user_profiles (
     credit_score_band VARCHAR(20) CHECK (credit_score_band IN ('excellent', 'good', 'fair', 'poor', 'unknown')),
     existing_liabilities_aed DECIMAL(12,2),
     preferred_language VARCHAR(5) DEFAULT 'en',
-    created_at TIMESTAMP DEFAULT NOW()
+    transfer_frequency VARCHAR(20) CHECK (transfer_frequency IN ('weekly', 'monthly', 'occasional')),
+    preferred_speed VARCHAR(20) CHECK (preferred_speed IN ('fastest', 'cheapest', 'balanced')),
+    onboarded BOOLEAN DEFAULT false,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE INDEX idx_user_profiles_session ON user_profiles(session_id);
+CREATE UNIQUE INDEX idx_user_profiles_session_unique ON user_profiles(session_id) WHERE session_id IS NOT NULL;
 
 -- ============================================================
 -- AFFILIATE CLICKS TABLE
@@ -157,3 +162,53 @@ CREATE INDEX idx_content_slug_en ON content_posts(slug_en);
 CREATE INDEX idx_content_slug_ar ON content_posts(slug_ar);
 CREATE INDEX idx_content_status ON content_posts(status);
 CREATE INDEX idx_content_category ON content_posts(category);
+
+-- ============================================================
+-- REMITTANCE RATE HISTORY TABLE (Phase 3: Rate Intelligence)
+-- ============================================================
+CREATE TABLE remittance_rate_history (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    provider_id UUID NOT NULL REFERENCES providers(id) ON DELETE CASCADE,
+    send_currency VARCHAR(10) DEFAULT 'AED',
+    receive_currency VARCHAR(10) DEFAULT 'INR',
+    exchange_rate DECIMAL(12,6) NOT NULL,
+    fee_aed DECIMAL(10,2) DEFAULT 0,
+    effective_rate DECIMAL(12,6),
+    recorded_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_rate_history_lookup ON remittance_rate_history(provider_id, send_currency, receive_currency, recorded_at DESC);
+CREATE INDEX idx_rate_history_time ON remittance_rate_history(recorded_at DESC);
+
+-- ============================================================
+-- RATE ALERTS TABLE (Phase 3: Rate Intelligence)
+-- ============================================================
+CREATE TABLE rate_alerts (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    session_id VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
+    send_currency VARCHAR(10) DEFAULT 'AED',
+    receive_currency VARCHAR(10) DEFAULT 'INR',
+    target_rate DECIMAL(12,6) NOT NULL,
+    direction VARCHAR(10) DEFAULT 'above' CHECK (direction IN ('above', 'below')),
+    active BOOLEAN DEFAULT true,
+    triggered_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_rate_alerts_session ON rate_alerts(session_id);
+CREATE INDEX idx_rate_alerts_active ON rate_alerts(active) WHERE active = true;
+
+-- ============================================================
+-- USER EVENTS TABLE (Phase 4: Behavioral Intelligence)
+-- ============================================================
+CREATE TABLE user_events (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    session_id VARCHAR(255) NOT NULL,
+    event_type VARCHAR(50) NOT NULL,
+    event_data JSONB DEFAULT '{}',
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_user_events_session ON user_events(session_id, created_at DESC);
+CREATE INDEX idx_user_events_type ON user_events(event_type, created_at DESC);

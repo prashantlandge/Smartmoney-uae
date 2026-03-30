@@ -3,6 +3,11 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { GetStaticProps } from 'next';
 import RemittanceCalculator from '@/components/remittance/RemittanceCalculator';
+import QuickProfileWidget from '@/components/profile/QuickProfileWidget';
+import ChatWidget from '@/components/advisor/ChatWidget';
+import RateChart from '@/components/rates/RateChart';
+import RateTrend from '@/components/rates/RateTrend';
+import { useUserProfile } from '@/hooks/useUserProfile';
 
 const CATEGORIES = [
   { key: 'remittance', icon: '💸', highlighted: true },
@@ -16,6 +21,7 @@ const CATEGORIES = [
 
 export default function Home() {
   const { t } = useTranslation('common');
+  const { profile, updateProfile } = useUserProfile();
 
   return (
     <>
@@ -40,8 +46,23 @@ export default function Home() {
             </p>
           </div>
 
+          {/* User Profile Widget */}
+          <div className="max-w-3xl mx-auto">
+            <QuickProfileWidget profile={profile} onUpdate={updateProfile} />
+          </div>
+
           {/* Remittance Calculator — above the fold */}
           <RemittanceCalculator />
+        </section>
+
+        {/* ===== RATE INTELLIGENCE ===== */}
+        <section className="py-6 px-4 bg-white">
+          <div className="max-w-4xl mx-auto">
+            <div className="flex justify-center mb-4">
+              <RateTrend />
+            </div>
+            <RateChart days={7} />
+          </div>
         </section>
 
         {/* ===== PRODUCT CATEGORIES ===== */}
@@ -97,6 +118,9 @@ export default function Home() {
             </p>
           </div>
         </section>
+
+        {/* AI Chat Widget */}
+        <ChatWidget />
 
         {/* ===== FOOTER ===== */}
         <footer className="py-8 px-4 bg-brand-dark text-white/60 text-center text-xs">
