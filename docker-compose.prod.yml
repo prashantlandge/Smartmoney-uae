@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: smartmoney_uae
+      POSTGRES_USER: smartmoney
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-smartmoney_prod_2024}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/app/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./backend/app/db/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+    networks:
+      - smartmoney
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    volumes:
+      - redis_data:/data
+    networks:
+      - smartmoney
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      DATABASE_URL: postgresql://smartmoney:${DB_PASSWORD:-smartmoney_prod_2024}@postgres:5432/smartmoney_uae
+      REDIS_URL: redis://redis:6379
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      WISE_API_KEY: ${WISE_API_KEY:-}
+      XE_API_KEY: ${XE_API_KEY:-}
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - smartmoney
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+    restart: always
+    depends_on:
+      - backend
+    networks:
+      - smartmoney
+
+  nginx:
+    image: nginx:alpine
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - smartmoney
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  smartmoney:
+    driver: bridge

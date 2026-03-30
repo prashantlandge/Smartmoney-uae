@@ -31,3 +31,6 @@ build/
 # Docker volumes
 postgres_data/
 redis_data/
+
+# SSH keys
+*.pem
