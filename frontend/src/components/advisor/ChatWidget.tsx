@@ -60,7 +60,7 @@ export default function ChatWidget() {
           <div className="text-center py-4">
             <p className="text-sm text-gray-500 mb-3">{t('chat_placeholder')}</p>
             <div className="space-y-2">
-              {(t('chat_suggestions', { returnObjects: true }) as string[] || []).map((suggestion: string, i: number) => (
+              {(Array.isArray(t('chat_suggestions', { returnObjects: true })) ? t('chat_suggestions', { returnObjects: true }) as string[] : []).map((suggestion: string, i: number) => (
                 <button
                   key={i}
                   onClick={() => handleSuggestion(suggestion)}

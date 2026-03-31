@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { getSessionId } from '@/lib/session';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? '';
 
 interface Props {
   currentRate?: number;

@@ -1,6 +1,6 @@
 import { getSessionId } from './session';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? '';
 
 let eventQueue: Array<{ session_id: string; event_type: string; event_data: Record<string, unknown> }> = [];
 let flushTimer: ReturnType<typeof setTimeout> | null = null;

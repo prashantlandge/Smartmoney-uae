@@ -3,7 +3,7 @@ import { getSessionId } from '@/lib/session';
 
 const PROFILE_KEY = 'smartmoney_profile';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? '';
 
 export interface UserProfile {
   session_id: string;
