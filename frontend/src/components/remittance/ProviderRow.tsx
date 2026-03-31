@@ -13,15 +13,21 @@ interface Props {
 export default function ProviderRow({ provider, rank, isBest, sendAmount }: Props) {
   const { t } = useTranslation('common');
 
-  const affiliateUrl = new URL(provider.affiliate_link || 'https://example.com');
-  affiliateUrl.searchParams.set('utm_source', 'uae_platform');
-  affiliateUrl.searchParams.set('utm_medium', 'remittance');
-  affiliateUrl.searchParams.set('utm_campaign', provider.provider_name.toLowerCase().replace(/\s+/g, '_'));
+  let affiliateHref = provider.affiliate_link || '#';
+  try {
+    const affiliateUrl = new URL(provider.affiliate_link || 'https://example.com');
+    affiliateUrl.searchParams.set('utm_source', 'uae_platform');
+    affiliateUrl.searchParams.set('utm_medium', 'remittance');
+    affiliateUrl.searchParams.set('utm_campaign', provider.provider_name.toLowerCase().replace(/\s+/g, '_'));
+    affiliateHref = affiliateHref;
+  } catch {
+    // Invalid URL, use as-is
+  }
 
   const handleClick = () => {
     trackEvent('click_provider', {
       provider_name: provider.provider_name,
-      affiliate_link: affiliateUrl.toString(),
+      affiliate_link: affiliateHref,
       rank,
       send_amount_aed: sendAmount,
       exchange_rate: provider.exchange_rate,
@@ -82,7 +88,7 @@ export default function ProviderRow({ provider, rank, isBest, sendAmount }: Prop
       {/* CTA */}
       <td className="py-3 px-3 text-end">
         <a
-          href={affiliateUrl.toString()}
+          href={affiliateHref}
           target="_blank"
           rel="noopener noreferrer"
           onClick={handleClick}
