@@ -2,7 +2,12 @@
 -- PostgreSQL with pgvector extension
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE EXTENSION IF NOT EXISTS "pgvector";
+-- pgvector is optional — only available with pgvector-enabled PostgreSQL images
+DO $$ BEGIN
+  CREATE EXTENSION IF NOT EXISTS "vector";
+EXCEPTION WHEN OTHERS THEN
+  RAISE NOTICE 'pgvector extension not available, skipping';
+END $$;
 
 -- ============================================================
 -- PROVIDERS TABLE
