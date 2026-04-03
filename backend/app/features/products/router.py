@@ -79,13 +79,50 @@ async def search_products(
     q: str = Query(min_length=2, max_length=100),
     limit: int = Query(default=10, ge=1, le=50),
 ):
-    """Search products across all categories by name, provider, or description."""
+    """Search products across all categories by name, provider, description, and features.
+
+    Understands spending categories like 'petrol', 'dining', 'groceries', 'travel'
+    by expanding queries to match related keywords in product features.
+    """
     pool = await get_pool()
+
+    # Expand common spending category synonyms so "petrol" also matches "fuel", etc.
+    KEYWORD_EXPANSIONS: dict[str, list[str]] = {
+        "petrol": ["petrol", "fuel", "gas_station", "gas"],
+        "fuel": ["petrol", "fuel", "gas_station", "gas"],
+        "dining": ["dining", "restaurant", "food", "dine"],
+        "restaurant": ["dining", "restaurant", "food", "dine"],
+        "food": ["dining", "restaurant", "food", "grocery", "groceries"],
+        "groceries": ["grocery", "groceries", "supermarket"],
+        "grocery": ["grocery", "groceries", "supermarket"],
+        "supermarket": ["grocery", "groceries", "supermarket"],
+        "travel": ["travel", "airline", "hotel", "miles", "lounge", "airport"],
+        "airline": ["travel", "airline", "miles", "airport"],
+        "hotel": ["travel", "hotel", "hotels"],
+        "shopping": ["shopping", "online_shopping", "retail"],
+        "online": ["online", "online_shopping", "streaming"],
+    }
+
+    q_lower = q.lower().strip()
     search_term = f"%{q}%"
     category_term = f"%{q.replace('-', '_').replace(' ', '_')}%"
 
-    rows = await pool.fetch(
-        """
+    # Build expanded feature search terms from keyword synonyms
+    feature_terms = [search_term]  # always include the raw query
+    for word in q_lower.split():
+        if word in KEYWORD_EXPANSIONS:
+            for synonym in KEYWORD_EXPANSIONS[word]:
+                term = f"%{synonym}%"
+                if term not in feature_terms:
+                    feature_terms.append(term)
+
+    # Build dynamic OR clause for feature matching
+    feature_conditions = " OR ".join(
+        f"CAST(p.key_features AS TEXT) ILIKE ${i + 4}"
+        for i in range(len(feature_terms))
+    )
+
+    query_sql = f"""
         SELECT p.id, pr.name_en as provider_name, pr.logo_url as provider_logo,
                p.name_en as product_name, p.category as product_type,
                p.description_en as description,
@@ -98,17 +135,23 @@ async def search_products(
             OR pr.name_en ILIKE $1 OR pr.name_ar ILIKE $1
             OR p.description_en ILIKE $1
             OR p.category ILIKE $2
+            OR {feature_conditions}
         )
         ORDER BY
             CASE WHEN p.name_en ILIKE $1 THEN 0
                  WHEN pr.name_en ILIKE $1 THEN 1
-                 ELSE 2 END,
+                 WHEN ({feature_conditions}) THEN 2
+                 ELSE 3 END,
             pr.name_en
         LIMIT $3
-        """,
+    """
+
+    rows = await pool.fetch(
+        query_sql,
         search_term,
         category_term,
         limit,
+        *feature_terms,
     )
 
     return [
