@@ -10,6 +10,7 @@ from app.features.profile.router import router as profile_router
 from app.features.rates.router import router as rates_router
 from app.features.advisor.router import router as advisor_router
 from app.features.events.router import router as events_router
+from app.features.products.router import router as products_router
 
 
 @asynccontextmanager
@@ -29,7 +30,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3001"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -40,6 +41,7 @@ app.include_router(profile_router, prefix="/api/profile", tags=["profile"])
 app.include_router(rates_router, prefix="/api/rates", tags=["rates"])
 app.include_router(advisor_router, prefix="/api/advisor", tags=["advisor"])
 app.include_router(events_router, prefix="/api/events", tags=["events"])
+app.include_router(products_router, prefix="/api/products", tags=["products"])
 
 
 @app.get("/api/health")
