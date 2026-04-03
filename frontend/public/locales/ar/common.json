@@ -146,5 +146,10 @@
 
   "currency_pkr": "روبية باكستانية",
   "currency_php": "بيزو فلبيني",
-  "currency_bdt": "تاكا بنغلاديشي"
+  "currency_bdt": "تاكا بنغلاديشي",
+
+  "search_placeholder": "ابحث عن بطاقات الائتمان، القروض، التأمين...",
+  "search_no_results": "لم يتم العثور على منتجات لـ \"{{query}}\"",
+  "search_view_all": "عرض جميع النتائج لـ \"{{query}}\"",
+  "search_categories": "الفئات الشائعة"
 }

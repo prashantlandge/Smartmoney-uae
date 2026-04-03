@@ -4,6 +4,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { GetStaticProps } from 'next';
 import Layout from '@/components/layout/Layout';
+import HeroSearch from '@/components/search/HeroSearch';
 import RemittanceCalculator from '@/components/remittance/RemittanceCalculator';
 import QuickProfileWidget from '@/components/profile/QuickProfileWidget';
 import RateChart from '@/components/rates/RateChart';
@@ -45,12 +46,13 @@ export default function Home() {
           <h1 className="text-2xl sm:text-4xl font-bold mb-3 leading-tight">
             {t('hero_title')}
           </h1>
-          <p className="text-base sm:text-lg text-white/80 max-w-xl mx-auto">
+          <p className="text-base sm:text-lg text-white/80 max-w-xl mx-auto mb-6">
             {t('hero_subtitle')}
           </p>
+          <HeroSearch />
         </div>
 
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-3xl mx-auto mt-6">
           <QuickProfileWidget profile={profile} onUpdate={updateProfile} />
         </div>
 

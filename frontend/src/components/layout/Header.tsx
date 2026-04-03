@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { useState } from 'react';
+import HeroSearch from '@/components/search/HeroSearch';
 
 const NAV_ITEMS = [
   { href: '/', key: 'nav_home' },
@@ -56,6 +57,11 @@ export default function Header() {
             })}
           </nav>
 
+          {/* Header Search (desktop) */}
+          <div className="hidden lg:block flex-1 max-w-xs mx-4">
+            <HeroSearch compact />
+          </div>
+
           {/* Right side */}
           <div className="flex items-center gap-2">
             <button
@@ -85,6 +91,9 @@ export default function Header() {
         {/* Mobile Nav */}
         {mobileOpen && (
           <nav className="lg:hidden pb-4 border-t border-gray-100 pt-2">
+            <div className="px-3 py-2">
+              <HeroSearch compact />
+            </div>
             {NAV_ITEMS.map((item) => {
               const isActive = router.pathname === item.href;
               return (

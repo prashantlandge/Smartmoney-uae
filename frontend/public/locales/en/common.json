@@ -146,5 +146,10 @@
 
   "currency_pkr": "PKR",
   "currency_php": "PHP",
-  "currency_bdt": "BDT"
+  "currency_bdt": "BDT",
+
+  "search_placeholder": "Search credit cards, loans, insurance...",
+  "search_no_results": "No products found for \"{{query}}\"",
+  "search_view_all": "View all results for \"{{query}}\"",
+  "search_categories": "Popular categories"
 }
