@@ -1,16 +1,17 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, HTTPException
 from typing import List
+from app.db.connection import get_pool
 from app.features.products.schemas import ProductResponse
 
 router = APIRouter()
 
 
 @router.get("/list/{category}", response_model=List[ProductResponse])
-async def list_products(category: str, request: Request):
+async def list_products(category: str):
     """List products by category."""
-    pool = request.app.state.pool
+    pool = await get_pool()
 
-    # Map URL slugs to DB product_type values
+    # Map URL slugs to DB category values
     category_map = {
         "credit-cards": "credit_card",
         "credit_cards": "credit_card",
@@ -28,13 +29,15 @@ async def list_products(category: str, request: Request):
 
     rows = await pool.fetch(
         """
-        SELECT p.id, pr.name as provider_name, pr.logo_url as provider_logo,
-               p.product_name, p.product_type, p.description,
-               p.features, p.affiliate_link, p.is_islamic, p.is_active
+        SELECT p.id, pr.name_en as provider_name, pr.logo_url as provider_logo,
+               p.name_en as product_name, p.category as product_type,
+               p.description_en as description,
+               p.key_features as features, p.affiliate_deep_link_en as affiliate_link,
+               p.islamic_compliant as is_islamic, p.active as is_active
         FROM products p
         JOIN providers pr ON p.provider_id = pr.id
-        WHERE p.product_type = $1 AND p.is_active = true
-        ORDER BY pr.name
+        WHERE p.category = $1 AND p.active = true
+        ORDER BY pr.name_en
         """,
         db_category,
     )
@@ -57,15 +60,17 @@ async def list_products(category: str, request: Request):
 
 
 @router.get("/{product_id}", response_model=ProductResponse)
-async def get_product(product_id: str, request: Request):
+async def get_product(product_id: str):
     """Get a single product by ID."""
-    pool = request.app.state.pool
+    pool = await get_pool()
 
     row = await pool.fetchrow(
         """
-        SELECT p.id, pr.name as provider_name, pr.logo_url as provider_logo,
-               p.product_name, p.product_type, p.description,
-               p.features, p.affiliate_link, p.is_islamic, p.is_active
+        SELECT p.id, pr.name_en as provider_name, pr.logo_url as provider_logo,
+               p.name_en as product_name, p.category as product_type,
+               p.description_en as description,
+               p.key_features as features, p.affiliate_deep_link_en as affiliate_link,
+               p.islamic_compliant as is_islamic, p.active as is_active
         FROM products p
         JOIN providers pr ON p.provider_id = pr.id
         WHERE p.id = $1
@@ -74,7 +79,6 @@ async def get_product(product_id: str, request: Request):
     )
 
     if not row:
-        from fastapi import HTTPException
         raise HTTPException(status_code=404, detail="Product not found")
 
     return ProductResponse(
