@@ -1,6 +1,6 @@
 """Analyze rate trends from historical data."""
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from app.db.connection import get_pool
 from app.features.rates.schemas import RateTrendResponse, BestTimeResponse
 
@@ -10,7 +10,7 @@ async def get_rate_trend(
     receive_currency: str = "INR",
 ) -> RateTrendResponse:
     pool = await get_pool()
-    now = datetime.now(timezone.utc)
+    now = datetime.utcnow()
     week_ago = now - timedelta(days=7)
 
     # Current average rate (last 24 hours)
