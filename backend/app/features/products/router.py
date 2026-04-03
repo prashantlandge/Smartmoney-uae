@@ -1,7 +1,22 @@
+import json
 from fastapi import APIRouter, HTTPException
 from typing import List
 from app.db.connection import get_pool
 from app.features.products.schemas import ProductResponse
+
+
+def _parse_features(raw) -> dict:
+    """Parse JSONB features which asyncpg may return as string."""
+    if raw is None:
+        return {}
+    if isinstance(raw, dict):
+        return raw
+    if isinstance(raw, str):
+        try:
+            return json.loads(raw)
+        except (json.JSONDecodeError, TypeError):
+            return {}
+    return {}
 
 router = APIRouter()
 
@@ -50,7 +65,7 @@ async def list_products(category: str):
             product_name=row["product_name"],
             product_type=row["product_type"],
             description=row["description"] or "",
-            features=row["features"] or {},
+            features=_parse_features(row["features"]),
             affiliate_link=row["affiliate_link"] or "#",
             is_islamic=row["is_islamic"],
             is_active=row["is_active"],
