@@ -4,6 +4,7 @@ import Layout from '@/components/layout/Layout';
 import ProductCard from '@/components/products/ProductCard';
 import { useProducts } from '@/hooks/useProducts';
 import { CategoryIcon } from '@/components/ui/Icon';
+import CategoryIllustration from '@/components/ui/CategoryIllustration';
 import { SkeletonCard } from '@/components/ui/Skeleton';
 import EmptyState from '@/components/ui/EmptyState';
 import { Package } from 'lucide-react';
@@ -55,8 +56,8 @@ export default function ProductPageTemplate({
       {/* Hero */}
       <section className={`bg-gradient-to-br ${gradient} text-white py-12 sm:py-16 px-4`}>
         <div className="max-w-content-lg mx-auto text-center">
-          <div className="w-16 h-16 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center mx-auto mb-4">
-            <CategoryIcon category={categoryKey} size={28} className="text-white" />
+          <div className="w-20 h-20 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center mx-auto mb-4">
+            <CategoryIllustration category={categoryKey} size={64} />
           </div>
           <h1 className="text-display-lg font-bold mb-2">{t(titleKey)}</h1>
           <p className="text-white/80 text-body-lg max-w-xl mx-auto">{t(subtitleKey)}</p>

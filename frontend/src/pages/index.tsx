@@ -11,6 +11,7 @@ import RemittanceCalculator from '@/components/remittance/RemittanceCalculator';
 import RateChart from '@/components/rates/RateChart';
 import RateTrend from '@/components/rates/RateTrend';
 import { CategoryIcon } from '@/components/ui/Icon';
+import CategoryIllustration from '@/components/ui/CategoryIllustration';
 import { Search, BarChart3, PiggyBank, Shield, Clock, Package, Heart, ChevronRight, Users, Sparkles } from 'lucide-react';
 import SectionHeading from '@/components/ui/SectionHeading';
 import Container from '@/components/ui/Container';
@@ -179,26 +180,27 @@ export default function Home() {
               subtitle="Compare the best financial products in UAE"
             />
           </AnimatedSection>
-          <StaggerContainer className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+          <StaggerContainer className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-5">
             {CATEGORIES.map((cat) => (
               <StaggerItem key={cat.key}>
                 <Link
                   href={cat.href}
-                  className={`group flex flex-col items-center gap-3 p-5 rounded-card text-center transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1 ${
+                  className={`group flex flex-col items-center gap-3 p-5 sm:p-6 rounded-2xl text-center transition-all duration-300 hover:shadow-elevated hover:-translate-y-1.5 ${
                     cat.highlighted
-                      ? 'bg-brand-primary-50 border-2 border-brand-primary shadow-card'
-                      : 'bg-white border border-surface-200 hover:border-brand-primary/30 shadow-card'
+                      ? 'bg-gradient-to-b from-brand-primary-50 to-white border-2 border-brand-primary/30 shadow-card'
+                      : 'bg-white border border-surface-200 hover:border-brand-primary/20 shadow-card'
                   }`}
                 >
-                  <CategoryIcon
+                  <CategoryIllustration
                     category={cat.categoryKey}
-                    size={28}
-                    withBackground
+                    size={56}
                   />
-                  <span className={`text-xs font-semibold ${cat.highlighted ? 'text-brand-primary' : 'text-gray-700'}`}>
+                  <span className={`text-xs sm:text-sm font-semibold leading-tight ${cat.highlighted ? 'text-brand-primary' : 'text-gray-700 group-hover:text-brand-primary'} transition-colors`}>
                     {t(`categories.${cat.key}`)}
                   </span>
-                  <ChevronRight size={14} className="text-gray-300 group-hover:text-brand-primary group-hover:translate-x-0.5 transition-all" />
+                  <span className="text-[10px] text-gray-400 font-medium group-hover:text-brand-primary/60 transition-colors flex items-center gap-0.5">
+                    Compare <ChevronRight size={10} className="group-hover:translate-x-0.5 transition-transform" />
+                  </span>
                 </Link>
               </StaggerItem>
             ))}
