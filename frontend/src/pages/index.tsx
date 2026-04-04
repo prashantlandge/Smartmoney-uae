@@ -41,21 +41,20 @@ export default function Home() {
       </Head>
 
       {/* ===== HERO SECTION ===== */}
-      <section className="bg-gradient-to-br from-brand-dark to-brand-primary text-white py-10 sm:py-14 px-4">
-        <div className="max-w-4xl mx-auto text-center mb-6">
-          <h1 className="text-2xl sm:text-4xl font-bold mb-3 leading-tight">
+      <section className="bg-gradient-to-br from-brand-dark to-brand-primary text-white py-8 sm:py-12 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-2xl sm:text-4xl font-bold mb-2 leading-tight">
             {t('hero_title')}
           </h1>
-          <p className="text-base sm:text-lg text-white/80 max-w-xl mx-auto mb-6">
+          <p className="text-sm sm:text-base text-white/80 max-w-xl mx-auto mb-5">
             {t('hero_subtitle')}
           </p>
           <HeroSearch />
         </div>
+      </section>
 
-        <div className="max-w-3xl mx-auto mt-6">
-          <QuickProfileWidget profile={profile} onUpdate={updateProfile} />
-        </div>
-
+      {/* ===== REMITTANCE CALCULATOR ===== */}
+      <section className="py-6 px-4 bg-gray-50 -mt-1">
         <RemittanceCalculator />
       </section>
 
