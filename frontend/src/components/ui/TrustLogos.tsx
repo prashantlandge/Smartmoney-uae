@@ -20,7 +20,7 @@ export default function TrustLogos() {
   const logos = [...PROVIDERS, ...PROVIDERS];
 
   return (
-    <div className="py-10 overflow-hidden bg-white border-y border-surface-100">
+    <div className="py-12 overflow-hidden bg-white border-y border-surface-100">
       <p className="text-center text-caption text-gray-400 uppercase tracking-[0.15em] mb-6 font-semibold">
         Trusted providers &amp; banks we compare
       </p>

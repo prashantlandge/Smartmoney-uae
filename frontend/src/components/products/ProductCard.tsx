@@ -1,8 +1,9 @@
 import { useTranslation } from 'next-i18next';
-import { Check, X } from 'lucide-react';
+import { Check, X, ArrowRightLeft } from 'lucide-react';
 import ProviderLogo from '@/components/ui/ProviderLogo';
 import Badge from '@/components/ui/Badge';
 import { trackEvent } from '@/lib/tracker';
+import { useCompare } from '@/context/CompareContext';
 
 export interface Product {
   id: string;
@@ -23,6 +24,16 @@ interface Props {
 
 export default function ProductCard({ product, featureLabels = {} }: Props) {
   const { t } = useTranslation('common');
+  const { add, remove, has, isFull } = useCompare();
+  const isSelected = has(product.id);
+
+  const toggleCompare = () => {
+    if (isSelected) {
+      remove(product.id);
+    } else {
+      add(product);
+    }
+  };
 
   const handleClick = () => {
     trackEvent('click_product', {
@@ -70,7 +81,7 @@ export default function ProductCard({ product, featureLabels = {} }: Props) {
         <div className="grid grid-cols-2 gap-2 mb-4">
           {Object.entries(product.features).map(([key, value]) => (
             <div key={key} className="bg-surface-50 rounded-badge px-3 py-2 border-s-2 border-surface-200">
-              <div className="text-[10px] text-gray-500 uppercase tracking-wider">
+              <div className="text-caption text-gray-500 uppercase tracking-wider">
                 {featureLabels[key] || key.replace(/_/g, ' ')}
               </div>
               <div className="text-sm font-semibold text-gray-800 mt-0.5">
@@ -89,15 +100,28 @@ export default function ProductCard({ product, featureLabels = {} }: Props) {
         </div>
       )}
 
-      <a
-        href={affiliateHref}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={handleClick}
-        className="btn-primary w-full text-center text-xs py-2.5"
-      >
-        {t('apply_now')}
-      </a>
+      <div className="flex gap-2">
+        <button
+          onClick={toggleCompare}
+          disabled={!isSelected && isFull}
+          className={`flex items-center justify-center gap-1.5 px-3 py-3 rounded-button text-xs font-medium transition-colors border ${
+            isSelected
+              ? 'bg-brand-primary-50 border-brand-primary text-brand-primary'
+              : 'border-surface-200 text-gray-500 hover:border-brand-primary hover:text-brand-primary disabled:opacity-40 disabled:cursor-not-allowed'
+          }`}
+        >
+          {isSelected ? <Check size={14} /> : <ArrowRightLeft size={14} />}
+        </button>
+        <a
+          href={affiliateHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={handleClick}
+          className="btn-primary flex-1 text-center text-body-sm py-3"
+        >
+          {t('apply_now')}
+        </a>
+      </div>
     </div>
   );
 }

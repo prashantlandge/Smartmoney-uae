@@ -139,13 +139,13 @@ export default function HeroSearch({ compact = false }: HeroSearchProps) {
                       <div className="text-xs text-gray-500 truncate flex items-center gap-1.5">
                         {product.provider_name}
                         {product.is_islamic && (
-                          <Badge variant="islamic" className="text-[9px] py-0 px-1.5">
+                          <Badge variant="islamic" className="text-xs py-0 px-1.5">
                             {t('islamic_compliant')}
                           </Badge>
                         )}
                       </div>
                     </div>
-                    <span className="text-[10px] text-gray-400 uppercase tracking-wider shrink-0 bg-surface-100 px-2 py-0.5 rounded-badge">
+                    <span className="text-caption text-gray-400 uppercase tracking-wider shrink-0 bg-surface-100 px-2 py-0.5 rounded-badge">
                       {product.product_type.replace(/_/g, ' ')}
                     </span>
                   </button>

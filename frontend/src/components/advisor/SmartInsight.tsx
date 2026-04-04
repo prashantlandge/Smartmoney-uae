@@ -17,7 +17,7 @@ export default function SmartInsight({ matchScore, matchReason }: Props) {
   };
 
   return (
-    <div className={`mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium border ${getColor(matchScore)}`}>
+    <div className={`mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-caption font-medium border ${getColor(matchScore)}`}>
       <span>{t('ai_match')}: {matchScore}%</span>
       <span className="hidden sm:inline">— {matchReason}</span>
     </div>

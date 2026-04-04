@@ -198,7 +198,7 @@ export default function Home() {
                   <span className={`text-xs sm:text-sm font-semibold leading-tight ${cat.highlighted ? 'text-brand-primary' : 'text-gray-700 group-hover:text-brand-primary'} transition-colors`}>
                     {t(`categories.${cat.key}`)}
                   </span>
-                  <span className="text-[10px] text-gray-400 font-medium group-hover:text-brand-primary/60 transition-colors flex items-center gap-0.5">
+                  <span className="text-caption text-gray-400 font-medium group-hover:text-brand-primary/60 transition-colors flex items-center gap-0.5">
                     Compare <ChevronRight size={10} className="group-hover:translate-x-0.5 transition-transform" />
                   </span>
                 </Link>
@@ -239,7 +239,7 @@ export default function Home() {
       </section>
 
       {/* ===== TRUST SIGNALS ===== */}
-      <section className="py-14 px-4 bg-brand-primary-50 border-y border-brand-primary-100">
+      <section className="section-padding bg-brand-primary-50 border-y border-brand-primary-100">
         <Container size="lg">
           <StaggerContainer className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8">
             {TRUST_STATS.map((stat) => (

@@ -71,7 +71,7 @@ export default function RateAlertForm({ currentRate }: Props) {
             step="0.0001"
             value={targetRate}
             onChange={(e) => setTargetRate(e.target.value)}
-            className="input-field text-sm py-2"
+            className="input-field text-body-sm py-2.5"
             required
           />
         </div>
@@ -82,7 +82,7 @@ export default function RateAlertForm({ currentRate }: Props) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@email.com"
-            className="input-field text-sm py-2"
+            className="input-field text-body-sm py-2.5"
             required
           />
         </div>

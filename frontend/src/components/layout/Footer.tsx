@@ -10,7 +10,7 @@ export default function Footer() {
       {/* Gradient top line */}
       <div className="h-1 bg-gradient-to-r from-brand-primary via-brand-gold to-brand-secondary" />
 
-      <div className="max-w-content-xl mx-auto px-4 sm:px-6 py-14">
+      <div className="max-w-content-xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-8">
           {/* Brand */}
           <div className="col-span-2">

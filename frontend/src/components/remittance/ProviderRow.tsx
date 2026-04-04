@@ -21,7 +21,7 @@ export default function ProviderRow({ provider, rank, isBest, sendAmount }: Prop
     affiliateUrl.searchParams.set('utm_source', 'uae_platform');
     affiliateUrl.searchParams.set('utm_medium', 'remittance');
     affiliateUrl.searchParams.set('utm_campaign', provider.provider_name.toLowerCase().replace(/\s+/g, '_'));
-    affiliateHref = affiliateHref;
+    affiliateHref = affiliateUrl.toString();
   } catch {
     // Invalid URL, use as-is
   }
@@ -43,7 +43,7 @@ export default function ProviderRow({ provider, rank, isBest, sendAmount }: Prop
         <div className="flex items-center gap-2.5">
           <div className="relative">
             <ProviderLogo name={provider.provider_name} size={36} />
-            <span className="absolute -top-1 -end-1 w-5 h-5 bg-white shadow-sm rounded-full flex items-center justify-center text-[10px] font-bold text-gray-600 border border-surface-200">
+            <span className="absolute -top-1 -end-1 w-5 h-5 bg-white shadow-sm rounded-full flex items-center justify-center text-caption font-bold text-gray-600 border border-surface-200">
               {rank}
             </span>
           </div>
@@ -79,7 +79,7 @@ export default function ProviderRow({ provider, rank, isBest, sendAmount }: Prop
           {provider.recipient_receives_inr.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
         </span>
         {provider.cost_vs_mid_market_percent > 0 && (
-          <div className="text-[11px] text-error mt-0.5">
+          <div className="text-caption text-error mt-0.5">
             -{provider.cost_vs_mid_market_percent.toFixed(2)}% vs mid
           </div>
         )}
