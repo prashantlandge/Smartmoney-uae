@@ -1,8 +1,10 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Menu, X } from 'lucide-react';
 import HeroSearch from '@/components/search/HeroSearch';
+import FlagIcon from '@/components/ui/FlagIcon';
 
 const NAV_ITEMS = [
   { href: '/', key: 'nav_home' },
@@ -17,6 +19,13 @@ export default function Header() {
   const { t } = useTranslation('common');
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const switchLocale = () => {
     const newLocale = router.locale === 'ar' ? 'en' : 'ar';
@@ -24,34 +33,41 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="flex items-center justify-between h-14">
+    <header className={`sticky top-0 z-40 transition-all duration-200 ${
+      scrolled
+        ? 'bg-white/80 backdrop-blur-xl border-b border-gray-200/50 shadow-sm'
+        : 'bg-white border-b border-gray-200'
+    }`}>
+      <div className="max-w-content-xl mx-auto px-4 sm:px-6">
+        <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-brand-primary rounded-lg flex items-center justify-center">
+          <Link href="/" className="flex items-center gap-2.5">
+            <div className="w-9 h-9 bg-gradient-to-br from-brand-primary to-brand-primary-700 rounded-xl flex items-center justify-center shadow-sm">
               <span className="text-white font-bold text-sm">SM</span>
             </div>
-            <span className="font-bold text-brand-dark text-lg hidden sm:block">
+            <span className="font-bold text-brand-dark text-lg hidden sm:block tracking-tight">
               SmartMoney<span className="text-brand-primary"> UAE</span>
             </span>
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-0.5">
             {NAV_ITEMS.map((item) => {
               const isActive = router.pathname === item.href;
               return (
                 <Link
                   key={item.key}
                   href={item.href}
-                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  className={`relative px-3 py-2 rounded-button text-sm font-medium transition-colors ${
                     isActive
-                      ? 'bg-brand-primary/10 text-brand-primary'
-                      : 'text-gray-600 hover:text-brand-primary hover:bg-gray-50'
+                      ? 'text-brand-primary'
+                      : 'text-gray-600 hover:text-brand-primary hover:bg-surface-50'
                   }`}
                 >
                   {t(item.key)}
+                  {isActive && (
+                    <span className="absolute bottom-0 inset-x-3 h-0.5 bg-brand-primary rounded-full" />
+                  )}
                 </Link>
               );
             })}
@@ -66,51 +82,48 @@ export default function Header() {
           <div className="flex items-center gap-2">
             <button
               onClick={switchLocale}
-              className="px-3 py-1.5 text-xs font-semibold border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold border border-gray-200 rounded-button hover:bg-surface-50 transition-colors"
             >
+              <FlagIcon code={router.locale === 'ar' ? 'ae' : 'ae'} size={14} />
               {router.locale === 'ar' ? 'EN' : 'عربي'}
             </button>
 
             {/* Mobile menu toggle */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="lg:hidden p-2 text-gray-600 hover:text-brand-primary"
+              className="lg:hidden p-2 text-gray-600 hover:text-brand-primary rounded-button hover:bg-surface-50 transition-colors"
               aria-label="Toggle menu"
             >
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                {mobileOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
+              {mobileOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
         </div>
 
         {/* Mobile Nav */}
         {mobileOpen && (
-          <nav className="lg:hidden pb-4 border-t border-gray-100 pt-2">
-            <div className="px-3 py-2">
+          <nav className="lg:hidden pb-4 border-t border-gray-100 pt-3 animate-fade-in">
+            <div className="px-1 py-2">
               <HeroSearch compact />
             </div>
-            {NAV_ITEMS.map((item) => {
-              const isActive = router.pathname === item.href;
-              return (
-                <Link
-                  key={item.key}
-                  href={item.href}
-                  onClick={() => setMobileOpen(false)}
-                  className={`block px-3 py-2.5 rounded-lg text-sm font-medium ${
-                    isActive
-                      ? 'bg-brand-primary/10 text-brand-primary'
-                      : 'text-gray-600 hover:bg-gray-50'
-                  }`}
-                >
-                  {t(item.key)}
-                </Link>
-              );
-            })}
+            <div className="mt-2 space-y-0.5">
+              {NAV_ITEMS.map((item) => {
+                const isActive = router.pathname === item.href;
+                return (
+                  <Link
+                    key={item.key}
+                    href={item.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={`block px-3 py-2.5 rounded-button text-sm font-medium transition-colors ${
+                      isActive
+                        ? 'bg-brand-primary-50 text-brand-primary'
+                        : 'text-gray-600 hover:bg-surface-50'
+                    }`}
+                  >
+                    {t(item.key)}
+                  </Link>
+                );
+              })}
+            </div>
           </nav>
         )}
       </div>

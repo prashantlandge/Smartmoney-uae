@@ -1,10 +1,11 @@
 import { useTranslation } from 'next-i18next';
+import FlagIcon from '@/components/ui/FlagIcon';
 
 const CURRENCIES = [
-  { code: 'INR', flag: '🇮🇳', name: 'Indian Rupee' },
-  { code: 'PKR', flag: '🇵🇰', name: 'Pakistani Rupee' },
-  { code: 'PHP', flag: '🇵🇭', name: 'Philippine Peso' },
-  { code: 'BDT', flag: '🇧🇩', name: 'Bangladeshi Taka' },
+  { code: 'INR', name: 'Indian Rupee' },
+  { code: 'PKR', name: 'Pakistani Rupee' },
+  { code: 'PHP', name: 'Philippine Peso' },
+  { code: 'BDT', name: 'Bangladeshi Taka' },
 ];
 
 interface Props {
@@ -21,13 +22,13 @@ export default function CurrencySelector({ value, onChange }: Props) {
         <button
           key={c.code}
           onClick={() => onChange(c.code)}
-          className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+          className={`flex items-center gap-1.5 px-3 py-2 rounded-button text-xs font-medium transition-all ${
             value === c.code
               ? 'bg-brand-primary text-white shadow-sm'
-              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              : 'bg-surface-100 text-gray-600 hover:bg-surface-200'
           }`}
         >
-          <span>{c.flag}</span>
+          <FlagIcon code={c.code} size={16} />
           <span>{c.code}</span>
         </button>
       ))}

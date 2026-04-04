@@ -5,14 +5,9 @@ import ProviderRow from './ProviderRow';
 import MidMarketTooltip from './MidMarketTooltip';
 import CurrencySelector from './CurrencySelector';
 import RateAlertForm from '@/components/rates/RateAlertForm';
+import FlagIcon from '@/components/ui/FlagIcon';
+import Skeleton from '@/components/ui/Skeleton';
 import { trackEvent } from '@/lib/tracker';
-
-const CURRENCY_FLAGS: Record<string, string> = {
-  INR: '🇮🇳',
-  PKR: '🇵🇰',
-  PHP: '🇵🇭',
-  BDT: '🇧🇩',
-};
 
 export default function RemittanceCalculator() {
   const { t } = useTranslation('common');
@@ -46,7 +41,7 @@ export default function RemittanceCalculator() {
       </div>
 
       {/* Input Section */}
-      <div className="card mb-4">
+      <div className="card-elevated mb-4">
         <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-end">
           {/* Send Amount */}
           <div className="flex-1">
@@ -54,9 +49,9 @@ export default function RemittanceCalculator() {
               {t('send_amount_label')}
             </label>
             <div className="relative">
-              <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                <span className="text-lg">🇦🇪</span>
-                <span className="ms-1.5 text-sm font-medium text-gray-500">AED</span>
+              <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none gap-1.5">
+                <FlagIcon code="AED" size={18} />
+                <span className="text-sm font-medium text-gray-500">AED</span>
               </div>
               <input
                 type="number"
@@ -83,11 +78,11 @@ export default function RemittanceCalculator() {
               {t('receive_amount_label')}
             </label>
             <div className="relative">
-              <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                <span className="text-lg">{CURRENCY_FLAGS[receiveCurrency] || '🌍'}</span>
-                <span className="ms-1.5 text-sm font-medium text-gray-500">{receiveCurrency}</span>
+              <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none gap-1.5">
+                <FlagIcon code={receiveCurrency} size={18} />
+                <span className="text-sm font-medium text-gray-500">{receiveCurrency}</span>
               </div>
-              <div className="input-field ps-20 bg-gray-50 flex items-center text-gray-700">
+              <div className="input-field ps-20 bg-surface-50 flex items-center text-gray-700">
                 {loading ? (
                   <span className="text-gray-400">{t('loading')}</span>
                 ) : bestProvider ? (
@@ -105,8 +100,8 @@ export default function RemittanceCalculator() {
 
       {/* Savings Banner */}
       {savingsInr > 0 && bestProvider && worstProvider && (
-        <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-4 text-center">
-          <p className="text-sm text-green-800 font-medium">
+        <div className="bg-success-light border border-emerald-200 rounded-card p-3 mb-4 text-center">
+          <p className="text-sm text-success-dark font-medium">
             {t('savings_message', {
               amount: savingsInr.toLocaleString('en-IN', { maximumFractionDigits: 2 }),
               best: bestProvider.provider_name,
@@ -118,17 +113,17 @@ export default function RemittanceCalculator() {
 
       {/* Error State */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4 text-center">
-          <p className="text-sm text-red-700">{t('error_message')}</p>
+        <div className="bg-error-light border border-red-200 rounded-card p-3 mb-4 text-center">
+          <p className="text-sm text-error-dark">{t('error_message')}</p>
         </div>
       )}
 
-      {/* Results Table */}
+      {/* Loading Skeleton */}
       {loading && !data && (
         <div className="card">
-          <div className="animate-pulse space-y-3">
+          <div className="space-y-3">
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="h-12 bg-gray-100 rounded" />
+              <Skeleton key={i} height={48} width="100%" rounded="lg" />
             ))}
           </div>
         </div>
@@ -137,7 +132,7 @@ export default function RemittanceCalculator() {
       {data && data.providers.length > 0 && (
         <div className="card overflow-hidden p-0">
           {/* Mid-market reference */}
-          <div className="px-4 py-2.5 border-b border-gray-100 bg-gray-50">
+          <div className="px-4 py-2.5 border-b border-gray-100 bg-surface-50">
             <MidMarketTooltip rate={data.mid_market_rate} />
           </div>
 
@@ -174,7 +169,7 @@ export default function RemittanceCalculator() {
           </div>
 
           {/* Last updated */}
-          <div className="px-4 py-2 border-t border-gray-100 bg-gray-50 text-xs text-gray-400 text-end">
+          <div className="px-4 py-2 border-t border-gray-100 bg-surface-50 text-xs text-gray-400 text-end">
             {t('last_updated')}: {new Date(data.last_updated).toLocaleTimeString()}
           </div>
         </div>

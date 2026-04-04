@@ -16,7 +16,7 @@ export default function IslamicFinancePage() {
       category="islamic-finance"
       titleKey="if_title"
       subtitleKey="if_subtitle"
-      heroIcon="☪️"
+      heroIcon="islamic_finance"
       featureLabels={FEATURE_LABELS}
     />
   );

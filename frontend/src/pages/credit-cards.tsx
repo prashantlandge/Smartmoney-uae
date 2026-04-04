@@ -17,7 +17,7 @@ export default function CreditCardsPage() {
       category="credit-cards"
       titleKey="cc_title"
       subtitleKey="cc_subtitle"
-      heroIcon="💳"
+      heroIcon="credit_cards"
       featureLabels={FEATURE_LABELS}
     />
   );

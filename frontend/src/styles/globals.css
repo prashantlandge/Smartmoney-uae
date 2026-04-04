@@ -5,34 +5,153 @@
 @layer base {
   html {
     font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
+    scroll-behavior: smooth;
   }
 
-  /* RTL support via CSS logical properties */
   html[dir='rtl'] {
     direction: rtl;
+  }
+
+  ::selection {
+    background: rgba(0, 128, 94, 0.15);
+    color: #004332;
+  }
+
+  /* Better focus defaults for accessibility */
+  :focus-visible {
+    outline: 2px solid rgba(0, 128, 94, 0.5);
+    outline-offset: 2px;
   }
 }
 
 @layer components {
+  /* ===== BUTTONS ===== */
   .btn-primary {
-    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-button
            bg-brand-primary text-white font-semibold text-sm
-           hover:bg-opacity-90 transition-colors duration-200;
+           shadow-sm hover:shadow-md hover:bg-brand-primary-600
+           active:scale-[0.98] transition-all duration-200
+           focus-visible:ring-2 focus-visible:ring-brand-primary/50 focus-visible:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-button
+           bg-white text-brand-primary font-semibold text-sm
+           border-2 border-brand-primary
+           hover:bg-brand-primary hover:text-white
+           active:scale-[0.98] transition-all duration-200
+           focus-visible:ring-2 focus-visible:ring-brand-primary/50 focus-visible:ring-offset-2;
   }
 
   .btn-outline {
-    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-button
            border-2 border-brand-primary text-brand-primary font-semibold text-sm
-           hover:bg-brand-primary hover:text-white transition-colors duration-200;
+           hover:bg-brand-primary hover:text-white
+           active:scale-[0.98] transition-all duration-200
+           focus-visible:ring-2 focus-visible:ring-brand-primary/50 focus-visible:ring-offset-2;
   }
 
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-button
+           bg-transparent text-gray-700 font-medium text-sm
+           hover:bg-surface-100 active:scale-[0.98]
+           transition-all duration-200;
+  }
+
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-button
+           bg-error text-white font-semibold text-sm
+           shadow-sm hover:shadow-md hover:bg-error-dark
+           active:scale-[0.98] transition-all duration-200;
+  }
+
+  /* ===== CARDS ===== */
   .card {
-    @apply bg-white rounded-xl shadow-sm border border-gray-100 p-4;
+    @apply bg-white rounded-card shadow-card p-5;
   }
 
+  .card-hover {
+    @apply bg-white rounded-card shadow-card p-5
+           hover:shadow-card-hover hover:-translate-y-0.5
+           transition-all duration-200;
+  }
+
+  .card-elevated {
+    @apply bg-white rounded-card shadow-elevated p-6;
+  }
+
+  .card-glass {
+    @apply bg-white/70 backdrop-blur-xl border border-white/20
+           rounded-card shadow-elevated p-5;
+  }
+
+  /* ===== INPUTS ===== */
   .input-field {
-    @apply w-full px-4 py-3 rounded-lg border border-gray-300
-           focus:ring-2 focus:ring-brand-primary focus:border-transparent
-           outline-none text-lg transition-all duration-200;
+    @apply w-full px-4 py-3 rounded-button border border-gray-300
+           bg-white text-gray-900 text-body-lg
+           placeholder:text-gray-400 placeholder:transition-colors
+           focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary
+           focus-visible:outline-none
+           transition-all duration-200;
+  }
+
+  /* ===== BADGES ===== */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5
+           rounded-badge text-xs font-semibold;
+  }
+
+  .badge-success {
+    @apply badge bg-success-light text-success-dark;
+  }
+
+  .badge-warning {
+    @apply badge bg-warning-light text-warning-dark;
+  }
+
+  .badge-error {
+    @apply badge bg-error-light text-error-dark;
+  }
+
+  .badge-info {
+    @apply badge bg-info-light text-info-dark;
+  }
+
+  .badge-islamic {
+    @apply badge bg-emerald-100 text-emerald-800;
+  }
+
+  .badge-ai {
+    @apply badge bg-brand-primary-50 text-brand-primary-700;
+  }
+
+  .badge-new {
+    @apply badge bg-brand-gold-50 text-amber-800;
+  }
+
+  /* ===== LAYOUT ===== */
+  .section-padding {
+    @apply py-16 sm:py-20 px-4 sm:px-6;
+  }
+
+  .container-content {
+    @apply max-w-content-xl mx-auto px-4 sm:px-6;
+  }
+
+  /* ===== SHIMMER SKELETON ===== */
+  .shimmer {
+    @apply relative overflow-hidden bg-surface-200 rounded-lg;
+  }
+
+  .shimmer::after {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.5),
+      transparent
+    );
+    animation: shimmer 1.5s infinite;
   }
 }

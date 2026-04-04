@@ -16,7 +16,7 @@ export default function HealthInsurancePage() {
       category="health-insurance"
       titleKey="hi_title"
       subtitleKey="hi_subtitle"
-      heroIcon="🏥"
+      heroIcon="health_insurance"
       featureLabels={FEATURE_LABELS}
     />
   );

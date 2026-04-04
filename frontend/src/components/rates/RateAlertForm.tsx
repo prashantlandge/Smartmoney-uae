@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { getSessionId } from '@/lib/session';
+import { Bell, Check } from 'lucide-react';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? '';
 
@@ -38,23 +39,27 @@ export default function RateAlertForm({ currentRate }: Props) {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="w-full mt-3 py-2 px-4 bg-brand-primary/10 text-brand-primary text-sm font-medium rounded-lg hover:bg-brand-primary/20 transition-colors"
+        className="w-full mt-3 py-2.5 px-4 bg-brand-primary-50 text-brand-primary text-sm font-medium rounded-button hover:bg-brand-primary-100 transition-colors flex items-center justify-center gap-2"
       >
-        🔔 {t('rate_alert_title')}
+        <Bell size={16} />
+        {t('rate_alert_title')}
       </button>
     );
   }
 
   if (submitted) {
     return (
-      <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg text-center">
-        <p className="text-sm text-green-700">✓ {t('rate_alert_success')}</p>
+      <div className="mt-3 p-3 bg-success-light border border-emerald-200 rounded-card text-center flex items-center justify-center gap-2">
+        <div className="w-5 h-5 bg-success rounded-full flex items-center justify-center">
+          <Check size={12} className="text-white" />
+        </div>
+        <p className="text-sm text-success-dark">{t('rate_alert_success')}</p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+    <form onSubmit={handleSubmit} className="mt-3 p-4 bg-surface-50 rounded-card border border-surface-200">
       <h4 className="text-sm font-semibold text-gray-700 mb-1">{t('rate_alert_title')}</h4>
       <p className="text-xs text-gray-500 mb-3">{t('rate_alert_desc')}</p>
 
@@ -66,7 +71,7 @@ export default function RateAlertForm({ currentRate }: Props) {
             step="0.0001"
             value={targetRate}
             onChange={(e) => setTargetRate(e.target.value)}
-            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none"
+            className="input-field text-sm py-2"
             required
           />
         </div>
@@ -77,7 +82,7 @@ export default function RateAlertForm({ currentRate }: Props) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@email.com"
-            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none"
+            className="input-field text-sm py-2"
             required
           />
         </div>
@@ -87,7 +92,7 @@ export default function RateAlertForm({ currentRate }: Props) {
         <button
           type="button"
           onClick={() => setIsOpen(false)}
-          className="flex-1 py-2 text-xs text-gray-500 hover:text-gray-700"
+          className="flex-1 py-2 text-xs text-gray-500 hover:text-gray-700 rounded-button hover:bg-surface-100 transition-colors"
         >
           Cancel
         </button>

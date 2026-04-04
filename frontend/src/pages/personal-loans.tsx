@@ -16,7 +16,7 @@ export default function PersonalLoansPage() {
       category="personal-loans"
       titleKey="pl_title"
       subtitleKey="pl_subtitle"
-      heroIcon="🏦"
+      heroIcon="personal_loans"
       featureLabels={FEATURE_LABELS}
     />
   );

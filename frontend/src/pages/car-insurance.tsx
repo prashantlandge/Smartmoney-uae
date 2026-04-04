@@ -16,7 +16,7 @@ export default function CarInsurancePage() {
       category="car-insurance"
       titleKey="ci_title"
       subtitleKey="ci_subtitle"
-      heroIcon="🚗"
+      heroIcon="car_insurance"
       featureLabels={FEATURE_LABELS}
     />
   );
