@@ -8,11 +8,11 @@ interface ProviderLogoProps {
   className?: string;
 }
 
-// Known provider logo URLs (local SVG files)
+// Known provider logos - prefer real images, fall back to branded SVG
 const KNOWN_LOGOS: Record<string, string> = {
   // Remittance providers
   'wise': '/images/providers/wise.svg',
-  'remitly': '/images/providers/remitly.svg',
+  'remitly': '/images/providers/remitly.png',
   'western union': '/images/providers/western-union.svg',
   'al ansari': '/images/providers/al-ansari.svg',
   'al ansari exchange': '/images/providers/al-ansari.svg',
@@ -24,24 +24,23 @@ const KNOWN_LOGOS: Record<string, string> = {
   'ria': '/images/providers/ria.svg',
   'moneygram': '/images/providers/moneygram.svg',
 
-  // UAE Banks
+  // UAE Banks - real logos where available
   'emirates nbd': '/images/providers/emirates-nbd.svg',
   'enbd': '/images/providers/emirates-nbd.svg',
   'fab': '/images/providers/fab.svg',
   'first abu dhabi bank': '/images/providers/fab.svg',
-  'adcb': '/images/providers/adcb.svg',
-  'abu dhabi commercial bank': '/images/providers/adcb.svg',
-  'mashreq': '/images/providers/mashreq.svg',
-  'mashreq bank': '/images/providers/mashreq.svg',
+  'adcb': '/images/providers/adcb.png',
+  'abu dhabi commercial bank': '/images/providers/adcb.png',
+  'mashreq': '/images/providers/mashreq.png',
+  'mashreq bank': '/images/providers/mashreq.png',
   'hsbc': '/images/providers/hsbc.svg',
-  'dib': '/images/providers/dib.svg',
-  'dubai islamic bank': '/images/providers/dib.svg',
+  'dib': '/images/providers/dib.png',
+  'dubai islamic bank': '/images/providers/dib.png',
   'rakbank': '/images/providers/rakbank.svg',
   'cbd': '/images/providers/cbd.svg',
   'commercial bank of dubai': '/images/providers/cbd.svg',
-  'standard chartered': '/images/providers/standard-chartered.svg',
+  'standard chartered': '/images/providers/standard-chartered.png',
   'citibank': '/images/providers/citibank.svg',
-  'ajman bank': '/images/providers/al-ansari.svg',
 
   // Insurance providers
   'oman insurance': '/images/providers/oman-insurance.svg',
@@ -94,7 +93,6 @@ function InitialsFallback({ name, size, className }: { name: string; size: numbe
 export default function ProviderLogo({ name, logoUrl, size = 48, className = '' }: ProviderLogoProps) {
   const [imgError, setImgError] = useState(false);
 
-  // Determine the best logo URL: explicit prop > known mapping > fallback
   const resolvedUrl = (logoUrl && logoUrl !== '' && logoUrl !== '#') ? logoUrl : getKnownLogo(name);
 
   if (resolvedUrl && !imgError) {
@@ -108,7 +106,7 @@ export default function ProviderLogo({ name, logoUrl, size = 48, className = '' 
           alt={name}
           width={size}
           height={size}
-          className="object-cover w-full h-full"
+          className="object-contain w-full h-full"
           onError={() => setImgError(true)}
         />
       </div>
