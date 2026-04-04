@@ -8,52 +8,49 @@ interface ProviderLogoProps {
   className?: string;
 }
 
-// Known provider logo URLs (official logos via clearbit)
+// Known provider logo URLs (local SVG files)
 const KNOWN_LOGOS: Record<string, string> = {
   // Remittance providers
-  'wise': 'https://logo.clearbit.com/wise.com',
-  'remitly': 'https://logo.clearbit.com/remitly.com',
-  'western union': 'https://logo.clearbit.com/westernunion.com',
-  'al ansari': 'https://logo.clearbit.com/alansariexchange.com',
-  'al ansari exchange': 'https://logo.clearbit.com/alansariexchange.com',
-  'uae exchange': 'https://logo.clearbit.com/unimoni.com',
-  'unimoni': 'https://logo.clearbit.com/unimoni.com',
-  'xpress money': 'https://logo.clearbit.com/xpressmoney.com',
-  'worldremit': 'https://logo.clearbit.com/worldremit.com',
-  'instarem': 'https://logo.clearbit.com/instarem.com',
-  'ria': 'https://logo.clearbit.com/riamoneytransfer.com',
-  'moneygram': 'https://logo.clearbit.com/moneygram.com',
+  'wise': '/images/providers/wise.svg',
+  'remitly': '/images/providers/remitly.svg',
+  'western union': '/images/providers/western-union.svg',
+  'al ansari': '/images/providers/al-ansari.svg',
+  'al ansari exchange': '/images/providers/al-ansari.svg',
+  'uae exchange': '/images/providers/unimoni.svg',
+  'unimoni': '/images/providers/unimoni.svg',
+  'xpress money': '/images/providers/xpress-money.svg',
+  'worldremit': '/images/providers/worldremit.svg',
+  'instarem': '/images/providers/instarem.svg',
+  'ria': '/images/providers/ria.svg',
+  'moneygram': '/images/providers/moneygram.svg',
 
   // UAE Banks
-  'emirates nbd': 'https://logo.clearbit.com/emiratesnbd.com',
-  'enbd': 'https://logo.clearbit.com/emiratesnbd.com',
-  'fab': 'https://logo.clearbit.com/bankfab.com',
-  'first abu dhabi bank': 'https://logo.clearbit.com/bankfab.com',
-  'adcb': 'https://logo.clearbit.com/adcb.com',
-  'abu dhabi commercial bank': 'https://logo.clearbit.com/adcb.com',
-  'mashreq': 'https://logo.clearbit.com/mashreqbank.com',
-  'mashreq bank': 'https://logo.clearbit.com/mashreqbank.com',
-  'hsbc': 'https://logo.clearbit.com/hsbc.com',
-  'dib': 'https://logo.clearbit.com/dib.ae',
-  'dubai islamic bank': 'https://logo.clearbit.com/dib.ae',
-  'rakbank': 'https://logo.clearbit.com/rakbank.ae',
-  'cbd': 'https://logo.clearbit.com/cbd.ae',
-  'commercial bank of dubai': 'https://logo.clearbit.com/cbd.ae',
-  'noor bank': 'https://logo.clearbit.com/emiratesnbd.com',
-  'standard chartered': 'https://logo.clearbit.com/sc.com',
-  'citibank': 'https://logo.clearbit.com/citibank.com',
-  'ajman bank': 'https://logo.clearbit.com/ajmanbank.ae',
+  'emirates nbd': '/images/providers/emirates-nbd.svg',
+  'enbd': '/images/providers/emirates-nbd.svg',
+  'fab': '/images/providers/fab.svg',
+  'first abu dhabi bank': '/images/providers/fab.svg',
+  'adcb': '/images/providers/adcb.svg',
+  'abu dhabi commercial bank': '/images/providers/adcb.svg',
+  'mashreq': '/images/providers/mashreq.svg',
+  'mashreq bank': '/images/providers/mashreq.svg',
+  'hsbc': '/images/providers/hsbc.svg',
+  'dib': '/images/providers/dib.svg',
+  'dubai islamic bank': '/images/providers/dib.svg',
+  'rakbank': '/images/providers/rakbank.svg',
+  'cbd': '/images/providers/cbd.svg',
+  'commercial bank of dubai': '/images/providers/cbd.svg',
+  'standard chartered': '/images/providers/standard-chartered.svg',
+  'citibank': '/images/providers/citibank.svg',
+  'ajman bank': '/images/providers/al-ansari.svg',
 
   // Insurance providers
-  'oman insurance': 'https://logo.clearbit.com/omaninsurance.ae',
-  'orient insurance': 'https://logo.clearbit.com/orientinsurance.com',
-  'axa': 'https://logo.clearbit.com/axa.ae',
-  'salama': 'https://logo.clearbit.com/salama.ae',
-  'sukoon': 'https://logo.clearbit.com/sukoon.com',
-  'daman': 'https://logo.clearbit.com/damanhealth.ae',
-  'tawuniya': 'https://logo.clearbit.com/tawuniya.com',
-  'adnic': 'https://logo.clearbit.com/adnic.ae',
-  'watania': 'https://logo.clearbit.com/watania.ae',
+  'oman insurance': '/images/providers/oman-insurance.svg',
+  'orient insurance': '/images/providers/orient-insurance.svg',
+  'axa': '/images/providers/axa.svg',
+  'salama': '/images/providers/salama.svg',
+  'sukoon': '/images/providers/sukoon.svg',
+  'daman': '/images/providers/daman.svg',
+  'adnic': '/images/providers/adnic.svg',
 };
 
 function getKnownLogo(name: string): string | null {
@@ -103,15 +100,15 @@ export default function ProviderLogo({ name, logoUrl, size = 48, className = '' 
   if (resolvedUrl && !imgError) {
     return (
       <div
-        className={`inline-flex items-center justify-center rounded-xl bg-white border border-gray-100 shadow-sm overflow-hidden ${className}`}
+        className={`inline-flex items-center justify-center rounded-xl overflow-hidden shrink-0 ${className}`}
         style={{ width: size, height: size }}
       >
         <Image
           src={resolvedUrl}
           alt={name}
-          width={Math.round(size * 0.7)}
-          height={Math.round(size * 0.7)}
-          className="object-contain"
+          width={size}
+          height={size}
+          className="object-cover w-full h-full"
           onError={() => setImgError(true)}
         />
       </div>

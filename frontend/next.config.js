@@ -12,14 +12,6 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'images.unsplash.com',
       },
-      {
-        protocol: 'https',
-        hostname: 'logo.clearbit.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'upload.wikimedia.org',
-      },
     ],
   },
 };
