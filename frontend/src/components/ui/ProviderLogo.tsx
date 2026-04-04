@@ -8,56 +8,60 @@ interface ProviderLogoProps {
   className?: string;
 }
 
-// Known provider logos - prefer real images, fall back to branded SVG
-const KNOWN_LOGOS: Record<string, string> = {
-  // Remittance providers
-  'wise': '/images/providers/wise.svg',
-  'remitly': '/images/providers/remitly.png',
-  'western union': '/images/providers/western-union.svg',
-  'al ansari': '/images/providers/al-ansari.svg',
-  'al ansari exchange': '/images/providers/al-ansari.svg',
-  'uae exchange': '/images/providers/unimoni.svg',
-  'unimoni': '/images/providers/unimoni.svg',
-  'xpress money': '/images/providers/xpress-money.svg',
-  'worldremit': '/images/providers/worldremit.svg',
-  'instarem': '/images/providers/instarem.svg',
-  'ria': '/images/providers/ria.svg',
-  'moneygram': '/images/providers/moneygram.svg',
+interface LogoEntry {
+  src: string;
+  bg?: string; // background color for white-on-transparent logos
+}
 
-  // UAE Banks - real logos where available
-  'emirates nbd': '/images/providers/emirates-nbd.svg',
-  'enbd': '/images/providers/emirates-nbd.svg',
-  'fab': '/images/providers/fab.svg',
-  'first abu dhabi bank': '/images/providers/fab.svg',
-  'adcb': '/images/providers/adcb.png',
-  'abu dhabi commercial bank': '/images/providers/adcb.png',
-  'mashreq': '/images/providers/mashreq.png',
-  'mashreq bank': '/images/providers/mashreq.png',
-  'hsbc': '/images/providers/hsbc.svg',
-  'dib': '/images/providers/dib.png',
-  'dubai islamic bank': '/images/providers/dib.png',
-  'rakbank': '/images/providers/rakbank.svg',
-  'cbd': '/images/providers/cbd.svg',
-  'commercial bank of dubai': '/images/providers/cbd.svg',
-  'standard chartered': '/images/providers/standard-chartered.png',
-  'citibank': '/images/providers/citibank.svg',
+// Known provider logos — use PNGs (real logos) where available
+const KNOWN_LOGOS: Record<string, LogoEntry> = {
+  // Remittance providers
+  'wise': { src: '/images/providers/wise.png' },
+  'remitly': { src: '/images/providers/remitly.png' },
+  'western union': { src: '/images/providers/western-union.png', bg: '#000000' },
+  'al ansari': { src: '/images/providers/al-ansari.png', bg: '#1B5E20' },
+  'al ansari exchange': { src: '/images/providers/al-ansari.png', bg: '#1B5E20' },
+  'uae exchange': { src: '/images/providers/unimoni.svg' },
+  'unimoni': { src: '/images/providers/unimoni.svg' },
+  'xpress money': { src: '/images/providers/xpress-money.svg' },
+  'worldremit': { src: '/images/providers/worldremit.svg' },
+  'instarem': { src: '/images/providers/instarem.svg' },
+  'ria': { src: '/images/providers/ria.svg' },
+  'moneygram': { src: '/images/providers/moneygram.svg' },
+
+  // UAE Banks
+  'emirates nbd': { src: '/images/providers/emirates-nbd.png', bg: '#1A237E' },
+  'enbd': { src: '/images/providers/emirates-nbd.png', bg: '#1A237E' },
+  'fab': { src: '/images/providers/fab.png', bg: '#004D40' },
+  'first abu dhabi bank': { src: '/images/providers/fab.png', bg: '#004D40' },
+  'adcb': { src: '/images/providers/adcb.png' },
+  'abu dhabi commercial bank': { src: '/images/providers/adcb.png' },
+  'mashreq': { src: '/images/providers/mashreq.png' },
+  'mashreq bank': { src: '/images/providers/mashreq.png' },
+  'hsbc': { src: '/images/providers/hsbc.png' },
+  'dib': { src: '/images/providers/dib.png', bg: '#00695C' },
+  'dubai islamic bank': { src: '/images/providers/dib.png', bg: '#00695C' },
+  'rakbank': { src: '/images/providers/rakbank.png' },
+  'cbd': { src: '/images/providers/cbd.svg' },
+  'commercial bank of dubai': { src: '/images/providers/cbd.svg' },
+  'standard chartered': { src: '/images/providers/standard-chartered.png', bg: '#003DA5' },
+  'citibank': { src: '/images/providers/citibank.svg' },
 
   // Insurance providers
-  'oman insurance': '/images/providers/oman-insurance.svg',
-  'orient insurance': '/images/providers/orient-insurance.svg',
-  'axa': '/images/providers/axa.svg',
-  'salama': '/images/providers/salama.svg',
-  'sukoon': '/images/providers/sukoon.svg',
-  'daman': '/images/providers/daman.svg',
-  'adnic': '/images/providers/adnic.svg',
+  'oman insurance': { src: '/images/providers/oman-insurance.svg' },
+  'orient insurance': { src: '/images/providers/orient-insurance.svg' },
+  'axa': { src: '/images/providers/axa.svg' },
+  'salama': { src: '/images/providers/salama.svg' },
+  'sukoon': { src: '/images/providers/sukoon.svg' },
+  'daman': { src: '/images/providers/daman.svg' },
+  'adnic': { src: '/images/providers/adnic.svg' },
 };
 
-function getKnownLogo(name: string): string | null {
+function getKnownLogo(name: string): LogoEntry | null {
   const key = name.toLowerCase().trim();
   return KNOWN_LOGOS[key] || null;
 }
 
-// Generate a consistent color from a string
 function hashColor(str: string): string {
   const colors = [
     'from-blue-500 to-blue-600',
@@ -93,20 +97,24 @@ function InitialsFallback({ name, size, className }: { name: string; size: numbe
 export default function ProviderLogo({ name, logoUrl, size = 48, className = '' }: ProviderLogoProps) {
   const [imgError, setImgError] = useState(false);
 
-  const resolvedUrl = (logoUrl && logoUrl !== '' && logoUrl !== '#') ? logoUrl : getKnownLogo(name);
+  // Resolve logo: explicit prop > known mapping > fallback
+  const explicitUrl = (logoUrl && logoUrl !== '' && logoUrl !== '#') ? logoUrl : null;
+  const knownEntry = getKnownLogo(name);
+  const resolvedSrc = explicitUrl || knownEntry?.src;
+  const bgColor = explicitUrl ? undefined : knownEntry?.bg;
 
-  if (resolvedUrl && !imgError) {
+  if (resolvedSrc && !imgError) {
     return (
       <div
-        className={`inline-flex items-center justify-center rounded-xl overflow-hidden shrink-0 ${className}`}
-        style={{ width: size, height: size }}
+        className={`inline-flex items-center justify-center rounded-xl overflow-hidden shrink-0 p-1 ${className}`}
+        style={{ width: size, height: size, backgroundColor: bgColor }}
       >
         <Image
-          src={resolvedUrl}
+          src={resolvedSrc}
           alt={name}
-          width={size}
-          height={size}
-          className="object-contain w-full h-full"
+          width={Math.round(size * 0.85)}
+          height={Math.round(size * 0.85)}
+          className="object-contain max-w-full max-h-full"
           onError={() => setImgError(true)}
         />
       </div>
