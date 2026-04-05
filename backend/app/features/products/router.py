@@ -208,7 +208,7 @@ async def get_product(product_id: str):
         product_name=row["product_name"],
         product_type=row["product_type"],
         description=row["description"] or "",
-        features=row["features"] or {},
+        features=_parse_features(row["features"]),
         affiliate_link=row["affiliate_link"] or "#",
         is_islamic=row["is_islamic"],
         is_active=row["is_active"],
