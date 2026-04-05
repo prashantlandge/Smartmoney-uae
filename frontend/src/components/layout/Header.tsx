@@ -2,8 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { useState } from 'react';
-import { Menu, X, Sparkles, Search } from 'lucide-react';
-import HeroSearch from '@/components/search/HeroSearch';
+import { Menu, X, Sparkles } from 'lucide-react';
 import FlagIcon from '@/components/ui/FlagIcon';
 
 const NAV_ITEMS = [
@@ -91,23 +90,9 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Secondary bar — search (desktop, hidden on homepage since hero has search) */}
-      {router.pathname !== '/' && (
-        <div className="hidden lg:block bg-white border-b border-surface-200">
-          <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-2">
-            <div className="max-w-md">
-              <HeroSearch compact />
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Mobile Nav */}
       {mobileOpen && (
         <div className="lg:hidden bg-white border-b border-surface-200 shadow-card animate-fade-in">
-          <div className="px-4 py-3">
-            <HeroSearch compact />
-          </div>
           <Link
             href="/recommend"
             onClick={() => setMobileOpen(false)}
