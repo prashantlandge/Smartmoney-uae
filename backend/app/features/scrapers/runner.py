@@ -65,7 +65,7 @@ async def upsert_product(pool, product: ScrapedProduct) -> Optional[str]:
         nationality_arr = []
 
     employer_arr = product.employer_categories or []
-    now = datetime.now(timezone.utc)
+    now = datetime.utcnow()  # timezone-naive for TIMESTAMP column
 
     if existing:
         # Update existing product
