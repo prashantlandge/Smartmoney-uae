@@ -17,7 +17,7 @@ interface ContainerProps {
 
 export default function Container({ size = 'xl', children, className = '' }: ContainerProps) {
   return (
-    <div className={`${SIZE_CLASSES[size]} mx-auto px-4 sm:px-6 ${className}`}>
+    <div className={`${SIZE_CLASSES[size]} mx-auto px-4 sm:px-8 ${className}`}>
       {children}
     </div>
   );

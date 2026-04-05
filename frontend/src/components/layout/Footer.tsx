@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 import { Globe, Mail, MessageCircle } from 'lucide-react';
 
@@ -11,11 +12,14 @@ export default function Footer() {
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-6">
           {/* Brand */}
           <div className="col-span-2">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 bg-brand-nav rounded-button flex items-center justify-center">
-                <span className="text-white font-bold text-xs">SM</span>
-              </div>
-              <span className="font-bold text-base">SmartMoney UAE</span>
+            <div className="mb-3">
+              <Image
+                src="/images/logo-white.svg"
+                alt="SmartMoney UAE"
+                width={160}
+                height={32}
+                className="h-8 w-auto"
+              />
             </div>
             <p className="text-body-sm text-gray-400 leading-relaxed mb-4 max-w-xs">
               {t('footer_desc')}

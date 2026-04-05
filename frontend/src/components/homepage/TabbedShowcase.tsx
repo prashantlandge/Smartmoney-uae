@@ -179,12 +179,12 @@ export default function TabbedShowcase() {
         ))}
       </div>
 
-      {/* Product cards — compact */}
+      {/* Product cards — equal height */}
       <div className="grid sm:grid-cols-3 gap-3">
         {tab.products.map((product, idx) => (
           <div
             key={product.name}
-            className={`bg-white rounded-card border p-4 hover:shadow-card-hover transition-all ${
+            className={`bg-white rounded-card border p-4 hover:shadow-card-hover transition-all flex flex-col ${
               idx === 0 ? 'border-brand-primary/30 ring-1 ring-brand-primary/10' : 'border-surface-200'
             }`}
           >
@@ -197,7 +197,7 @@ export default function TabbedShowcase() {
 
             {/* Provider + name */}
             <div className="flex items-center gap-3 mb-3">
-              <ProviderLogo name={product.provider} size={40} />
+              <ProviderLogo name={product.provider} size={44} />
               <div className="min-w-0">
                 <h4 className="text-body-sm font-bold text-brand-dark truncate">{product.name}</h4>
                 <p className="text-label text-gray-500">{product.provider}</p>
@@ -205,7 +205,7 @@ export default function TabbedShowcase() {
             </div>
 
             {/* Features */}
-            <ul className="space-y-1.5 mb-4">
+            <ul className="space-y-1.5 mb-4 flex-1">
               {product.features.map((feat) => (
                 <li key={feat} className="flex items-start gap-2 text-body-sm text-gray-600">
                   <Check size={14} className="text-brand-primary shrink-0 mt-0.5" />
@@ -217,7 +217,7 @@ export default function TabbedShowcase() {
             {/* CTA */}
             <Link
               href={product.href}
-              className="text-body-sm font-bold text-accent hover:text-accent-hover flex items-center gap-1 transition-colors"
+              className="text-body-sm font-bold text-accent hover:text-accent-hover flex items-center gap-1 transition-colors mt-auto"
             >
               View details <ChevronRight size={14} />
             </Link>

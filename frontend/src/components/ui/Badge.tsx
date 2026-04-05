@@ -9,8 +9,8 @@ const VARIANT_CLASSES: Record<BadgeVariant, string> = {
   info: 'bg-info-light text-info-dark',
   islamic: 'bg-emerald-100 text-emerald-800',
   ai: 'bg-brand-primary-50 text-brand-primary-700',
-  new: 'bg-brand-gold-50 text-amber-800',
-  best: 'bg-lime-100 text-lime-800',
+  new: 'bg-yellow-50 text-yellow-800',
+  best: 'bg-yellow-100 text-yellow-800',
   cashback: 'bg-amber-50 text-amber-700 border border-amber-200',
   promoted: 'bg-blue-50 text-blue-700',
   limited: 'bg-rose-50 text-rose-700 border border-rose-200',
@@ -26,7 +26,7 @@ interface BadgeProps {
 
 export default function Badge({ variant = 'default', children, className = '', icon }: BadgeProps) {
   return (
-    <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-badge text-xs font-semibold ${VARIANT_CLASSES[variant]} ${className}`}>
+    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-badge text-label font-semibold leading-normal ${VARIANT_CLASSES[variant]} ${className}`}>
       {icon}
       {children}
     </span>

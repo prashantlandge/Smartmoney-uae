@@ -15,7 +15,7 @@ export default function CompareTray() {
   return (
     <>
       <div className="fixed bottom-0 inset-x-0 z-40 bg-white border-t border-surface-200 shadow-elevated animate-fade-in-up">
-        <div className="max-w-content-xl mx-auto px-4 sm:px-6 py-3 flex items-center gap-4">
+        <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-3 flex items-center gap-4">
           {/* Selected items */}
           <div className="flex items-center gap-3 flex-1 min-w-0">
             <span className="text-body-sm font-semibold text-gray-700 shrink-0">

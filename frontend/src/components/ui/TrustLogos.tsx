@@ -29,7 +29,7 @@ export default function TrustLogos() {
               title={provider.name}
             >
               <div
-                className="w-8 h-8 rounded-button overflow-hidden shrink-0 flex items-center justify-center p-0.5 opacity-50 group-hover:opacity-100 transition-opacity"
+                className="w-8 h-8 rounded-card overflow-hidden shrink-0 flex items-center justify-center p-0.5 opacity-50 group-hover:opacity-100 transition-opacity"
                 style={provider.bg ? { backgroundColor: provider.bg } : undefined}
               >
                 <Image

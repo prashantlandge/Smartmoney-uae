@@ -86,7 +86,7 @@ function InitialsFallback({ name, size, className }: { name: string; size: numbe
 
   return (
     <div
-      className={`inline-flex items-center justify-center rounded-xl bg-gradient-to-br ${gradient} text-white font-bold ${className}`}
+      className={`inline-flex items-center justify-center rounded-card bg-gradient-to-br ${gradient} text-white font-bold ${className}`}
       style={{ width: size, height: size, fontSize: size * 0.35 }}
     >
       {initials}
@@ -106,7 +106,7 @@ export default function ProviderLogo({ name, logoUrl, size = 48, className = '' 
   if (resolvedSrc && !imgError) {
     return (
       <div
-        className={`inline-flex items-center justify-center rounded-xl overflow-hidden shrink-0 p-1 ${className}`}
+        className={`inline-flex items-center justify-center rounded-card overflow-hidden shrink-0 p-1 ${className}`}
         style={{ width: size, height: size, backgroundColor: bgColor }}
       >
         <Image

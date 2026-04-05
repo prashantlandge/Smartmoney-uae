@@ -1,8 +1,9 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { useState, useRef, useEffect } from 'react';
-import { Menu, X, Sparkles, ChevronDown, Fuel, Gift, Plane, Crown, Percent, Building2, Shield, Moon, Heart, Car, Stethoscope, Baby, Users, Zap } from 'lucide-react';
+import { Menu, X, Sparkles, ChevronDown, Fuel, Gift, Plane, Crown, Percent, Building2, Shield, Moon, Car, Stethoscope, Baby, Users, Zap } from 'lucide-react';
 import FlagIcon from '@/components/ui/FlagIcon';
 
 interface SubItem {
@@ -103,13 +104,15 @@ export default function Header() {
         <div className="max-w-content-xl mx-auto px-4 sm:px-8">
           <div className="flex items-center justify-between h-14">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-white rounded-md flex items-center justify-center">
-                <span className="text-brand-nav font-bold text-sm">SM</span>
-              </div>
-              <span className="font-bold text-white text-base hidden sm:block">
-                SmartMoney UAE
-              </span>
+            <Link href="/" className="flex items-center shrink-0">
+              <Image
+                src="/images/logo-white.svg"
+                alt="SmartMoney UAE"
+                width={160}
+                height={32}
+                className="h-8 w-auto"
+                priority
+              />
             </Link>
 
             {/* Desktop Nav with dropdowns */}

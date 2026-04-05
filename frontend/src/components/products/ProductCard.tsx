@@ -71,7 +71,7 @@ export default function ProductCard({ product, featureLabels = {} }: Props) {
         {/* Row 1: Logo + Name + Badge + CTA */}
         <div className="flex items-start gap-3 sm:gap-4">
           {/* Logo */}
-          <ProviderLogo name={product.provider_name} logoUrl={product.provider_logo} size={52} />
+          <ProviderLogo name={product.provider_name} logoUrl={product.provider_logo} size={44} />
 
           {/* Name + Provider + Badges */}
           <div className="flex-1 min-w-0">
