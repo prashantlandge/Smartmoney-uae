@@ -174,6 +174,14 @@ async def search_products(
 @router.get("/{product_id}", response_model=ProductResponse)
 async def get_product(product_id: str):
     """Get a single product by ID."""
+    import uuid as _uuid
+
+    # Validate UUID format
+    try:
+        valid_uuid = _uuid.UUID(product_id)
+    except (ValueError, AttributeError):
+        raise HTTPException(status_code=404, detail="Product not found")
+
     pool = await get_pool()
 
     row = await pool.fetchrow(
@@ -187,7 +195,7 @@ async def get_product(product_id: str):
         JOIN providers pr ON p.provider_id = pr.id
         WHERE p.id = $1
         """,
-        product_id,
+        valid_uuid,
     )
 
     if not row:
