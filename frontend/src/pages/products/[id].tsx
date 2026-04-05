@@ -73,14 +73,16 @@ function Section({ icon: Icon, iconColor, title, children }: {
   children: ReactNode;
 }) {
   return (
-    <div className="bg-white rounded-card border border-surface-200">
-      <div className="px-6 py-4 border-b border-surface-100">
-        <h2 className="text-sm font-bold text-gray-900 flex items-center gap-2">
-          <Icon size={16} className={iconColor} />
+    <div className="bg-white rounded-2xl border border-surface-200">
+      <div className="px-6 sm:px-8 py-5 border-b border-surface-100">
+        <h2 className="text-base font-bold text-gray-900 flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-lg bg-surface-50 flex items-center justify-center shrink-0">
+            <Icon size={18} className={iconColor} />
+          </div>
           {title}
         </h2>
       </div>
-      <div className="px-6 py-5">{children}</div>
+      <div className="px-6 sm:px-8 py-6">{children}</div>
     </div>
   );
 }
@@ -89,9 +91,9 @@ function Section({ icon: Icon, iconColor, title, children }: {
 function Row({ label, value }: { label: string; value: FeatureValue | undefined }) {
   if (value === undefined) return null;
   return (
-    <div className="flex items-start justify-between py-2.5 border-b border-surface-100 last:border-b-0">
-      <span className="text-sm text-gray-600">{label}</span>
-      <span className="text-sm font-semibold text-gray-900 text-right max-w-[55%]">{formatValue(value)}</span>
+    <div className="flex items-start justify-between py-3 border-b border-surface-100 last:border-b-0">
+      <span className="text-sm text-gray-500">{label}</span>
+      <span className="text-sm font-bold text-gray-900 text-right max-w-[55%]">{formatValue(value)}</span>
     </div>
   );
 }
@@ -101,17 +103,17 @@ function BoolRow({ label, value }: { label: string; value: FeatureValue | undefi
   if (value === undefined) return null;
   const yes = Boolean(value);
   return (
-    <div className="flex items-center gap-2.5 py-1.5">
+    <div className="flex items-center gap-3 py-2">
       {yes ? (
-        <div className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
-          <Check size={12} className="text-emerald-600" />
+        <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
+          <Check size={14} className="text-emerald-600" />
         </div>
       ) : (
-        <div className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
-          <X size={12} className="text-gray-400" />
+        <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+          <X size={14} className="text-gray-400" />
         </div>
       )}
-      <span className={`text-sm ${yes ? 'text-gray-700' : 'text-gray-400'}`}>{label}</span>
+      <span className={`text-sm ${yes ? 'text-gray-700 font-medium' : 'text-gray-400'}`}>{label}</span>
     </div>
   );
 }
@@ -121,13 +123,13 @@ function MiniTable({ data, label }: { data: Record<string, unknown>; label?: str
   const entries = Object.entries(data).filter(([, v]) => v !== undefined && v !== null && v !== '');
   if (entries.length === 0) return null;
   return (
-    <div className="mt-3">
-      {label && <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{label}</p>}
+    <div className="mt-4">
+      {label && <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2.5">{label}</p>}
       <div className="bg-surface-50 rounded-xl overflow-hidden border border-surface-100">
         {entries.map(([key, val]) => (
-          <div key={key} className="flex items-center justify-between px-4 py-2 border-b border-surface-100 last:border-b-0">
-            <span className="text-xs text-gray-600">{formatLabel(key)}</span>
-            <span className="text-xs font-semibold text-gray-900">{String(val)}</span>
+          <div key={key} className="flex items-center justify-between px-4 py-2.5 border-b border-surface-100 last:border-b-0">
+            <span className="text-sm text-gray-600">{formatLabel(key)}</span>
+            <span className="text-sm font-bold text-gray-900">{String(val)}</span>
           </div>
         ))}
       </div>
@@ -162,9 +164,9 @@ function HighlightCard({ label, value, color }: { label: string; value: string; 
   };
   const cls = colorMap[color] || colorMap.blue;
   return (
-    <div className={`rounded-xl border px-4 py-3 ${cls}`}>
-      <p className="text-xs font-medium opacity-70">{label}</p>
-      <p className="text-base font-bold mt-0.5">{value}</p>
+    <div className={`rounded-xl border px-5 py-4 ${cls}`}>
+      <p className="text-xs font-medium opacity-70 mb-1">{label}</p>
+      <p className="text-lg font-bold">{value}</p>
     </div>
   );
 }
@@ -608,7 +610,7 @@ export default function ProductDetailPage() {
 
       {/* Breadcrumb */}
       <div className="bg-white border-b border-surface-200">
-        <div className="max-w-content-xl mx-auto px-4 sm:px-6 py-3 flex items-center gap-2 text-xs text-gray-500">
+        <div className="max-w-content-xl mx-auto px-4 sm:px-6 py-3.5 flex items-center gap-2 text-sm text-gray-500">
           <Link href="/" className="hover:text-brand-primary transition-colors">Home</Link>
           <ChevronRight size={12} />
           {product && (
@@ -646,18 +648,18 @@ export default function ProductDetailPage() {
 
       {product && (
         <div className="bg-surface-50 min-h-[60vh]">
-          <div className="max-w-content-xl mx-auto px-4 sm:px-6 py-8">
-            <div className="lg:grid lg:grid-cols-[1fr_320px] lg:gap-8">
+          <div className="max-w-content-xl mx-auto px-4 sm:px-6 py-10">
+            <div className="lg:grid lg:grid-cols-[1fr_340px] lg:gap-10">
 
               {/* Main content */}
-              <div className="space-y-6">
+              <div className="space-y-7">
 
                 {/* ── Hero Section ── */}
-                <div className="bg-white rounded-card border border-surface-200 p-6">
-                  <div className="flex items-start gap-4">
-                    <ProviderLogo name={product.provider_name} logoUrl={product.provider_logo} size={64} />
+                <div className="bg-white rounded-2xl border border-surface-200 p-7 sm:p-8">
+                  <div className="flex items-start gap-5">
+                    <ProviderLogo name={product.provider_name} logoUrl={product.provider_logo} size={72} />
                     <div className="flex-1 min-w-0">
-                      <div className="flex flex-wrap items-center gap-2 mb-1">
+                      <div className="flex flex-wrap items-center gap-2 mb-2">
                         {product.is_islamic && (
                           <Badge variant="islamic">{t('islamic_compliant')}</Badge>
                         )}
@@ -668,14 +670,14 @@ export default function ProductDetailPage() {
                           <Badge variant={product.badge.type as any}>{product.badge.label}</Badge>
                         )}
                       </div>
-                      <h1 className="text-heading-lg font-bold text-gray-900">{product.product_name}</h1>
-                      <p className="text-body-sm text-gray-500 mt-0.5">{product.provider_name}</p>
+                      <h1 className="text-2xl font-bold text-gray-900">{product.product_name}</h1>
+                      <p className="text-base text-gray-500 mt-1">{product.provider_name}</p>
                     </div>
                   </div>
 
                   {/* Key highlight cards */}
                   {highlights.length > 0 && (
-                    <div className={`mt-5 grid gap-3 ${highlights.length <= 2 ? 'grid-cols-2' : highlights.length === 3 ? 'grid-cols-3' : 'grid-cols-2 sm:grid-cols-4'}`}>
+                    <div className={`mt-6 grid gap-4 ${highlights.length <= 2 ? 'grid-cols-2' : highlights.length === 3 ? 'grid-cols-3' : 'grid-cols-2 sm:grid-cols-4'}`}>
                       {highlights.map((h) => (
                         <HighlightCard key={h.label} label={h.label} value={h.value} color={h.color} />
                       ))}
@@ -721,48 +723,46 @@ export default function ProductDetailPage() {
               </div>
 
               {/* ── Sidebar — Apply CTA + provider info ── */}
-              <div className="mt-6 lg:mt-0">
-                <div className="sticky top-20 space-y-4">
+              <div className="mt-8 lg:mt-0">
+                <div className="sticky top-20 space-y-5">
                   {/* Apply card */}
-                  <div className="bg-white rounded-card border border-surface-200 p-5">
+                  <div className="bg-white rounded-2xl border border-surface-200 p-6">
                     <a
                       href={affiliateHref}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={handleApply}
-                      className="btn-primary w-full justify-center text-sm py-3 gap-2 shadow-glow-primary"
+                      className="btn-primary w-full justify-center text-base py-3.5 gap-2 shadow-glow-primary"
                     >
-                      Apply Now <ExternalLink size={14} />
+                      Apply Now <ExternalLink size={16} />
                     </a>
-                    <p className="text-caption text-gray-400 text-center mt-2">
+                    <p className="text-xs text-gray-400 text-center mt-3">
                       You&apos;ll be redirected to {product.provider_name}
                     </p>
                   </div>
 
                   {/* Provider info */}
-                  <div className="bg-white rounded-card border border-surface-200 p-5">
-                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">About the Provider</h3>
-                    <div className="flex items-center gap-3">
-                      <ProviderLogo name={product.provider_name} logoUrl={product.provider_logo} size={40} />
+                  <div className="bg-white rounded-2xl border border-surface-200 p-6">
+                    <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">About the Provider</h3>
+                    <div className="flex items-center gap-4">
+                      <ProviderLogo name={product.provider_name} logoUrl={product.provider_logo} size={48} />
                       <div>
-                        <p className="text-sm font-semibold text-gray-900">{product.provider_name}</p>
-                        <p className="text-xs text-gray-500">Licensed in UAE</p>
+                        <p className="text-base font-bold text-gray-900">{product.provider_name}</p>
+                        <p className="text-sm text-gray-500">Licensed in UAE</p>
                       </div>
                     </div>
                   </div>
 
                   {/* Quick links */}
-                  <div className="bg-white rounded-card border border-surface-200 p-5">
-                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Related</h3>
-                    <div className="space-y-2">
-                      <Link
-                        href={categoryRoute}
-                        className="flex items-center gap-2 text-sm text-brand-primary hover:text-brand-primary-700 font-medium transition-colors"
-                      >
-                        <ArrowLeft size={14} />
-                        All {categoryLabel}
-                      </Link>
-                    </div>
+                  <div className="bg-white rounded-2xl border border-surface-200 p-6">
+                    <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Related</h3>
+                    <Link
+                      href={categoryRoute}
+                      className="flex items-center gap-2 text-sm text-brand-primary hover:text-brand-primary-700 font-semibold transition-colors"
+                    >
+                      <ArrowLeft size={16} />
+                      All {categoryLabel}
+                    </Link>
                   </div>
                 </div>
               </div>
