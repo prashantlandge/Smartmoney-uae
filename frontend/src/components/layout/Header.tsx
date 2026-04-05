@@ -24,16 +24,15 @@ interface SubItem {
 interface NavItem {
   href: string;
   key: string;
-  label: string;
   icon: typeof CreditCard;
   sub?: SubItem[];
 }
 
 /* ─── Consolidated nav: 5 items ─── */
 const NAV_ITEMS: NavItem[] = [
-  { href: '/', key: 'nav_home', label: 'Remittance', icon: ArrowLeftRight },
+  { href: '/', key: 'nav_home', icon: ArrowLeftRight },
   {
-    href: '/credit-cards', key: 'nav_credit_cards', label: 'Credit Cards', icon: CreditCard,
+    href: '/credit-cards', key: 'nav_credit_cards', icon: CreditCard,
     sub: [
       { label: 'Cashback Cards', href: '/credit-cards?filter=cashback', icon: Percent, desc: 'Earn cashback on every purchase' },
       { label: 'Travel & Miles Cards', href: '/credit-cards?filter=travel', icon: Plane, desc: 'Airline miles & lounge access' },
@@ -44,7 +43,7 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   {
-    href: '/personal-loans', key: 'nav_loans', label: 'Loans', icon: Wallet,
+    href: '/personal-loans', key: 'nav_loans', icon: Wallet,
     sub: [
       { label: 'Personal Loans', href: '/personal-loans', icon: Wallet, desc: 'Compare best rates from UAE banks' },
       { label: 'Home Loans', href: '/personal-loans?filter=home', icon: Home, desc: 'Mortgage & home finance options' },
@@ -54,7 +53,7 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   {
-    href: '/car-insurance', key: 'nav_insurance', label: 'Insurance', icon: Shield,
+    href: '/car-insurance', key: 'nav_insurance', icon: Shield,
     sub: [
       { label: 'Car Insurance', href: '/car-insurance', icon: Car, desc: 'Comprehensive & third party' },
       { label: 'Health Insurance', href: '/health-insurance', icon: HeartPulse, desc: 'Individual & family plans' },
@@ -64,7 +63,7 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   {
-    href: '/calculators', key: 'nav_tools', label: 'Tools & Tax', icon: Calculator,
+    href: '/calculators', key: 'nav_tools', icon: Calculator,
     sub: [
       { label: 'EMI Calculator', href: '/calculators#emi', icon: Calculator, desc: 'Calculate loan EMI instantly' },
       { label: 'Cashback Calculator', href: '/calculators#cashback', icon: Percent, desc: 'Compare card cashback returns' },
@@ -86,10 +85,29 @@ export default function Header() {
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const dropdownTimeout = useRef<ReturnType<typeof setTimeout>>();
 
-  const switchLocale = () => {
-    const newLocale = router.locale === 'ar' ? 'en' : 'ar';
-    router.push(router.pathname, router.asPath, { locale: newLocale });
+  const [langOpen, setLangOpen] = useState(false);
+  const langRef = useRef<HTMLDivElement>(null);
+
+  const LANGUAGES = [
+    { code: 'en', label: 'EN', flag: 'gb' },
+    { code: 'ar', label: 'عربي', flag: 'ae' },
+    { code: 'hi', label: 'हिंदी', flag: 'in' },
+  ] as const;
+
+  const switchLocale = (locale: string) => {
+    setLangOpen(false);
+    router.push(router.pathname, router.asPath, { locale });
   };
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setLangOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleMouseEnter = (key: string) => {
     clearTimeout(dropdownTimeout.current);
@@ -104,6 +122,7 @@ export default function Header() {
     setOpenDropdown(null);
     setMobileOpen(false);
     setMobileExpanded(null);
+    setLangOpen(false);
   }, [router.asPath]);
 
   return (
@@ -124,25 +143,42 @@ export default function Header() {
 
           <div className="flex items-center gap-1.5 sm:gap-2">
             <Link href="/about" className="hidden md:block text-label text-gray-500 hover:text-brand-nav transition-colors px-2 py-1">
-              About
+              {t('nav_about')}
             </Link>
             <Link href="/contact" className="hidden md:block text-label text-gray-500 hover:text-brand-nav transition-colors px-2 py-1">
-              Contact
+              {t('nav_contact')}
             </Link>
             <Link
               href="/recommend"
               className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-label font-bold bg-brand-nav text-white rounded-button hover:bg-brand-nav-dark transition-colors"
             >
               <Sparkles size={12} />
-              Smart Compare
+              {t('nav_smart_compare')}
             </Link>
-            <button
-              onClick={switchLocale}
-              className="flex items-center gap-1.5 px-2 py-1.5 text-label font-medium text-gray-500 hover:text-brand-nav rounded hover:bg-surface-50 transition-colors"
-            >
-              <FlagIcon code="ae" size={14} />
-              {router.locale === 'ar' ? 'EN' : 'عربي'}
-            </button>
+            <div ref={langRef} className="relative">
+              <button
+                onClick={() => setLangOpen(!langOpen)}
+                className="flex items-center gap-1.5 px-2 py-1.5 text-label font-medium text-gray-500 hover:text-brand-nav rounded hover:bg-surface-50 transition-colors"
+              >
+                <FlagIcon code={LANGUAGES.find(l => l.code === router.locale)?.flag || 'gb'} size={14} />
+                {LANGUAGES.find(l => l.code === router.locale)?.label || 'EN'}
+                <ChevronDown size={10} className={`transition-transform ${langOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {langOpen && (
+                <div className="absolute end-0 top-full mt-1 bg-white rounded-lg shadow-elevated border border-surface-200 overflow-hidden animate-fade-in z-50 min-w-[120px]">
+                  {LANGUAGES.filter(l => l.code !== router.locale).map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => switchLocale(lang.code)}
+                      className="flex items-center gap-2 w-full px-3 py-2 text-body-sm text-gray-700 hover:bg-surface-50 hover:text-brand-nav transition-colors"
+                    >
+                      <FlagIcon code={lang.flag} size={14} />
+                      {lang.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="lg:hidden p-1.5 text-gray-500 hover:text-brand-nav rounded hover:bg-surface-50 transition-colors"
@@ -180,7 +216,7 @@ export default function Header() {
                     }`}
                   >
                     <Icon size={16} strokeWidth={2} />
-                    {item.label}
+                    {t(item.key)}
                     {hasSub && <ChevronDown size={11} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />}
                   </Link>
 
@@ -197,7 +233,7 @@ export default function Header() {
                           href={item.href}
                           className="flex items-center justify-between px-4 py-2.5 bg-surface-50 border-b border-surface-100 text-body-sm font-bold text-brand-nav hover:text-brand-nav-dark transition-colors"
                         >
-                          All {item.label}
+                          {t('view_all')} {t(item.key)}
                           <ArrowRight size={13} />
                         </Link>
 
@@ -259,7 +295,7 @@ export default function Header() {
                       }`}
                     >
                       <Icon size={16} className={isActive ? 'text-brand-nav' : 'text-gray-400'} />
-                      {item.label}
+                      {t(item.key)}
                     </Link>
                     {hasSub && (
                       <button
@@ -292,8 +328,8 @@ export default function Header() {
           </div>
 
           <div className="border-t border-surface-100 px-3 py-2 flex gap-4">
-            <Link href="/about" onClick={() => setMobileOpen(false)} className="text-label text-gray-500 hover:text-brand-nav">About</Link>
-            <Link href="/contact" onClick={() => setMobileOpen(false)} className="text-label text-gray-500 hover:text-brand-nav">Contact</Link>
+            <Link href="/about" onClick={() => setMobileOpen(false)} className="text-label text-gray-500 hover:text-brand-nav">{t('nav_about')}</Link>
+            <Link href="/contact" onClick={() => setMobileOpen(false)} className="text-label text-gray-500 hover:text-brand-nav">{t('nav_contact')}</Link>
           </div>
         </div>
       )}

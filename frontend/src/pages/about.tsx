@@ -81,9 +81,9 @@ export default function AboutPage() {
 
           {/* CTA */}
           <div className="text-center py-8 bg-surface-50 rounded-card">
-            <h3 className="text-heading-md font-bold text-brand-dark mb-3">Ready to start comparing?</h3>
+            <h3 className="text-heading-md font-bold text-brand-dark mb-3">{t('about_cta')}</h3>
             <Link href="/" className="btn-primary inline-flex">
-              Compare rates now
+              {t('about_cta_button')}
               <ChevronRight size={16} />
             </Link>
           </div>

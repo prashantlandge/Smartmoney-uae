@@ -59,8 +59,8 @@ export default function Tax() {
   return (
     <Layout>
       <Head>
-        <title>UAE Tax Tools & Guides — {t('site_name')}</title>
-        <meta name="description" content="UAE tax calculators and guides — VAT calculator, corporate tax estimator, tax residency checker, and comprehensive tax guides for UAE residents." />
+        <title>{t('tax_page_title')} — {t('site_name')}</title>
+        <meta name="description" content={t('tax_page_meta')} />
       </Head>
 
       {/* Hero */}
@@ -68,10 +68,10 @@ export default function Tax() {
         <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-8 sm:py-10">
           <div className="flex items-center gap-2 mb-2">
             <Scale size={20} />
-            <h1 className="text-display-lg font-bold">UAE Tax Tools & Guides</h1>
+            <h1 className="text-display-lg font-bold">{t('tax_page_title')}</h1>
           </div>
           <p className="text-sm text-white/70 max-w-xl">
-            Navigate UAE taxes with confidence. Calculate VAT, estimate corporate tax, check your tax residency status, and learn about UAE tax rules.
+            {t('tax_page_desc')}
           </p>
         </div>
       </section>
@@ -97,8 +97,8 @@ export default function Tax() {
       {/* Overview cards */}
       <section className="bg-surface-50 border-b border-surface-100">
         <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-6 sm:py-8">
-          <h2 className="text-heading-sm font-bold text-brand-dark mb-1">UAE Tax Overview</h2>
-          <p className="text-body-sm text-gray-500 mb-5">Key tax facts for UAE residents and businesses</p>
+          <h2 className="text-heading-sm font-bold text-brand-dark mb-1">{t('tax_overview')}</h2>
+          <p className="text-body-sm text-gray-500 mb-5">{t('tax_overview_desc')}</p>
 
           <div className="grid sm:grid-cols-3 gap-3">
             <div className="bg-white rounded-card border border-surface-200 p-4">
@@ -106,27 +106,27 @@ export default function Tax() {
                 <div className="w-8 h-8 rounded-lg bg-brand-primary-50 flex items-center justify-center">
                   <CheckCircle size={16} className="text-brand-primary" />
                 </div>
-                <h3 className="text-sm font-bold text-brand-dark">No Income Tax</h3>
+                <h3 className="text-sm font-bold text-brand-dark">{t('tax_no_income')}</h3>
               </div>
-              <p className="text-label text-gray-500">The UAE does not levy personal income tax on salaries, wages, or employment income — one of the key benefits of living in the UAE.</p>
+              <p className="text-label text-gray-500">{t('tax_no_income_desc')}</p>
             </div>
             <div className="bg-white rounded-card border border-surface-200 p-4">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-8 h-8 rounded-lg bg-brand-nav/5 flex items-center justify-center">
                   <Receipt size={16} className="text-brand-nav" />
                 </div>
-                <h3 className="text-sm font-bold text-brand-dark">5% VAT</h3>
+                <h3 className="text-sm font-bold text-brand-dark">{t('tax_vat')}</h3>
               </div>
-              <p className="text-label text-gray-500">Value Added Tax (VAT) of 5% applies to most goods and services. Essential items like basic food, healthcare, and education may be exempt.</p>
+              <p className="text-label text-gray-500">{t('tax_vat_desc')}</p>
             </div>
             <div className="bg-white rounded-card border border-surface-200 p-4">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-8 h-8 rounded-lg bg-warning-light flex items-center justify-center">
                   <Briefcase size={16} className="text-warning" />
                 </div>
-                <h3 className="text-sm font-bold text-brand-dark">9% Corporate Tax</h3>
+                <h3 className="text-sm font-bold text-brand-dark">{t('tax_corporate')}</h3>
               </div>
-              <p className="text-label text-gray-500">Since June 2023, corporate tax of 9% applies to business profits exceeding AED 375,000. Free zone entities may qualify for 0% rate.</p>
+              <p className="text-label text-gray-500">{t('tax_corporate_desc')}</p>
             </div>
           </div>
         </div>
@@ -150,7 +150,7 @@ export default function Tax() {
         <div id="guides" className="scroll-mt-32 space-y-4">
           <h2 className="text-heading-sm font-bold text-brand-dark flex items-center gap-2">
             <Scale size={18} className="text-brand-nav" />
-            Tax Guides
+            {t('tax_guides')}
           </h2>
 
           {TAX_GUIDES.map((guide) => (
@@ -173,9 +173,9 @@ export default function Tax() {
           <div className="bg-info-light border border-blue-200 rounded-card p-4 flex items-start gap-3">
             <Info size={16} className="text-info shrink-0 mt-0.5" />
             <div>
-              <p className="text-sm font-medium text-info-dark">Disclaimer</p>
+              <p className="text-sm font-medium text-info-dark">{t('tax_disclaimer_title')}</p>
               <p className="text-xs text-gray-600 mt-1">
-                The information provided here is for general guidance only and does not constitute tax advice. Tax laws and regulations are subject to change. Please consult a qualified tax advisor for advice specific to your situation.
+                {t('tax_disclaimer')}
               </p>
             </div>
           </div>
@@ -187,11 +187,11 @@ export default function Tax() {
         <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-5">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
             <div>
-              <h3 className="text-sm font-bold text-white">Looking for financial products?</h3>
-              <p className="text-label text-white/60">Compare credit cards, loans, and insurance tailored for UAE residents</p>
+              <h3 className="text-sm font-bold text-white">{t('tax_cta_title')}</h3>
+              <p className="text-label text-white/60">{t('tax_cta_desc')}</p>
             </div>
             <Link href="/" className="flex items-center gap-1.5 px-4 py-2 bg-brand-primary text-white text-sm font-semibold rounded-button hover:bg-brand-primary-600 transition-colors">
-              Compare Products <ArrowRight size={14} />
+              {t('tax_cta_button')} <ArrowRight size={14} />
             </Link>
           </div>
         </div>

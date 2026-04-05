@@ -47,32 +47,32 @@ export default function ContactPage() {
                     onClick={() => setSubmitted(false)}
                     className="btn-ghost text-brand-primary"
                   >
-                    Send another message
+                    {t('contact_send_another')}
                   </button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="card-elevated space-y-5">
                   <div>
                     <label className="block text-body-sm font-medium text-gray-700 mb-1.5">{t('contact_name')}</label>
-                    <input type="text" required className="input-field" placeholder="Your full name" />
+                    <input type="text" required className="input-field" placeholder={t('contact_name_placeholder')} />
                   </div>
                   <div>
                     <label className="block text-body-sm font-medium text-gray-700 mb-1.5">{t('contact_email')}</label>
-                    <input type="email" required className="input-field" placeholder="you@email.com" />
+                    <input type="email" required className="input-field" placeholder={t('contact_email_placeholder')} />
                   </div>
                   <div>
                     <label className="block text-body-sm font-medium text-gray-700 mb-1.5">{t('contact_subject')}</label>
                     <select className="input-field" required>
                       <option value="">{t('contact_select_subject')}</option>
-                      <option value="general">General Inquiry</option>
-                      <option value="partnership">Partnership / Advertising</option>
-                      <option value="bug">Report a Bug</option>
-                      <option value="feedback">Feedback</option>
+                      <option value="general">{t('contact_subject_general')}</option>
+                      <option value="partnership">{t('contact_subject_partnership')}</option>
+                      <option value="bug">{t('contact_subject_bug')}</option>
+                      <option value="feedback">{t('contact_subject_feedback')}</option>
                     </select>
                   </div>
                   <div>
                     <label className="block text-body-sm font-medium text-gray-700 mb-1.5">{t('contact_message')}</label>
-                    <textarea required rows={5} className="input-field" placeholder="How can we help?" />
+                    <textarea required rows={5} className="input-field" placeholder={t('contact_message_placeholder')} />
                   </div>
                   <button type="submit" className="btn-primary w-full">
                     {t('contact_send')}
@@ -89,8 +89,8 @@ export default function ContactPage() {
                     <Mail size={18} className="text-brand-primary" />
                   </div>
                   <div>
-                    <h3 className="text-heading-sm font-semibold text-brand-dark mb-1">Email Us</h3>
-                    <p className="text-body-sm text-gray-500">hello@smartmoney.ae</p>
+                    <h3 className="text-heading-sm font-semibold text-brand-dark mb-1">{t('contact_email_us')}</h3>
+                    <p className="text-body-sm text-gray-500">{t('contact_email_address')}</p>
                   </div>
                 </div>
               </div>
@@ -100,8 +100,8 @@ export default function ContactPage() {
                     <Clock size={18} className="text-brand-primary" />
                   </div>
                   <div>
-                    <h3 className="text-heading-sm font-semibold text-brand-dark mb-1">Response Time</h3>
-                    <p className="text-body-sm text-gray-500">Within 24 hours</p>
+                    <h3 className="text-heading-sm font-semibold text-brand-dark mb-1">{t('contact_response_time')}</h3>
+                    <p className="text-body-sm text-gray-500">{t('contact_response_value')}</p>
                   </div>
                 </div>
               </div>
@@ -111,8 +111,8 @@ export default function ContactPage() {
                     <MessageSquare size={18} className="text-brand-primary" />
                   </div>
                   <div>
-                    <h3 className="text-heading-sm font-semibold text-brand-dark mb-1">Live Chat</h3>
-                    <p className="text-body-sm text-gray-500">Available via our AI advisor</p>
+                    <h3 className="text-heading-sm font-semibold text-brand-dark mb-1">{t('contact_live_chat')}</h3>
+                    <p className="text-body-sm text-gray-500">{t('contact_live_chat_desc')}</p>
                   </div>
                 </div>
               </div>

@@ -30,8 +30,8 @@ export default function Calculators() {
   return (
     <Layout>
       <Head>
-        <title>Financial Calculators — {t('site_name')}</title>
-        <meta name="description" content="Free financial calculators for UAE residents — EMI, cashback, insurance, savings, fuel cost, and loan eligibility." />
+        <title>{t('calc_page_title')} — {t('site_name')}</title>
+        <meta name="description" content={t('calc_page_meta')} />
       </Head>
 
       {/* Hero */}
@@ -39,10 +39,10 @@ export default function Calculators() {
         <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-8 sm:py-10">
           <div className="flex items-center gap-2 mb-2">
             <Calculator size={20} />
-            <h1 className="text-display-lg font-bold">Financial Calculators</h1>
+            <h1 className="text-display-lg font-bold">{t('calc_page_title')}</h1>
           </div>
           <p className="text-sm text-white/70 max-w-xl">
-            Free tools to help you make smarter financial decisions. Calculate EMI, compare cashback returns, estimate insurance premiums, and more.
+            {t('calc_page_desc')}
           </p>
         </div>
       </section>
@@ -68,8 +68,8 @@ export default function Calculators() {
       {/* Calculator grid — RupeeLens style */}
       <section className="bg-surface-50 border-b border-surface-100">
         <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-6 sm:py-8">
-          <h2 className="text-heading-sm font-bold text-brand-dark mb-1">All Calculators</h2>
-          <p className="text-body-sm text-gray-500 mb-5">Click any calculator to jump to it</p>
+          <h2 className="text-heading-sm font-bold text-brand-dark mb-1">{t('calc_all')}</h2>
+          <p className="text-body-sm text-gray-500 mb-5">{t('calc_all_desc')}</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
             {CALCULATOR_SECTIONS.map((sec) => (
               <a
@@ -126,11 +126,11 @@ export default function Calculators() {
         <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-5">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
             <div>
-              <h3 className="text-sm font-bold text-white">Need more help deciding?</h3>
-              <p className="text-label text-white/60">Our AI advisor can recommend the best products for your profile</p>
+              <h3 className="text-sm font-bold text-white">{t('calc_cta_title')}</h3>
+              <p className="text-label text-white/60">{t('calc_cta_desc')}</p>
             </div>
             <Link href="/recommend" className="flex items-center gap-1.5 px-4 py-2 bg-brand-primary text-white text-sm font-semibold rounded-button hover:bg-brand-primary-600 transition-colors">
-              Smart Compare <ArrowRight size={14} />
+              {t('nav_smart_compare')} <ArrowRight size={14} />
             </Link>
           </div>
         </div>

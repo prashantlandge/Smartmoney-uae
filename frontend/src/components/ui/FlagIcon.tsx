@@ -17,6 +17,7 @@ const COUNTRY_FLAGS: Record<string, { src: string; alt: string }> = {
   ph: { src: '/images/flags/ph.svg', alt: 'Philippines' },
   bd: { src: '/images/flags/bd.svg', alt: 'Bangladesh' },
   lk: { src: '/images/flags/lk.svg', alt: 'Sri Lanka' },
+  gb: { src: '/images/flags/gb.svg', alt: 'United Kingdom' },
 };
 
 interface FlagIconProps {

@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useTranslation } from 'next-i18next';
 
 const PROVIDERS = [
   { name: 'Emirates NBD', logo: '/images/providers/emirates-nbd.png' },
@@ -14,11 +15,12 @@ const PROVIDERS = [
 ];
 
 export default function TrustLogos() {
+  const { t } = useTranslation('common');
   return (
     <div className="bg-white border-y border-surface-100 py-5">
       <div className="max-w-content-xl mx-auto px-4 sm:px-8">
         <p className="text-center text-label text-gray-400 uppercase tracking-wider font-semibold mb-4">
-          Trusted by users comparing products from
+          {t('trust_logos_title')}
         </p>
         <div className="flex items-center justify-center flex-wrap gap-x-8 gap-y-3">
           {PROVIDERS.map((p) => (

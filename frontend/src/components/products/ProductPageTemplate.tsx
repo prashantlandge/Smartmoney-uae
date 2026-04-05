@@ -122,7 +122,7 @@ export default function ProductPageTemplate({
         <section className={`bg-gradient-to-r ${heroGradient} text-white`}>
           <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-5 sm:py-7">
             <nav className="flex items-center gap-1.5 text-xs text-white/60 mb-3">
-              <Link href="/" className="hover:text-white transition-colors">Home</Link>
+              <Link href="/" className="hover:text-white transition-colors">{t('breadcrumb_home')}</Link>
               <ChevronRight size={12} />
               <span className="text-white font-medium">{t(titleKey)}</span>
             </nav>
@@ -144,17 +144,17 @@ export default function ProductPageTemplate({
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-1.5">
               <p className="text-body-sm text-gray-500 font-medium">
                 {loading
-                  ? 'Loading...'
+                  ? t('loading_products')
                   : filteredProducts.length === products.length
-                    ? `${products.length} products`
-                    : `${filteredProducts.length} of ${products.length}`}
+                    ? t('product_count', { count: products.length })
+                    : t('product_count_filtered', { filtered: filteredProducts.length, total: products.length })}
               </p>
               <div className="flex items-center gap-2">
                 <div className="relative">
                   <Search size={14} className="absolute start-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
                   <input
                     type="text"
-                    placeholder="Search..."
+                    placeholder={t('search_products')}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="input-field text-sm py-1.5 ps-8 pe-3 w-40"
@@ -182,7 +182,7 @@ export default function ProductPageTemplate({
                       : 'bg-surface-100 text-gray-600 hover:bg-surface-200'
                   }`}
                 >
-                  Islamic Only
+                  {t('islamic_only')}
                   {islamicOnly && <X size={11} />}
                 </button>
               )}
@@ -209,7 +209,7 @@ export default function ProductPageTemplate({
                   className="flex items-center gap-1 px-2.5 py-1 rounded-badge text-label font-semibold bg-surface-100 text-gray-600 hover:bg-surface-200 whitespace-nowrap"
                 >
                   <SlidersHorizontal size={11} />
-                  More
+                  {t('more_filters')}
                 </button>
               )}
               {activeFilterCount > 0 && (
@@ -217,7 +217,7 @@ export default function ProductPageTemplate({
                   onClick={clearFilters}
                   className="text-label font-semibold text-brand-primary hover:text-brand-primary-700 whitespace-nowrap"
                 >
-                  Clear all
+                  {t('clear_all')}
                 </button>
               )}
             </div>
@@ -257,20 +257,20 @@ export default function ProductPageTemplate({
             )}
 
             {error && (
-              <EmptyState title={t('error_message')} description="Please try again later." />
+              <EmptyState title={t('error_message')} description={t('error_try_again')} />
             )}
 
             {!loading && products.length === 0 && (
               <EmptyState
                 icon={Package}
                 title={t('no_products')}
-                description="We're adding new products every week."
+                description={t('adding_products')}
               />
             )}
 
             {!loading && products.length > 0 && (
               filteredProducts.length === 0 ? (
-                <EmptyState title="No products match your filters" description="Try adjusting or clearing your filters." />
+                <EmptyState title={t('no_filter_match')} description={t('try_adjusting')} />
               ) : (
                 <div className="space-y-3">
                   {filteredProducts.map((product) => (

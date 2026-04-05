@@ -48,7 +48,7 @@ module.exports = {
         info: { DEFAULT: '#2563EB', light: '#EFF6FF', dark: '#1E40AF' },
       },
       fontFamily: {
-        sans: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', '"Noto Sans Arabic"', 'sans-serif'],
+        sans: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', '"Noto Sans Arabic"', '"Noto Sans Devanagari"', 'sans-serif'],
       },
       fontSize: {
         'display-xl': ['2.25rem', { lineHeight: '1.15', letterSpacing: '-0.025em' }],
