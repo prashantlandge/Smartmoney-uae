@@ -18,13 +18,11 @@
   }
 
   ::selection {
-    background: rgba(26, 188, 156, 0.2);
-    color: #085A49;
+    @apply bg-brand-primary-100 text-brand-primary-900;
   }
 
   :focus-visible {
-    outline: 2px solid rgba(82, 113, 255, 0.5);
-    outline-offset: 2px;
+    @apply outline-2 outline-brand-nav/50 outline-offset-2;
   }
 }
 

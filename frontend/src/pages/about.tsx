@@ -24,11 +24,11 @@ export default function AboutPage() {
         <title>{t('about_title')} — SmartMoney UAE</title>
       </Head>
 
-      <section className="bg-gradient-to-br from-blue-950 to-brand-primary text-white py-16 sm:py-20 px-4">
+      <section className="bg-gradient-to-br from-brand-nav via-brand-nav-dark to-brand-primary text-white py-8 sm:py-10 px-4">
         <Container size="md">
           <div className="text-center">
-            <h1 className="text-display-lg font-bold mb-3">{t('about_title')}</h1>
-            <p className="text-body-lg text-white/70">{t('about_hero')}</p>
+            <h1 className="text-xl sm:text-2xl font-bold mb-2">{t('about_title')}</h1>
+            <p className="text-body-sm text-white/70">{t('about_hero')}</p>
           </div>
         </Container>
       </section>
@@ -50,7 +50,7 @@ export default function AboutPage() {
                 <div className="w-12 h-12 rounded-2xl bg-brand-primary-50 flex items-center justify-center mx-auto mb-3">
                   <stat.icon size={22} className="text-brand-primary" />
                 </div>
-                <div className="text-display-lg font-bold text-brand-primary mb-1">
+                <div className="text-display-lg font-bold text-brand-primary mb-0.5">
                   <CountUp end={stat.value} suffix={stat.suffix} />
                 </div>
                 <div className="text-body-sm text-gray-500">{stat.label}</div>

@@ -24,7 +24,7 @@ interface Props {
   days?: number;
 }
 
-const PROVIDER_COLORS = ['#00805E', '#C8102E', '#2563EB', '#D97706', '#7C3AED', '#059669'];
+const PROVIDER_COLORS = ['#1ABC9C', '#5271FF', '#E74C3C', '#D97706', '#7C3AED', '#059669'];
 
 export default function RateChart({ days = 7 }: Props) {
   const { t } = useTranslation('common');
@@ -93,15 +93,15 @@ export default function RateChart({ days = 7 }: Props) {
 
       <ResponsiveContainer width="100%" height={220}>
         <LineChart data={chartData} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#F0F0F0" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
           <XAxis
             dataKey="date"
-            tick={{ fontSize: 11, fill: '#9CA3AF' }}
-            axisLine={{ stroke: '#E5E7EB' }}
+            tick={{ fontSize: 11, fill: '#6B7280' }}
+            axisLine={{ stroke: '#D1D5DB' }}
             tickLine={false}
           />
           <YAxis
-            tick={{ fontSize: 11, fill: '#9CA3AF' }}
+            tick={{ fontSize: 11, fill: '#6B7280' }}
             axisLine={false}
             tickLine={false}
             domain={['auto', 'auto']}

@@ -22,11 +22,11 @@ export default function ContactPage() {
         <title>{t('contact_title')} — SmartMoney UAE</title>
       </Head>
 
-      <section className="bg-gradient-to-br from-brand-dark to-brand-primary text-white py-16 sm:py-20 px-4">
+      <section className="bg-gradient-to-br from-brand-nav via-brand-nav-dark to-brand-primary text-white py-8 sm:py-10 px-4">
         <Container size="md">
           <div className="text-center">
-            <h1 className="text-display-lg font-bold mb-3">{t('contact_title')}</h1>
-            <p className="text-body-lg text-white/70">{t('contact_subtitle')}</p>
+            <h1 className="text-xl sm:text-2xl font-bold mb-2">{t('contact_title')}</h1>
+            <p className="text-body-sm text-white/70">{t('contact_subtitle')}</p>
           </div>
         </Container>
       </section>
@@ -89,29 +89,29 @@ export default function ContactPage() {
                     <Mail size={18} className="text-brand-primary" />
                   </div>
                   <div>
-                    <h3 className="text-heading-sm font-semibold text-gray-900 mb-1">Email Us</h3>
+                    <h3 className="text-heading-sm font-semibold text-brand-dark mb-1">Email Us</h3>
                     <p className="text-body-sm text-gray-500">hello@smartmoney.ae</p>
                   </div>
                 </div>
               </div>
               <div className="card-hover">
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
-                    <Clock size={18} className="text-blue-600" />
+                  <div className="w-10 h-10 rounded-card bg-brand-primary-50 flex items-center justify-center shrink-0">
+                    <Clock size={18} className="text-brand-primary" />
                   </div>
                   <div>
-                    <h3 className="text-heading-sm font-semibold text-gray-900 mb-1">Response Time</h3>
+                    <h3 className="text-heading-sm font-semibold text-brand-dark mb-1">Response Time</h3>
                     <p className="text-body-sm text-gray-500">Within 24 hours</p>
                   </div>
                 </div>
               </div>
               <div className="card-hover">
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center shrink-0">
-                    <MessageSquare size={18} className="text-amber-600" />
+                  <div className="w-10 h-10 rounded-card bg-brand-primary-50 flex items-center justify-center shrink-0">
+                    <MessageSquare size={18} className="text-brand-primary" />
                   </div>
                   <div>
-                    <h3 className="text-heading-sm font-semibold text-gray-900 mb-1">Live Chat</h3>
+                    <h3 className="text-heading-sm font-semibold text-brand-dark mb-1">Live Chat</h3>
                     <p className="text-body-sm text-gray-500">Available via our AI advisor</p>
                   </div>
                 </div>
