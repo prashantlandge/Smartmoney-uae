@@ -41,11 +41,11 @@ const CATEGORY_ROUTES: Record<string, string> = {
 };
 
 const CATEGORY_GRADIENTS: Record<string, string> = {
-  credit_card: 'from-indigo-600 to-brand-nav',
-  personal_loan: 'from-teal-600 to-teal-500',
-  islamic_finance: 'from-emerald-700 to-emerald-500',
-  car_insurance: 'from-amber-600 to-amber-500',
-  health_insurance: 'from-rose-600 to-rose-500',
+  credit_card: 'from-brand-nav via-brand-nav to-brand-nav-dark',
+  personal_loan: 'from-brand-nav via-brand-nav to-brand-nav-dark',
+  islamic_finance: 'from-brand-nav via-brand-nav to-brand-nav-dark',
+  car_insurance: 'from-brand-nav via-brand-nav to-brand-nav-dark',
+  health_insurance: 'from-brand-nav via-brand-nav to-brand-nav-dark',
 };
 
 type FeatureValue = string | number | boolean | Record<string, unknown> | unknown[];

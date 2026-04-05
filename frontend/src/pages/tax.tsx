@@ -64,7 +64,7 @@ export default function Tax() {
       </Head>
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-brand-dark via-brand-dark to-gray-800 text-white">
+      <section className="bg-gradient-to-br from-brand-nav via-brand-nav to-brand-nav-dark text-white">
         <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-8 sm:py-10">
           <div className="flex items-center gap-2 mb-2">
             <Scale size={20} />

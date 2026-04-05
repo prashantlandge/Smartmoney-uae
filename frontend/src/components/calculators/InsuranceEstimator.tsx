@@ -81,11 +81,11 @@ export default function InsuranceEstimator({ type }: Props) {
 
   const isCarType = type === 'car';
   const Icon = isCarType ? Car : HeartPulse;
-  const gradient = isCarType ? 'from-amber-600 to-amber-500' : 'from-rose-600 to-rose-500';
-  const accentBg = isCarType ? 'bg-amber-50 border-amber-100' : 'bg-rose-50 border-rose-100';
-  const accentText = isCarType ? 'text-amber-700' : 'text-rose-700';
-  const accentLabel = isCarType ? 'text-amber-600' : 'text-rose-600';
-  const accent = isCarType ? 'accent-amber-600' : 'accent-rose-600';
+  const gradient = 'from-brand-nav to-brand-nav-dark';
+  const accentBg = 'bg-brand-nav/5 border-brand-nav/10';
+  const accentText = 'text-brand-nav';
+  const accentLabel = 'text-brand-nav';
+  const accent = 'accent-brand-nav';
 
   return (
     <div className="bg-white rounded-card border border-surface-200 overflow-hidden">
@@ -136,8 +136,8 @@ export default function InsuranceEstimator({ type }: Props) {
                       onClick={() => setCoverType(opt.value)}
                       className={`flex-1 py-2 rounded-button text-xs font-medium border transition-colors ${
                         coverType === opt.value
-                          ? 'border-amber-400 bg-amber-50 text-amber-700'
-                          : 'border-surface-200 text-gray-600 hover:border-amber-300'
+                          ? 'border-brand-nav bg-brand-nav/5 text-brand-nav'
+                          : 'border-surface-200 text-gray-600 hover:border-brand-nav/30'
                       }`}
                     >
                       {opt.label}
@@ -180,8 +180,8 @@ export default function InsuranceEstimator({ type }: Props) {
                       onClick={() => setCoverage(opt.value)}
                       className={`flex-1 py-2 rounded-button text-xs font-medium border transition-colors ${
                         coverage === opt.value
-                          ? 'border-rose-400 bg-rose-50 text-rose-700'
-                          : 'border-surface-200 text-gray-600 hover:border-rose-300'
+                          ? 'border-brand-nav bg-brand-nav/5 text-brand-nav'
+                          : 'border-surface-200 text-gray-600 hover:border-brand-nav/30'
                       }`}
                     >
                       {opt.label}

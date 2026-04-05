@@ -22,7 +22,7 @@ export default function ContactPage() {
         <title>{t('contact_title')} — SmartMoney UAE</title>
       </Head>
 
-      <section className="bg-gradient-to-br from-brand-nav via-brand-nav-dark to-brand-primary text-white py-8 sm:py-10 px-4">
+      <section className="bg-gradient-to-br from-brand-nav via-brand-nav to-brand-nav-dark text-white py-8 sm:py-10 px-4">
         <Container size="md">
           <div className="text-center">
             <h1 className="text-xl sm:text-2xl font-bold mb-2">{t('contact_title')}</h1>

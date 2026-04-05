@@ -216,7 +216,7 @@ export default function SmartRecommendQuiz({ onClose, className = '' }: Props) {
   return (
     <div className={`bg-white rounded-card border border-surface-200 shadow-elevated overflow-hidden ${className}`}>
       {/* Header */}
-      <div className="bg-gradient-to-r from-brand-primary to-emerald-600 px-6 py-4 flex items-center justify-between">
+      <div className="bg-gradient-to-r from-brand-nav to-brand-nav-dark px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2 text-white">
           <Sparkles size={18} />
           <div>

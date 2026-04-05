@@ -24,7 +24,7 @@ export default function CorporateTaxCalculator() {
 
   return (
     <div className="bg-white rounded-card border border-surface-200 overflow-hidden">
-      <div className="px-5 py-3 bg-gradient-to-r from-brand-dark to-gray-700 flex items-center gap-2 text-white">
+      <div className="px-5 py-3 bg-gradient-to-r from-brand-nav to-brand-nav-dark flex items-center gap-2 text-white">
         <Briefcase size={16} />
         <h3 className="text-sm font-bold">UAE Corporate Tax Calculator (9%)</h3>
       </div>
@@ -38,7 +38,7 @@ export default function CorporateTaxCalculator() {
             </label>
             <input type="range" min={100000} max={10000000} step={50000} value={revenue}
               onChange={(e) => setRevenue(Number(e.target.value))}
-              className="w-full accent-brand-dark" />
+              className="w-full accent-brand-nav" />
             <div className="flex justify-between text-label text-gray-400">
               <span>AED 100K</span><span>AED 10M</span>
             </div>
@@ -51,7 +51,7 @@ export default function CorporateTaxCalculator() {
             </label>
             <input type="range" min={0} max={revenue} step={50000} value={Math.min(expenses, revenue)}
               onChange={(e) => setExpenses(Number(e.target.value))}
-              className="w-full accent-brand-dark" />
+              className="w-full accent-brand-nav" />
           </div>
 
           <div>

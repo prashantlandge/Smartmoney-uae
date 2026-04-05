@@ -13,7 +13,7 @@ export default function RecommendPage() {
         <meta name="description" content="Get AI-powered personalized financial product recommendations based on your profile and preferences." />
       </Head>
 
-      <section className="bg-gradient-to-br from-brand-nav via-brand-nav-dark to-brand-primary text-white">
+      <section className="bg-gradient-to-br from-brand-nav via-brand-nav to-brand-nav-dark text-white">
         <div className="max-w-content-lg mx-auto px-4 sm:px-8 py-8 text-center">
           <div className="inline-flex items-center gap-1.5 bg-white/15 text-white text-label font-semibold px-3 py-1.5 rounded-badge mb-3">
             <Sparkles size={12} />

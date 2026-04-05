@@ -14,11 +14,11 @@ import CompareTray from '@/components/products/CompareTray';
 import { Package, Search, SlidersHorizontal, ChevronRight, X } from 'lucide-react';
 
 const HERO_COLORS: Record<string, string> = {
-  'credit-cards': 'from-indigo-600 to-brand-nav',
-  'personal-loans': 'from-teal-600 to-teal-500',
-  'islamic-finance': 'from-emerald-700 to-emerald-500',
-  'car-insurance': 'from-amber-600 to-amber-500',
-  'health-insurance': 'from-rose-600 to-rose-500',
+  'credit-cards': 'from-brand-nav via-brand-nav to-brand-nav-dark',
+  'personal-loans': 'from-brand-nav via-brand-nav to-brand-nav-dark',
+  'islamic-finance': 'from-brand-nav via-brand-nav to-brand-nav-dark',
+  'car-insurance': 'from-brand-nav via-brand-nav to-brand-nav-dark',
+  'health-insurance': 'from-brand-nav via-brand-nav to-brand-nav-dark',
 };
 
 const HERO_DESCRIPTIONS: Record<string, string> = {

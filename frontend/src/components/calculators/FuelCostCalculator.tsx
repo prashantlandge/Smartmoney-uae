@@ -18,7 +18,7 @@ export default function FuelCostCalculator() {
 
   return (
     <div className="bg-white rounded-card border border-surface-200 overflow-hidden">
-      <div className="px-5 py-3 bg-gradient-to-r from-amber-600 to-amber-500 flex items-center gap-2 text-white">
+      <div className="px-5 py-3 bg-gradient-to-r from-brand-nav to-brand-nav-dark flex items-center gap-2 text-white">
         <Fuel size={16} />
         <h3 className="text-sm font-bold">Fuel Cost Calculator</h3>
       </div>
@@ -32,7 +32,7 @@ export default function FuelCostCalculator() {
             </label>
             <input type="range" min={5} max={200} step={5} value={dailyKm}
               onChange={(e) => setDailyKm(Number(e.target.value))}
-              className="w-full accent-amber-600" />
+              className="w-full accent-brand-nav" />
             <div className="flex justify-between text-label text-gray-400">
               <span>5 km</span><span>200 km</span>
             </div>
@@ -45,7 +45,7 @@ export default function FuelCostCalculator() {
             </label>
             <input type="range" min={5} max={25} step={0.5} value={mileage}
               onChange={(e) => setMileage(Number(e.target.value))}
-              className="w-full accent-amber-600" />
+              className="w-full accent-brand-nav" />
             <div className="flex justify-between text-label text-gray-400">
               <span>5 km/L</span><span>25 km/L</span>
             </div>
@@ -58,7 +58,7 @@ export default function FuelCostCalculator() {
             </label>
             <input type="range" min={2} max={5} step={0.01} value={fuelPrice}
               onChange={(e) => setFuelPrice(Number(e.target.value))}
-              className="w-full accent-amber-600" />
+              className="w-full accent-brand-nav" />
             <div className="flex justify-between text-label text-gray-400">
               <span>AED 2.00</span><span>AED 5.00</span>
             </div>
@@ -66,9 +66,9 @@ export default function FuelCostCalculator() {
         </div>
 
         <div className="space-y-3">
-          <div className="bg-amber-50 rounded-xl p-4 text-center border border-amber-100">
-            <p className="text-xs text-amber-600 font-medium mb-1">Monthly Fuel Cost</p>
-            <p className="text-display-lg font-bold text-amber-700">{fmt(result.monthlyCost)}</p>
+          <div className="bg-brand-nav/5 rounded-xl p-4 text-center border border-brand-nav/10">
+            <p className="text-xs text-brand-nav font-medium mb-1">Monthly Fuel Cost</p>
+            <p className="text-display-lg font-bold text-brand-nav">{fmt(result.monthlyCost)}</p>
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="bg-surface-50 rounded-xl p-3 text-center">
@@ -79,7 +79,7 @@ export default function FuelCostCalculator() {
             <div className="bg-surface-50 rounded-xl p-3 text-center">
               <TrendingDown size={14} className="mx-auto text-gray-400 mb-1" />
               <p className="text-label text-gray-500">Annual Cost</p>
-              <p className="text-sm font-bold text-amber-600">{fmt(result.annualCost)}</p>
+              <p className="text-sm font-bold text-brand-nav">{fmt(result.annualCost)}</p>
             </div>
           </div>
           <p className="text-label text-gray-400 text-center">
