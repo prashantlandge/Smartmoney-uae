@@ -34,3 +34,4 @@ redis_data/
 
 # SSH keys
 *.pem
+frontend/tsconfig.tsbuildinfo
