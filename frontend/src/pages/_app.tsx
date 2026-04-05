@@ -1,7 +1,5 @@
 import type { AppProps } from 'next/app';
-import { useRouter } from 'next/router';
 import { appWithTranslation } from 'next-i18next';
-import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 import '@/styles/globals.css';
 
@@ -38,21 +36,9 @@ class ErrorBoundary extends React.Component<
 }
 
 function App({ Component, pageProps }: AppProps) {
-  const router = useRouter();
-
   return (
     <ErrorBoundary>
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={router.asPath}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.2, ease: 'easeInOut' }}
-        >
-          <Component {...pageProps} />
-        </motion.div>
-      </AnimatePresence>
+      <Component {...pageProps} />
     </ErrorBoundary>
   );
 }

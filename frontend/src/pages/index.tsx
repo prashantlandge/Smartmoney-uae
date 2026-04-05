@@ -56,10 +56,10 @@ export default function Home() {
             UAE&apos;s #1 Financial Comparison Platform
           </div>
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 leading-tight max-w-3xl mx-auto">
-            Compare & save on every financial product in the UAE
+            Your money deserves the best deal.<br className="hidden sm:block" />We find it in seconds.
           </h1>
           <p className="text-sm sm:text-base text-white/70 max-w-2xl mx-auto mb-6">
-            Remittance rates, credit cards, loans, insurance — all compared live from 20+ providers. Free, unbiased, updated every 15 minutes.
+            Live rates from 20+ UAE providers. Credit cards, loans, insurance, remittance — compared side by side so you never overpay again.
           </p>
           <div className="max-w-xl mx-auto mb-6">
             <HeroSearch />
