@@ -18,12 +18,9 @@ const CATEGORY_ROUTES: Record<string, string> = {
 
 const QUICK_CATEGORIES = [
   { key: 'credit_cards', label: 'Credit Cards', href: '/credit-cards' },
-  { key: 'personal_loans', label: 'Personal Loans', href: '/personal-loans' },
-  { key: 'islamic_finance', label: 'Islamic Finance', href: '/islamic-finance' },
-  { key: 'car_insurance', label: 'Car Insurance', href: '/car-insurance' },
-  { key: 'health_insurance', label: 'Health Insurance', href: '/health-insurance' },
-  { key: 'calculators', label: 'Calculators', href: '/calculators' },
-  { key: 'tax', label: 'Tax Tools', href: '/tax' },
+  { key: 'personal_loans', label: 'Loans', href: '/personal-loans' },
+  { key: 'car_insurance', label: 'Insurance', href: '/car-insurance' },
+  { key: 'calculators', label: 'Tools & Tax', href: '/calculators' },
 ];
 
 interface HeroSearchProps {

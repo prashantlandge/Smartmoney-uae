@@ -9,7 +9,7 @@ export default function Footer() {
   return (
     <footer className="bg-gray-800 text-white">
       <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-8 sm:py-10">
-        <div className="grid grid-cols-2 sm:grid-cols-6 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-6">
           {/* Brand */}
           <div className="col-span-2">
             <div className="mb-3">
@@ -37,35 +37,27 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Products */}
+          {/* Credit Cards & Loans */}
           <div>
-            <h4 className="font-semibold text-body-sm mb-3 text-white/90">{t('footer_products')}</h4>
+            <h4 className="font-semibold text-body-sm mb-3 text-white/90">Credit Cards & Loans</h4>
             <ul className="space-y-2 text-body-sm text-gray-400">
-              <li><Link href="/" className="hover:text-white transition-colors">{t('nav_home')}</Link></li>
-              <li><Link href="/credit-cards" className="hover:text-white transition-colors">{t('nav_credit_cards')}</Link></li>
-              <li><Link href="/personal-loans" className="hover:text-white transition-colors">{t('nav_personal_loans')}</Link></li>
-              <li><Link href="/islamic-finance" className="hover:text-white transition-colors">{t('nav_islamic_finance')}</Link></li>
+              <li><Link href="/credit-cards" className="hover:text-white transition-colors">Credit Cards</Link></li>
+              <li><Link href="/personal-loans" className="hover:text-white transition-colors">Personal Loans</Link></li>
+              <li><Link href="/islamic-finance" className="hover:text-white transition-colors">Islamic Finance</Link></li>
+              <li><Link href="/car-insurance" className="hover:text-white transition-colors">Car Insurance</Link></li>
+              <li><Link href="/health-insurance" className="hover:text-white transition-colors">Health Insurance</Link></li>
             </ul>
           </div>
 
-          {/* Insurance */}
+          {/* Tools & Tax */}
           <div>
-            <h4 className="font-semibold text-body-sm mb-3 text-white/90">{t('footer_insurance')}</h4>
+            <h4 className="font-semibold text-body-sm mb-3 text-white/90">Tools & Tax</h4>
             <ul className="space-y-2 text-body-sm text-gray-400">
-              <li><Link href="/car-insurance" className="hover:text-white transition-colors">{t('nav_car_insurance')}</Link></li>
-              <li><Link href="/health-insurance" className="hover:text-white transition-colors">{t('nav_health_insurance')}</Link></li>
-            </ul>
-          </div>
-
-          {/* Tools */}
-          <div>
-            <h4 className="font-semibold text-body-sm mb-3 text-white/90">Tools</h4>
-            <ul className="space-y-2 text-body-sm text-gray-400">
-              <li><Link href="/calculators" className="hover:text-white transition-colors">{t('nav_calculators')}</Link></li>
+              <li><Link href="/calculators" className="hover:text-white transition-colors">Calculators</Link></li>
               <li><Link href="/calculators#emi" className="hover:text-white transition-colors">EMI Calculator</Link></li>
-              <li><Link href="/calculators#cashback" className="hover:text-white transition-colors">Cashback Calculator</Link></li>
-              <li><Link href="/tax" className="hover:text-white transition-colors">{t('nav_tax')}</Link></li>
+              <li><Link href="/tax" className="hover:text-white transition-colors">Tax Tools</Link></li>
               <li><Link href="/tax#vat" className="hover:text-white transition-colors">VAT Calculator</Link></li>
+              <li><Link href="/recommend" className="hover:text-white transition-colors">Smart Compare</Link></li>
             </ul>
           </div>
 
@@ -75,7 +67,7 @@ export default function Footer() {
             <ul className="space-y-2 text-body-sm text-gray-400">
               <li><Link href="/about" className="hover:text-white transition-colors">{t('nav_about')}</Link></li>
               <li><Link href="/contact" className="hover:text-white transition-colors">{t('nav_contact')}</Link></li>
-              <li><Link href="/recommend" className="hover:text-white transition-colors">Smart Compare</Link></li>
+              <li><Link href="/" className="hover:text-white transition-colors">Remittance</Link></li>
             </ul>
           </div>
         </div>

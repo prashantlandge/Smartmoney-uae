@@ -13,16 +13,13 @@ import {
   Zap, BadgeCheck, Search, BarChart3, PiggyBank, Users, Star,
 } from 'lucide-react';
 
-/* ─── Categories with icons ─── */
+/* ─── Main categories — matches consolidated nav ─── */
 const CATEGORIES = [
-  { key: 'remittance', label: 'Remittance', href: '/', icon: ArrowLeftRight, desc: 'Best exchange rates', color: 'bg-blue-50 hover:bg-blue-100 border-blue-100' },
-  { key: 'credit_cards', label: 'Credit Cards', href: '/credit-cards', icon: CreditCard, desc: 'Cashback & rewards', color: 'bg-purple-50 hover:bg-purple-100 border-purple-100' },
-  { key: 'personal_loans', label: 'Personal Loans', href: '/personal-loans', icon: Wallet, desc: 'Lowest rates', color: 'bg-teal-50 hover:bg-teal-100 border-teal-100' },
-  { key: 'islamic_finance', label: 'Islamic Finance', href: '/islamic-finance', icon: Landmark, desc: 'Shariah-compliant', color: 'bg-emerald-50 hover:bg-emerald-100 border-emerald-100' },
-  { key: 'car_insurance', label: 'Car Insurance', href: '/car-insurance', icon: Car, desc: 'Comprehensive cover', color: 'bg-amber-50 hover:bg-amber-100 border-amber-100' },
-  { key: 'health_insurance', label: 'Health Insurance', href: '/health-insurance', icon: HeartPulse, desc: 'DHA/HAAD plans', color: 'bg-rose-50 hover:bg-rose-100 border-rose-100' },
-  { key: 'calculators', label: 'Calculators', href: '/calculators', icon: Calculator, desc: 'EMI & cashback', color: 'bg-indigo-50 hover:bg-indigo-100 border-indigo-100' },
-  { key: 'tax', label: 'Tax Tools', href: '/tax', icon: Receipt, desc: 'VAT & corporate', color: 'bg-slate-50 hover:bg-slate-100 border-slate-200' },
+  { key: 'remittance', label: 'Remittance', href: '/', icon: ArrowLeftRight, desc: 'Compare exchange rates from 10+ providers', color: 'bg-blue-50 hover:bg-blue-100 border-blue-100' },
+  { key: 'credit_cards', label: 'Credit Cards', href: '/credit-cards', icon: CreditCard, desc: 'Cashback, travel, rewards & fuel cards', color: 'bg-purple-50 hover:bg-purple-100 border-purple-100' },
+  { key: 'loans', label: 'Loans', href: '/personal-loans', icon: Wallet, desc: 'Personal loans, home loans & Islamic finance', color: 'bg-teal-50 hover:bg-teal-100 border-teal-100' },
+  { key: 'insurance', label: 'Insurance', href: '/car-insurance', icon: Shield, desc: 'Car insurance, health plans & Takaful', color: 'bg-amber-50 hover:bg-amber-100 border-amber-100' },
+  { key: 'tools', label: 'Tools & Tax', href: '/calculators', icon: Calculator, desc: 'EMI, cashback, VAT & tax calculators', color: 'bg-indigo-50 hover:bg-indigo-100 border-indigo-100' },
 ];
 
 const TRUST_STATS = [
@@ -104,7 +101,7 @@ export default function Home() {
             <h2 className="text-heading-lg font-bold text-brand-dark mb-1">What are you looking for?</h2>
             <p className="text-body-sm text-gray-500">Compare the best financial products in the UAE</p>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
             {CATEGORIES.map((cat) => {
               const Icon = cat.icon;
               return (
