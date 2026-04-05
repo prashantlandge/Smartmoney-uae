@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import type { ReactNode } from 'react';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 import Layout from '@/components/layout/Layout';
@@ -34,6 +35,7 @@ interface Props {
   subtitleKey: string;
   heroIcon: string;
   featureLabels?: Record<string, string>;
+  calculatorSlot?: ReactNode;
 }
 
 export default function ProductPageTemplate({
@@ -42,6 +44,7 @@ export default function ProductPageTemplate({
   subtitleKey,
   heroIcon,
   featureLabels = {},
+  calculatorSlot,
 }: Props) {
   const { t } = useTranslation('common');
   const { products, loading, error } = useProducts(category);
@@ -176,6 +179,14 @@ export default function ProductPageTemplate({
             )}
           </div>
         </section>
+
+        {calculatorSlot && (
+          <section className="bg-white border-t border-surface-200">
+            <div className="max-w-content-xl mx-auto px-4 sm:px-6 py-8 space-y-6">
+              {calculatorSlot}
+            </div>
+          </section>
+        )}
 
         <CompareTray />
       </Layout>

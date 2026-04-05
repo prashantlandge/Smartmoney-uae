@@ -217,3 +217,20 @@ CREATE TABLE user_events (
 
 CREATE INDEX idx_user_events_session ON user_events(session_id, created_at DESC);
 CREATE INDEX idx_user_events_type ON user_events(event_type, created_at DESC);
+
+-- ============================================================
+-- SCRAPE RUNS TABLE (Audit trail for daily scrapers)
+-- ============================================================
+CREATE TABLE scrape_runs (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    completed_at TIMESTAMPTZ,
+    duration_seconds DECIMAL(10, 2),
+    total_scraped INTEGER DEFAULT 0,
+    total_upserted INTEGER DEFAULT 0,
+    total_errors INTEGER DEFAULT 0,
+    details JSONB DEFAULT '[]'::jsonb,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_scrape_runs_started ON scrape_runs(started_at DESC);

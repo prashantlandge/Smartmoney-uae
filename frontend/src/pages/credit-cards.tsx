@@ -1,6 +1,8 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { GetStaticProps } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import CashbackCalculator from '@/components/calculators/CashbackCalculator';
+import EligibilityChecker from '@/components/eligibility/EligibilityChecker';
 
 const FEATURE_LABELS: Record<string, string> = {
   annual_fee: 'Annual Fee',
@@ -19,6 +21,12 @@ export default function CreditCardsPage() {
       subtitleKey="cc_subtitle"
       heroIcon="credit_cards"
       featureLabels={FEATURE_LABELS}
+      calculatorSlot={
+        <>
+          <EligibilityChecker />
+          <CashbackCalculator />
+        </>
+      }
     />
   );
 }

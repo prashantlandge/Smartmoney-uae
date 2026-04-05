@@ -11,12 +11,17 @@ from app.features.rates.router import router as rates_router
 from app.features.advisor.router import router as advisor_router
 from app.features.events.router import router as events_router
 from app.features.products.router import router as products_router
+from app.features.eligibility.router import router as eligibility_router
+from app.features.scrapers.router import router as scraper_router
+from app.features.scrapers.scheduler import start_scheduler, stop_scheduler
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await create_pool()
+    start_scheduler()
     yield
+    stop_scheduler()
     await close_pool()
     await close_redis()
 
@@ -42,6 +47,8 @@ app.include_router(rates_router, prefix="/api/rates", tags=["rates"])
 app.include_router(advisor_router, prefix="/api/advisor", tags=["advisor"])
 app.include_router(events_router, prefix="/api/events", tags=["events"])
 app.include_router(products_router, prefix="/api/products", tags=["products"])
+app.include_router(eligibility_router, prefix="/api/eligibility", tags=["eligibility"])
+app.include_router(scraper_router, prefix="/api/scrapers", tags=["scrapers"])
 
 
 @app.get("/api/health")

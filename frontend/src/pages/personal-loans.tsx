@@ -1,6 +1,8 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { GetStaticProps } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import EmiCalculator from '@/components/calculators/EmiCalculator';
+import EligibilityChecker from '@/components/eligibility/EligibilityChecker';
 
 const FEATURE_LABELS: Record<string, string> = {
   interest_rate: 'Interest Rate',
@@ -18,6 +20,12 @@ export default function PersonalLoansPage() {
       subtitleKey="pl_subtitle"
       heroIcon="personal_loans"
       featureLabels={FEATURE_LABELS}
+      calculatorSlot={
+        <>
+          <EligibilityChecker />
+          <EmiCalculator />
+        </>
+      }
     />
   );
 }

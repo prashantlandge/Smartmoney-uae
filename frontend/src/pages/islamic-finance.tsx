@@ -1,6 +1,8 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { GetStaticProps } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import EmiCalculator from '@/components/calculators/EmiCalculator';
+import EligibilityChecker from '@/components/eligibility/EligibilityChecker';
 
 const FEATURE_LABELS: Record<string, string> = {
   profit_rate: 'Profit Rate',
@@ -18,6 +20,12 @@ export default function IslamicFinancePage() {
       subtitleKey="if_subtitle"
       heroIcon="islamic_finance"
       featureLabels={FEATURE_LABELS}
+      calculatorSlot={
+        <>
+          <EligibilityChecker />
+          <EmiCalculator />
+        </>
+      }
     />
   );
 }
