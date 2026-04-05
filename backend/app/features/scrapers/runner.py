@@ -3,6 +3,7 @@
 import asyncio
 import json
 import logging
+import uuid
 from datetime import datetime, timezone
 from typing import Optional
 
@@ -39,20 +40,31 @@ async def upsert_product(pool, product: ScrapedProduct) -> Optional[str]:
     Updates existing products; inserts new ones.
     Returns the product ID.
     """
+    # Convert provider_id string to UUID for asyncpg
+    provider_uuid = uuid.UUID(product.provider_id) if isinstance(product.provider_id, str) else product.provider_id
+
     # Check if product already exists
     existing = await pool.fetchrow(
         """
         SELECT id FROM products
         WHERE provider_id = $1 AND name_en = $2
         """,
-        product.provider_id,
+        provider_uuid,
         product.name_en,
     )
 
     features_json = json.dumps(product.key_features)
-    nationality_json = json.dumps(product.nationality_restrictions)
-    employer_arr = product.employer_categories
     eligibility_json = json.dumps(product.eligibility_criteria)
+
+    # nationality_restrictions is TEXT[] in the DB, convert dict to list of strings
+    if isinstance(product.nationality_restrictions, dict):
+        nationality_arr = list(product.nationality_restrictions.keys()) if product.nationality_restrictions else []
+    elif isinstance(product.nationality_restrictions, list):
+        nationality_arr = product.nationality_restrictions
+    else:
+        nationality_arr = []
+
+    employer_arr = product.employer_categories or []
     now = datetime.now(timezone.utc)
 
     if existing:
@@ -66,7 +78,7 @@ async def upsert_product(pool, product: ScrapedProduct) -> Optional[str]:
                 name_ar = COALESCE(NULLIF($3, ''), name_ar),
                 min_salary_aed = COALESCE($4, min_salary_aed),
                 residency_required = $5,
-                nationality_restrictions = COALESCE($6::jsonb, nationality_restrictions),
+                nationality_restrictions = COALESCE($6, nationality_restrictions),
                 employer_categories = COALESCE($7, employer_categories),
                 representative_rate = COALESCE($8, representative_rate),
                 rate_type = $9,
@@ -88,7 +100,7 @@ async def upsert_product(pool, product: ScrapedProduct) -> Optional[str]:
             product.name_ar,
             product.min_salary_aed,
             product.residency_required,
-            nationality_json,
+            nationality_arr,
             employer_arr,
             product.representative_rate,
             product.rate_type,
@@ -123,13 +135,13 @@ async def upsert_product(pool, product: ScrapedProduct) -> Optional[str]:
                 islamic_compliant, data_source,
                 eligibility_criteria, last_updated, active
             ) VALUES (
-                $1, $2, $3, $4, $5, $6, $7, $8, $9::jsonb, $10,
+                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10,
                 $11, $12, $13, $14, $15, $16, $17::jsonb, $18,
                 $19, $20, $21, $22, $23, $24::jsonb, $25, true
             )
             RETURNING id
             """,
-            product.provider_id,
+            provider_uuid,
             product.category,
             product.name_en,
             product.name_ar,
@@ -137,7 +149,7 @@ async def upsert_product(pool, product: ScrapedProduct) -> Optional[str]:
             product.description_ar,
             product.min_salary_aed,
             product.residency_required,
-            nationality_json,
+            nationality_arr,
             employer_arr,
             product.representative_rate,
             product.rate_type,

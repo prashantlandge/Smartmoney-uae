@@ -37,19 +37,19 @@ export default function ProviderRow({ provider, rank, isBest, sendAmount }: Prop
   };
 
   return (
-    <tr className={`border-b border-gray-100 last:border-0 transition-colors ${isBest ? 'bg-success-light' : 'hover:bg-surface-50'}`}>
+    <tr className={`border-b border-gray-100 last:border-0 transition-colors h-[72px] ${isBest ? 'bg-success-light' : 'hover:bg-surface-50'}`}>
       {/* Provider */}
-      <td className="py-3 px-3">
+      <td className="py-3 px-3 align-middle">
         <div className="flex items-center gap-2.5">
-          <div className="relative">
+          <div className="relative shrink-0">
             <ProviderLogo name={provider.provider_name} size={36} />
             <span className="absolute -top-1 -end-1 w-5 h-5 bg-white shadow-sm rounded-full flex items-center justify-center text-caption font-bold text-gray-600 border border-surface-200">
               {rank}
             </span>
           </div>
-          <div>
+          <div className="min-w-0">
             <div className="flex items-center gap-1.5">
-              <span className="font-medium text-sm">{provider.provider_name}</span>
+              <span className="font-medium text-sm truncate">{provider.provider_name}</span>
               {isBest && (
                 <Badge variant="ai">{t('ai_best_for_you')}</Badge>
               )}
@@ -60,38 +60,40 @@ export default function ProviderRow({ provider, rank, isBest, sendAmount }: Prop
       </td>
 
       {/* Exchange Rate */}
-      <td className="py-3 px-3 text-sm text-center font-medium">
+      <td className="py-3 px-3 text-sm text-center font-medium align-middle">
         {provider.exchange_rate.toFixed(4)}
       </td>
 
       {/* Fee */}
-      <td className="py-3 px-3 text-sm text-center">
+      <td className="py-3 px-3 text-sm text-center align-middle">
         {provider.fee_aed === 0 ? (
           <Badge variant="success">Free</Badge>
         ) : (
-          <span>AED {provider.fee_aed.toFixed(2)}</span>
+          <span className="whitespace-nowrap">AED {provider.fee_aed.toFixed(2)}</span>
         )}
       </td>
 
       {/* Recipient Gets */}
-      <td className="py-3 px-3 text-center">
+      <td className="py-3 px-3 text-center align-middle">
         <span className="font-bold text-sm">
           {provider.recipient_receives_inr.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
         </span>
-        {provider.cost_vs_mid_market_percent > 0 && (
-          <div className="text-caption text-error mt-0.5">
+        {provider.cost_vs_mid_market_percent > 0 ? (
+          <div className="text-caption text-error mt-0.5 whitespace-nowrap">
             -{provider.cost_vs_mid_market_percent.toFixed(2)}% vs mid
           </div>
+        ) : (
+          <div className="text-caption text-transparent mt-0.5 select-none">&nbsp;</div>
         )}
       </td>
 
       {/* Speed */}
-      <td className="py-3 px-3 text-sm text-center text-gray-600 hidden sm:table-cell">
-        {provider.transfer_speed}
+      <td className="py-3 px-3 text-sm text-center text-gray-600 hidden sm:table-cell align-middle">
+        <span className="whitespace-nowrap">{provider.transfer_speed}</span>
       </td>
 
       {/* CTA */}
-      <td className="py-3 px-3 text-end">
+      <td className="py-3 px-3 text-end align-middle">
         <a
           href={affiliateHref}
           target="_blank"
