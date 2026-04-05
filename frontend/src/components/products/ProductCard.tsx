@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
-import { Check, X, ExternalLink, ArrowRightLeft, ChevronDown, ChevronUp } from 'lucide-react';
+import { Check, X, ExternalLink, ArrowRightLeft, ChevronDown, ChevronUp, Star } from 'lucide-react';
 import ProviderLogo from '@/components/ui/ProviderLogo';
 import Badge from '@/components/ui/Badge';
-import StarRating, { generateRating } from '@/components/ui/StarRating';
 import { trackEvent } from '@/lib/tracker';
 import { useCompare } from '@/context/CompareContext';
 
@@ -25,21 +24,6 @@ export interface Product {
   is_islamic: boolean;
   badge?: ProductBadge;
 }
-
-const CATEGORY_COLORS: Record<string, string> = {
-  credit_card: 'bg-indigo-500',
-  personal_loan: 'bg-teal-500',
-  islamic_finance: 'bg-emerald-600',
-  car_insurance: 'bg-amber-500',
-  health_insurance: 'bg-rose-500',
-};
-
-const METRIC_COLORS = [
-  'bg-blue-50 text-blue-800',
-  'bg-emerald-50 text-emerald-800',
-  'bg-amber-50 text-amber-800',
-  'bg-purple-50 text-purple-800',
-];
 
 interface Props {
   product: Product;
@@ -77,107 +61,107 @@ export default function ProductCard({ product, featureLabels = {} }: Props) {
   const featureEntries = Object.entries(product.features).filter(
     ([, v]) => v !== null && v !== undefined && v !== '' && typeof v !== 'object'
   );
-  const visibleFeatures = featureEntries.slice(0, 4);
-  const extraFeatures = featureEntries.slice(4, 12);
-  const accentColor = CATEGORY_COLORS[product.product_type] || 'bg-brand-primary';
-  const rating = generateRating(product.features);
+  const topFeatures = featureEntries.slice(0, 5);
+  const extraFeatures = featureEntries.slice(5, 14);
   const bestFor = product.features.best_for;
 
   return (
-    <div className="bg-white rounded-card border border-surface-200 shadow-card hover:shadow-card-hover transition-all duration-200 overflow-hidden">
-      {/* Category accent strip */}
-      <div className={`h-1 ${accentColor}`} />
+    <div className="bg-white rounded-card border border-surface-200 shadow-sm hover:shadow-card-hover transition-all duration-150 overflow-hidden">
+      <div className="p-4 sm:p-5">
+        {/* Row 1: Logo + Name + Badge + CTA */}
+        <div className="flex items-start gap-3 sm:gap-4">
+          {/* Logo */}
+          <ProviderLogo name={product.provider_name} logoUrl={product.provider_logo} size={52} />
 
-      <div className="p-6 sm:p-7">
-        {/* Top row: editorial badges + rating */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2 flex-wrap">
-            {product.badge && (
-              <Badge variant={product.badge.type as any}>
-                {product.badge.label}
-              </Badge>
-            )}
-            {product.is_islamic && (
-              <Badge variant="islamic">{t('islamic_compliant')}</Badge>
-            )}
-            {bestFor && typeof bestFor === 'string' && (
-              <span className="text-xs font-medium text-gray-500">
-                Best for: <span className="text-gray-700 font-semibold">{bestFor}</span>
-              </span>
-            )}
-          </div>
-          <StarRating rating={rating} size={13} />
-        </div>
-
-        {/* Provider + Product name */}
-        <div className="flex items-center gap-4 mb-5">
-          <ProviderLogo name={product.provider_name} logoUrl={product.provider_logo} size={56} />
-          <div className="min-w-0 flex-1">
-            <h3 className="font-display text-lg font-bold text-gray-900 leading-snug">
-              {product.product_name}
-            </h3>
-            <p className="text-sm text-gray-500 mt-0.5">
-              {product.provider_name}
-              <span className="mx-1.5 text-surface-300">&middot;</span>
-              <span className="text-gray-400">{product.product_type.replace(/_/g, ' ')}</span>
-            </p>
-          </div>
-        </div>
-
-        {/* Key metrics in colored chips */}
-        {visibleFeatures.length > 0 && (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
-            {visibleFeatures.map(([key, value], idx) => (
-              <div
-                key={key}
-                className={`rounded-xl px-3.5 py-3 ${METRIC_COLORS[idx % METRIC_COLORS.length]}`}
-              >
-                <div className="text-[11px] font-medium uppercase tracking-wider opacity-70 mb-0.5">
-                  {featureLabels[key] || key.replace(/_/g, ' ')}
-                </div>
-                <div className="text-sm font-bold">
-                  {typeof value === 'boolean' ? (
-                    value ? <Check size={16} /> : <X size={16} className="opacity-40" />
-                  ) : (
-                    String(value)
-                  )}
-                </div>
+          {/* Name + Provider + Badges */}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-start justify-between gap-2">
+              <div>
+                <h3 className="font-semibold text-brand-dark text-base leading-tight">
+                  {product.product_name}
+                </h3>
+                <p className="text-body-sm text-gray-500 mt-0.5">{product.provider_name}</p>
               </div>
-            ))}
+              {/* Desktop CTA */}
+              <a
+                href={affiliateHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={handleClick}
+                className="hidden sm:inline-flex btn-primary text-sm py-2 px-6 shrink-0"
+              >
+                Apply Now
+              </a>
+            </div>
+
+            {/* Badges row */}
+            <div className="flex items-center gap-2 mt-2 flex-wrap">
+              {product.badge && (
+                <Badge variant={product.badge.type as any}>
+                  {product.badge.label}
+                </Badge>
+              )}
+              {product.is_islamic && (
+                <Badge variant="islamic">{t('islamic_compliant')}</Badge>
+              )}
+              {bestFor && typeof bestFor === 'string' && (
+                <span className="text-label text-gray-500">
+                  Best for <span className="font-semibold text-brand-dark">{bestFor}</span>
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Row 2: Key features as compact grid */}
+        {topFeatures.length > 0 && (
+          <div className="mt-4 pt-3 border-t border-surface-100">
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-x-4 gap-y-2">
+              {topFeatures.map(([key, value]) => (
+                <div key={key}>
+                  <div className="text-label text-gray-400 uppercase tracking-wider">
+                    {featureLabels[key] || key.replace(/_/g, ' ')}
+                  </div>
+                  <div className="text-sm font-semibold text-brand-dark mt-0.5">
+                    {typeof value === 'boolean' ? (
+                      value ? (
+                        <Check size={15} className="text-brand-primary" />
+                      ) : (
+                        <X size={15} className="text-gray-300" />
+                      )
+                    ) : (
+                      String(value)
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
-        {/* Expandable details accordion */}
+        {/* Row 3: Expandable details */}
         {extraFeatures.length > 0 && (
-          <div className="mb-5">
+          <div className="mt-3">
             <button
               onClick={() => setExpanded(!expanded)}
-              className="flex items-center gap-1.5 text-sm font-semibold text-brand-primary hover:text-brand-primary-700 transition-colors"
+              className="flex items-center gap-1 text-sm font-medium text-accent hover:text-accent-hover transition-colors"
             >
-              {expanded ? 'Hide details' : `View ${extraFeatures.length} more details`}
-              {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+              {expanded ? 'Hide details' : `+${extraFeatures.length} more details`}
+              {expanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
             </button>
 
             {expanded && (
               <div className="mt-3 pt-3 border-t border-surface-100 animate-fade-in">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5">
                   {extraFeatures.map(([key, value]) => (
-                    <div key={key} className="flex items-center justify-between py-2 border-b border-surface-100 last:border-b-0">
+                    <div key={key} className="flex items-center justify-between py-1.5 border-b border-surface-100 last:border-b-0">
                       <span className="text-sm text-gray-500">
                         {featureLabels[key] || key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
                       </span>
-                      <span className="text-sm font-semibold text-gray-900 text-right">
+                      <span className="text-sm font-semibold text-brand-dark">
                         {typeof value === 'boolean' ? (
-                          value ? (
-                            <span className="inline-flex items-center gap-1 text-emerald-600">
-                              <Check size={14} /> Yes
-                            </span>
-                          ) : (
-                            <span className="text-gray-400">No</span>
-                          )
-                        ) : (
-                          String(value)
-                        )}
+                          value ? <span className="text-brand-primary">Yes</span> : <span className="text-gray-400">No</span>
+                        ) : String(value)}
                       </span>
                     </div>
                   ))}
@@ -187,42 +171,42 @@ export default function ProductCard({ product, featureLabels = {} }: Props) {
           </div>
         )}
 
-        {/* Description */}
-        {product.description && !expanded && (
-          <p className="text-sm text-gray-500 line-clamp-1 mb-5 leading-relaxed">
-            {product.description}
-          </p>
-        )}
-
-        {/* Action buttons */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-4 border-t border-surface-100">
+        {/* Row 4: Actions */}
+        <div className="mt-4 pt-3 border-t border-surface-100 flex items-center gap-2 flex-wrap">
+          {/* Mobile CTA */}
           <a
             href={affiliateHref}
             target="_blank"
             rel="noopener noreferrer"
             onClick={handleClick}
-            className="btn-primary text-sm py-3 px-6 gap-2 justify-center sm:w-auto w-full shadow-glow-accent"
+            className="sm:hidden btn-primary text-sm py-2.5 px-6 w-full justify-center"
           >
             Apply Now <ExternalLink size={14} />
           </a>
           <Link
             href={`/products/${product.id}`}
-            className="btn-secondary text-sm py-3 px-5 justify-center sm:w-auto w-full"
+            className="btn-outline text-sm py-2 px-4"
           >
-            Full Details
+            View Details
           </Link>
           <button
             onClick={toggleCompare}
             disabled={!isSelected && isFull}
-            className={`inline-flex items-center justify-center gap-2 px-4 py-3 rounded-button text-sm font-medium transition-all border sm:w-auto w-full ${
+            className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-button text-sm font-medium transition-all border ${
               isSelected
-                ? 'bg-brand-primary-50 border-brand-primary text-brand-primary'
-                : 'border-surface-200 text-gray-500 hover:border-brand-primary hover:text-brand-primary disabled:opacity-40 disabled:cursor-not-allowed'
+                ? 'bg-brand-primary-50 border-brand-primary text-brand-primary-700'
+                : 'border-surface-200 text-gray-500 hover:border-brand-primary hover:text-brand-primary disabled:opacity-40'
             }`}
           >
-            {isSelected ? <Check size={15} /> : <ArrowRightLeft size={15} />}
+            {isSelected ? <Check size={14} /> : <ArrowRightLeft size={14} />}
             Compare
           </button>
+          {/* Desktop: show description inline */}
+          {product.description && !expanded && (
+            <p className="hidden sm:block text-body-sm text-gray-400 truncate flex-1 ml-2">
+              {product.description}
+            </p>
+          )}
         </div>
       </div>
     </div>

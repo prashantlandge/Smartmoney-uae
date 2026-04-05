@@ -8,7 +8,6 @@ import { useState, useEffect, type ReactNode } from 'react';
 import Layout from '@/components/layout/Layout';
 import ProviderLogo from '@/components/ui/ProviderLogo';
 import Badge from '@/components/ui/Badge';
-import StarRating, { generateRating } from '@/components/ui/StarRating';
 import { SkeletonCard } from '@/components/ui/Skeleton';
 import EmptyState from '@/components/ui/EmptyState';
 import { trackEvent } from '@/lib/tracker';
@@ -41,13 +40,16 @@ const CATEGORY_ROUTES: Record<string, string> = {
   remittance: '/',
 };
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
+const CATEGORY_GRADIENTS: Record<string, string> = {
+  credit_card: 'from-indigo-600 to-brand-nav',
+  personal_loan: 'from-teal-600 to-teal-500',
+  islamic_finance: 'from-emerald-700 to-emerald-500',
+  car_insurance: 'from-amber-600 to-amber-500',
+  health_insurance: 'from-rose-600 to-rose-500',
+};
 
 type FeatureValue = string | number | boolean | Record<string, unknown> | unknown[];
 
-/** Safely read a feature, returning undefined when absent. */
 function feat(features: Record<string, unknown>, key: string): FeatureValue | undefined {
   const v = features[key];
   if (v === undefined || v === null || v === '') return undefined;
@@ -62,11 +64,6 @@ const formatValue = (v: FeatureValue): string => {
   return String(v);
 };
 
-// ---------------------------------------------------------------------------
-// Reusable sub-components
-// ---------------------------------------------------------------------------
-
-/** A white card section with a colored icon header. */
 function Section({ icon: Icon, iconColor, title, children }: {
   icon: LucideIcon;
   iconColor: string;
@@ -74,63 +71,60 @@ function Section({ icon: Icon, iconColor, title, children }: {
   children: ReactNode;
 }) {
   return (
-    <div className="bg-white rounded-2xl border border-surface-200">
-      <div className="px-6 sm:px-8 py-5 border-b border-surface-100">
-        <h2 className="text-base font-bold text-gray-900 flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-surface-50 flex items-center justify-center shrink-0">
-            <Icon size={18} className={iconColor} />
+    <div className="bg-white rounded-card border border-surface-200">
+      <div className="px-4 sm:px-5 py-3 border-b border-surface-100">
+        <h2 className="text-body-sm font-bold text-brand-dark flex items-center gap-2">
+          <div className="w-7 h-7 rounded-button bg-surface-50 flex items-center justify-center shrink-0">
+            <Icon size={15} className={iconColor} />
           </div>
           {title}
         </h2>
       </div>
-      <div className="px-6 sm:px-8 py-6">{children}</div>
+      <div className="px-4 sm:px-5 py-4">{children}</div>
     </div>
   );
 }
 
-/** A single row in a detail table. Returns null when value is undefined. */
 function Row({ label, value }: { label: string; value: FeatureValue | undefined }) {
   if (value === undefined) return null;
   return (
-    <div className="flex items-start justify-between py-3 border-b border-surface-100 last:border-b-0">
-      <span className="text-sm text-gray-500">{label}</span>
-      <span className="text-sm font-bold text-gray-900 text-right max-w-[55%]">{formatValue(value)}</span>
+    <div className="flex items-start justify-between py-2.5 border-b border-surface-100 last:border-b-0">
+      <span className="text-body-sm text-gray-500">{label}</span>
+      <span className="text-body-sm font-bold text-brand-dark text-right max-w-[55%]">{formatValue(value)}</span>
     </div>
   );
 }
 
-/** Boolean feature row with a check/X icon. Returns null when value is undefined. */
 function BoolRow({ label, value }: { label: string; value: FeatureValue | undefined }) {
   if (value === undefined) return null;
   const yes = Boolean(value);
   return (
-    <div className="flex items-center gap-3 py-2">
+    <div className="flex items-center gap-2.5 py-1.5">
       {yes ? (
-        <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
-          <Check size={14} className="text-emerald-600" />
+        <div className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
+          <Check size={12} className="text-emerald-600" />
         </div>
       ) : (
-        <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
-          <X size={14} className="text-gray-400" />
+        <div className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+          <X size={12} className="text-gray-400" />
         </div>
       )}
-      <span className={`text-sm ${yes ? 'text-gray-700 font-medium' : 'text-gray-400'}`}>{label}</span>
+      <span className={`text-body-sm ${yes ? 'text-gray-700 font-medium' : 'text-gray-400'}`}>{label}</span>
     </div>
   );
 }
 
-/** Render an object/dict as a mini table. */
 function MiniTable({ data, label }: { data: Record<string, unknown>; label?: string }) {
   const entries = Object.entries(data).filter(([, v]) => v !== undefined && v !== null && v !== '');
   if (entries.length === 0) return null;
   return (
-    <div className="mt-4">
-      {label && <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2.5">{label}</p>}
-      <div className="bg-surface-50 rounded-xl overflow-hidden border border-surface-100">
+    <div className="mt-3">
+      {label && <p className="text-label font-bold text-gray-500 uppercase tracking-wider mb-2">{label}</p>}
+      <div className="bg-surface-50 rounded-button overflow-hidden border border-surface-100">
         {entries.map(([key, val]) => (
-          <div key={key} className="flex items-center justify-between px-4 py-2.5 border-b border-surface-100 last:border-b-0">
-            <span className="text-sm text-gray-600">{formatLabel(key)}</span>
-            <span className="text-sm font-bold text-gray-900">{String(val)}</span>
+          <div key={key} className="flex items-center justify-between px-3 py-2 border-b border-surface-100 last:border-b-0">
+            <span className="text-body-sm text-gray-600">{formatLabel(key)}</span>
+            <span className="text-body-sm font-bold text-brand-dark">{String(val)}</span>
           </div>
         ))}
       </div>
@@ -138,22 +132,20 @@ function MiniTable({ data, label }: { data: Record<string, unknown>; label?: str
   );
 }
 
-/** Render an array as a bulleted list. */
 function BulletList({ items, label }: { items: unknown[]; label?: string }) {
   if (items.length === 0) return null;
   return (
-    <div className="mt-3">
-      {label && <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{label}</p>}
-      <ul className="list-disc list-inside space-y-1">
+    <div className="mt-2">
+      {label && <p className="text-label font-semibold text-gray-500 uppercase tracking-wider mb-1.5">{label}</p>}
+      <ul className="list-disc list-inside space-y-0.5">
         {items.map((item, idx) => (
-          <li key={idx} className="text-sm text-gray-700">{String(item)}</li>
+          <li key={idx} className="text-body-sm text-gray-700">{String(item)}</li>
         ))}
       </ul>
     </div>
   );
 }
 
-/** Highlight card used in the hero section for key metrics. */
 function HighlightCard({ label, value, color }: { label: string; value: string; color: string }) {
   const colorMap: Record<string, string> = {
     blue: 'bg-blue-50 border-blue-100 text-blue-800',
@@ -165,19 +157,17 @@ function HighlightCard({ label, value, color }: { label: string; value: string; 
   };
   const cls = colorMap[color] || colorMap.blue;
   return (
-    <div className={`rounded-xl border px-5 py-4 ${cls}`}>
-      <p className="text-xs font-medium opacity-70 mb-1">{label}</p>
-      <p className="text-lg font-bold">{value}</p>
+    <div className={`rounded-card border px-4 py-3 ${cls}`}>
+      <p className="text-label font-medium opacity-70 mb-0.5">{label}</p>
+      <p className="text-base font-bold">{value}</p>
     </div>
   );
 }
 
-/** Helper: returns true when at least one of the given keys exists in features. */
 function hasAny(features: Record<string, unknown>, keys: string[]): boolean {
   return keys.some((k) => feat(features, k) !== undefined);
 }
 
-/** Wrapper that only renders children if at least one key is present. */
 function ConditionalSection({ features, keys, ...rest }: {
   features: Record<string, unknown>;
   keys: string[];
@@ -190,14 +180,11 @@ function ConditionalSection({ features, keys, ...rest }: {
   return <Section {...rest} />;
 }
 
-// ---------------------------------------------------------------------------
-// Category-specific section renderers
-// ---------------------------------------------------------------------------
+// Category-specific section renderers (unchanged logic, compact styling)
 
 function CreditCardSections({ f }: { f: Record<string, unknown> }) {
   return (
     <>
-      {/* Fees & Charges */}
       <ConditionalSection
         features={f}
         keys={['annual_fee', 'annual_fee_first_year', 'annual_fee_subsequent', 'interest_rate', 'foreign_transaction_fee', 'cash_advance_fee', 'late_payment_fee', 'minimum_payment']}
@@ -212,7 +199,6 @@ function CreditCardSections({ f }: { f: Record<string, unknown> }) {
         <Row label="Minimum Payment" value={feat(f, 'minimum_payment')} />
       </ConditionalSection>
 
-      {/* Rewards & Cashback */}
       <ConditionalSection
         features={f}
         keys={['rewards_program', 'earn_rate', 'cashback_rate', 'cashback_categories', 'welcome_bonus']}
@@ -227,7 +213,6 @@ function CreditCardSections({ f }: { f: Record<string, unknown> }) {
         )}
       </ConditionalSection>
 
-      {/* Travel & Lifestyle */}
       <ConditionalSection
         features={f}
         keys={['lounge_access', 'lounge_program', 'lounge_visits', 'travel_insurance', 'travel_insurance_coverage', 'valet_parking', 'airport_transfer', 'golf', 'concierge']}
@@ -244,7 +229,6 @@ function CreditCardSections({ f }: { f: Record<string, unknown> }) {
         <BoolRow label="Concierge Service" value={feat(f, 'concierge')} />
       </ConditionalSection>
 
-      {/* Digital & Convenience */}
       <ConditionalSection
         features={f}
         keys={['contactless', 'apple_pay', 'samsung_pay', 'online_banking', 'supplementary_cards']}
@@ -259,7 +243,6 @@ function CreditCardSections({ f }: { f: Record<string, unknown> }) {
         <Row label="Supplementary Cards" value={feat(f, 'supplementary_cards')} />
       </ConditionalSection>
 
-      {/* Eligibility */}
       <ConditionalSection
         features={f}
         keys={['min_salary', 'salary_transfer_required', 'employer_types', 'nationalities']}
@@ -277,7 +260,6 @@ function CreditCardSections({ f }: { f: Record<string, unknown> }) {
 function PersonalLoanSections({ f }: { f: Record<string, unknown> }) {
   return (
     <>
-      {/* Rates & Fees */}
       <ConditionalSection
         features={f}
         keys={['interest_rate', 'flat_rate', 'reducing_rate', 'processing_fee', 'early_settlement_fee', 'late_payment_fee', 'insurance']}
@@ -292,7 +274,6 @@ function PersonalLoanSections({ f }: { f: Record<string, unknown> }) {
         <Row label="Insurance" value={feat(f, 'insurance')} />
       </ConditionalSection>
 
-      {/* Loan Details */}
       <ConditionalSection
         features={f}
         keys={['min_amount', 'max_amount', 'min_tenure', 'max_tenure', 'top_up', 'balance_transfer']}
@@ -306,7 +287,6 @@ function PersonalLoanSections({ f }: { f: Record<string, unknown> }) {
         <BoolRow label="Balance Transfer" value={feat(f, 'balance_transfer')} />
       </ConditionalSection>
 
-      {/* Eligibility & Process */}
       <ConditionalSection
         features={f}
         keys={['min_salary', 'dbr', 'salary_transfer_required', 'documents_required', 'approval_time', 'disbursement_time']}
@@ -322,7 +302,6 @@ function PersonalLoanSections({ f }: { f: Record<string, unknown> }) {
         )}
       </ConditionalSection>
 
-      {/* Application */}
       <ConditionalSection
         features={f}
         keys={['online_application', 'nationalities', 'employer_types']}
@@ -339,7 +318,6 @@ function PersonalLoanSections({ f }: { f: Record<string, unknown> }) {
 function IslamicFinanceSections({ f }: { f: Record<string, unknown> }) {
   return (
     <>
-      {/* Finance Details */}
       <ConditionalSection
         features={f}
         keys={['profit_rate', 'processing_fee', 'min_amount', 'max_amount', 'min_tenure', 'max_tenure', 'takaful']}
@@ -354,7 +332,6 @@ function IslamicFinanceSections({ f }: { f: Record<string, unknown> }) {
         <Row label="Takaful" value={feat(f, 'takaful')} />
       </ConditionalSection>
 
-      {/* Sharia Compliance */}
       <ConditionalSection
         features={f}
         keys={['structure_type', 'sharia_board', 'fatwa']}
@@ -365,7 +342,6 @@ function IslamicFinanceSections({ f }: { f: Record<string, unknown> }) {
         <Row label="Fatwa Reference" value={feat(f, 'fatwa')} />
       </ConditionalSection>
 
-      {/* Eligibility */}
       <ConditionalSection
         features={f}
         keys={['min_salary', 'documents_required', 'approval_time']}
@@ -384,7 +360,6 @@ function IslamicFinanceSections({ f }: { f: Record<string, unknown> }) {
 function CarInsuranceSections({ f }: { f: Record<string, unknown> }) {
   return (
     <>
-      {/* Coverage Details */}
       <ConditionalSection
         features={f}
         keys={['coverage_type', 'comprehensive', 'third_party', 'natural_disasters', 'personal_accident', 'gcc_cover', 'oman_extension']}
@@ -399,7 +374,6 @@ function CarInsuranceSections({ f }: { f: Record<string, unknown> }) {
         <BoolRow label="Oman Extension" value={feat(f, 'oman_extension')} />
       </ConditionalSection>
 
-      {/* Repair & Claims */}
       <ConditionalSection
         features={f}
         keys={['agency_repair', 'non_agency_repair', 'claim_settlement_time', 'rent_a_car', 'new_for_old']}
@@ -412,7 +386,6 @@ function CarInsuranceSections({ f }: { f: Record<string, unknown> }) {
         <BoolRow label="New-for-Old Replacement" value={feat(f, 'new_for_old')} />
       </ConditionalSection>
 
-      {/* Additional Benefits */}
       <ConditionalSection
         features={f}
         keys={['roadside_assistance', 'towing', 'windscreen_cover', 'off_road_cover', 'no_claim_discount']}
@@ -431,7 +404,6 @@ function CarInsuranceSections({ f }: { f: Record<string, unknown> }) {
 function HealthInsuranceSections({ f }: { f: Record<string, unknown> }) {
   return (
     <>
-      {/* Coverage Limits */}
       <ConditionalSection
         features={f}
         keys={['inpatient_cover', 'outpatient_cover', 'annual_limit', 'room_type']}
@@ -443,7 +415,6 @@ function HealthInsuranceSections({ f }: { f: Record<string, unknown> }) {
         <Row label="Room Type" value={feat(f, 'room_type')} />
       </ConditionalSection>
 
-      {/* Specialist Coverage */}
       <ConditionalSection
         features={f}
         keys={['dental', 'optical', 'maternity', 'maternity_waiting_period', 'maternity_limit', 'mental_health', 'alternative_medicine']}
@@ -458,7 +429,6 @@ function HealthInsuranceSections({ f }: { f: Record<string, unknown> }) {
         <BoolRow label="Alternative Medicine" value={feat(f, 'alternative_medicine')} />
       </ConditionalSection>
 
-      {/* Network & Access */}
       <ConditionalSection
         features={f}
         keys={['network_hospitals', 'network_type', 'dha_compliant', 'haad_compliant']}
@@ -470,7 +440,6 @@ function HealthInsuranceSections({ f }: { f: Record<string, unknown> }) {
         <BoolRow label="HAAD Compliant" value={feat(f, 'haad_compliant')} />
       </ConditionalSection>
 
-      {/* Cost Sharing */}
       <ConditionalSection
         features={f}
         keys={['copay_consultation', 'copay_pharmacy', 'excess']}
@@ -484,10 +453,6 @@ function HealthInsuranceSections({ f }: { f: Record<string, unknown> }) {
   );
 }
 
-// ---------------------------------------------------------------------------
-// Hero highlight builders per category
-// ---------------------------------------------------------------------------
-
 interface Highlight {
   label: string;
   value: string;
@@ -496,7 +461,6 @@ interface Highlight {
 
 function getHighlights(productType: string, f: Record<string, unknown>): Highlight[] {
   const highlights: Highlight[] = [];
-
   const push = (label: string, key: string, color: string) => {
     const v = feat(f, key);
     if (v !== undefined) highlights.push({ label, value: formatValue(v), color });
@@ -535,14 +499,8 @@ function getHighlights(productType: string, f: Record<string, unknown>): Highlig
       push('Network Hospitals', 'network_hospitals', 'purple');
       break;
   }
-
-  // Limit to 4 highlights max
   return highlights.slice(0, 4);
 }
-
-// ---------------------------------------------------------------------------
-// Main page component
-// ---------------------------------------------------------------------------
 
 export default function ProductDetailPage() {
   const router = useRouter();
@@ -594,10 +552,8 @@ export default function ProductDetailPage() {
 
   const categoryLabel = product ? CATEGORY_LABELS[product.product_type] || product.product_type : '';
   const categoryRoute = product ? CATEGORY_ROUTES[product.product_type] || '/' : '/';
-
-  // Cast features broadly so we can handle objects/arrays
+  const heroGradient = product ? CATEGORY_GRADIENTS[product.product_type] || 'from-brand-nav to-brand-nav-dark' : '';
   const features: Record<string, unknown> = product ? (product.features as Record<string, unknown>) : {};
-
   const highlights = product ? getHighlights(product.product_type, features) : [];
 
   return (
@@ -609,39 +565,48 @@ export default function ProductDetailPage() {
         {product && <meta name="description" content={product.description} />}
       </Head>
 
-      {/* Breadcrumb */}
-      <div className="bg-white border-b border-surface-200">
-        <div className="max-w-content-xl mx-auto px-4 sm:px-6 py-3.5 flex items-center gap-2 text-sm text-gray-500">
-          <Link href="/" className="hover:text-brand-primary transition-colors">Home</Link>
-          <ChevronRight size={12} />
+      {/* Colored hero with breadcrumb + product info */}
+      <section className={`bg-gradient-to-r ${heroGradient || 'from-brand-nav to-brand-nav-dark'} text-white`}>
+        <div className="max-w-content-lg mx-auto px-4 sm:px-8 py-4 sm:py-5">
+          <nav className="flex items-center gap-1.5 text-xs text-white/60 mb-3">
+            <Link href="/" className="hover:text-white transition-colors">Home</Link>
+            <ChevronRight size={12} />
+            {product && (
+              <>
+                <Link href={categoryRoute} className="hover:text-white transition-colors">{categoryLabel}</Link>
+                <ChevronRight size={12} />
+                <span className="text-white font-medium truncate">{product.product_name}</span>
+              </>
+            )}
+          </nav>
           {product && (
-            <>
-              <Link href={categoryRoute} className="hover:text-brand-primary transition-colors">
-                {categoryLabel}
-              </Link>
-              <ChevronRight size={12} />
-              <span className="text-gray-900 font-medium truncate">{product.product_name}</span>
-            </>
+            <div className="flex items-center gap-3">
+              <ProviderLogo name={product.provider_name} logoUrl={product.provider_logo} size={48} />
+              <div className="min-w-0">
+                <h1 className="text-lg sm:text-xl font-bold truncate">{product.product_name}</h1>
+                <p className="text-body-sm text-white/80">{product.provider_name}</p>
+              </div>
+            </div>
           )}
         </div>
-      </div>
+      </section>
 
       {loading && (
-        <div className="max-w-content-lg mx-auto px-4 sm:px-6 py-10">
+        <div className="max-w-content-lg mx-auto px-4 sm:px-8 py-8">
           <SkeletonCard />
         </div>
       )}
 
       {error && (
-        <div className="max-w-content-lg mx-auto px-4 sm:px-6 py-16">
+        <div className="max-w-content-lg mx-auto px-4 sm:px-8 py-12">
           <EmptyState
             icon={AlertCircle}
             title="Product not found"
             description="This product may have been removed or the link is incorrect."
           />
-          <div className="text-center mt-6">
+          <div className="text-center mt-4">
             <Link href="/" className="btn-primary">
-              <ArrowLeft size={16} /> Back to Home
+              <ArrowLeft size={14} /> Back to Home
             </Link>
           </div>
         </div>
@@ -649,112 +614,94 @@ export default function ProductDetailPage() {
 
       {product && (
         <>
-        {/* Sticky CTA bar */}
-        <div className="bg-white border-b border-surface-200 sticky top-16 z-20">
-          <div className="max-w-content-lg mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3 min-w-0">
-              <ProviderLogo name={product.provider_name} logoUrl={product.provider_logo} size={36} />
-              <div className="min-w-0">
-                <p className="text-sm font-bold text-gray-900 truncate">{product.product_name}</p>
-                <p className="text-xs text-gray-500">{product.provider_name}</p>
+          {/* Sticky CTA bar */}
+          <div className="bg-white border-b border-surface-200 sticky top-14 z-20">
+            <div className="max-w-content-lg mx-auto px-4 sm:px-8 py-2.5 flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <ProviderLogo name={product.provider_name} logoUrl={product.provider_logo} size={32} />
+                <div className="min-w-0">
+                  <p className="text-body-sm font-bold text-brand-dark truncate">{product.product_name}</p>
+                  <p className="text-label text-gray-500">{product.provider_name}</p>
+                </div>
               </div>
+              <a
+                href={affiliateHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={handleApply}
+                className="btn-primary text-sm py-2 px-5 gap-1.5 shrink-0"
+              >
+                Apply Now <ExternalLink size={13} />
+              </a>
             </div>
-            <a
-              href={affiliateHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={handleApply}
-              className="btn-primary text-sm py-2.5 px-5 gap-2 shrink-0 shadow-glow-accent"
-            >
-              Apply Now <ExternalLink size={14} />
-            </a>
           </div>
-        </div>
 
-        <div className="bg-surface-50 min-h-[60vh]">
-          <div className="max-w-content-lg mx-auto px-4 sm:px-6 py-10">
+          <div className="bg-surface-50 min-h-[60vh]">
+            <div className="max-w-content-lg mx-auto px-4 sm:px-8 py-6">
+              <div className="space-y-4">
 
-              {/* Full-width content */}
-              <div className="space-y-7">
-
-                {/* ── Hero Section ── */}
-                <div className="bg-white rounded-card border border-surface-200 p-7 sm:p-8">
-                  <div className="flex items-start gap-5 mb-6">
-                    <ProviderLogo name={product.provider_name} logoUrl={product.provider_logo} size={72} />
-                    <div className="flex-1 min-w-0">
-                      <div className="flex flex-wrap items-center gap-2 mb-2">
-                        {product.is_islamic && (
-                          <Badge variant="islamic">{t('islamic_compliant')}</Badge>
-                        )}
-                        {product.product_type === 'islamic_finance' && !product.is_islamic && (
-                          <Badge variant="islamic">Sharia-Compliant</Badge>
-                        )}
-                        {product.badge && (
-                          <Badge variant={product.badge.type as any}>{product.badge.label}</Badge>
-                        )}
-                      </div>
-                      <h1 className="font-display text-2xl sm:text-3xl font-extrabold text-gray-900">{product.product_name}</h1>
-                      <div className="flex items-center gap-3 mt-2">
-                        <p className="text-base text-gray-500">{product.provider_name}</p>
-                        <StarRating rating={generateRating(features as Record<string, unknown>)} size={14} />
-                      </div>
-                    </div>
+                {/* Key highlights + badges */}
+                <div className="bg-white rounded-card border border-surface-200 p-4 sm:p-5">
+                  <div className="flex flex-wrap items-center gap-2 mb-3">
+                    {product.is_islamic && (
+                      <Badge variant="islamic">{t('islamic_compliant')}</Badge>
+                    )}
+                    {product.product_type === 'islamic_finance' && !product.is_islamic && (
+                      <Badge variant="islamic">Sharia-Compliant</Badge>
+                    )}
+                    {product.badge && (
+                      <Badge variant={product.badge.type as any}>{product.badge.label}</Badge>
+                    )}
                   </div>
 
-                  {/* Key highlight cards */}
                   {highlights.length > 0 && (
-                    <div className={`grid gap-4 ${highlights.length <= 2 ? 'grid-cols-2' : highlights.length === 3 ? 'grid-cols-3' : 'grid-cols-2 sm:grid-cols-4'}`}>
+                    <div className={`grid gap-3 mb-4 ${highlights.length <= 2 ? 'grid-cols-2' : highlights.length === 3 ? 'grid-cols-3' : 'grid-cols-2 sm:grid-cols-4'}`}>
                       {highlights.map((h) => (
                         <HighlightCard key={h.label} label={h.label} value={h.value} color={h.color} />
                       ))}
                     </div>
                   )}
 
-                  {/* Apply CTA inline */}
-                  <div className="mt-6 pt-6 border-t border-surface-100 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                     <a
                       href={affiliateHref}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={handleApply}
-                      className="btn-primary text-base py-3.5 px-8 gap-2 shadow-glow-accent justify-center"
+                      className="btn-primary text-sm py-2.5 px-6 gap-1.5 justify-center"
                     >
-                      Apply Now <ExternalLink size={16} />
+                      Apply Now <ExternalLink size={14} />
                     </a>
-                    <Link
-                      href={categoryRoute}
-                      className="btn-secondary py-3.5 px-6 justify-center"
-                    >
-                      <ArrowLeft size={16} />
-                      All {categoryLabel}
+                    <Link href={categoryRoute} className="btn-outline text-sm py-2.5 px-4 justify-center">
+                      <ArrowLeft size={14} /> All {categoryLabel}
                     </Link>
-                    <p className="text-xs text-gray-400 sm:ml-auto">
+                    <p className="text-label text-gray-400 sm:ml-auto">
                       You&apos;ll be redirected to {product.provider_name}
                     </p>
                   </div>
                 </div>
 
-                {/* ── Overview Section ── */}
+                {/* Overview */}
                 {(product.description || feat(features, 'best_for') || feat(features, 'structure_type')) && (
                   <Section icon={Lightbulb} iconColor="text-amber-500" title="Overview">
                     {product.description && (
-                      <p className="text-base text-gray-600 leading-relaxed">{product.description}</p>
+                      <p className="text-body-sm text-gray-600 leading-relaxed">{product.description}</p>
                     )}
                     {feat(features, 'best_for') && (
-                      <div className="mt-4">
+                      <div className="mt-3">
                         <Badge variant="info">Best for: {formatValue(feat(features, 'best_for')!)}</Badge>
                       </div>
                     )}
                     {feat(features, 'structure_type') && (
-                      <div className="mt-3 flex items-center gap-2">
-                        <span className="text-sm font-semibold text-gray-500">Structure:</span>
+                      <div className="mt-2 flex items-center gap-2">
+                        <span className="text-body-sm font-semibold text-gray-500">Structure:</span>
                         <Badge variant="islamic">{formatValue(feat(features, 'structure_type')!)}</Badge>
                       </div>
                     )}
                   </Section>
                 )}
 
-                {/* ── Category-specific sections ── */}
+                {/* Category-specific sections */}
                 {product.product_type === 'credit_card' && <CreditCardSections f={features} />}
                 {product.product_type === 'personal_loan' && <PersonalLoanSections f={features} />}
                 {product.product_type === 'islamic_finance' && <IslamicFinanceSections f={features} />}
@@ -762,16 +709,16 @@ export default function ProductDetailPage() {
                 {product.product_type === 'health_insurance' && <HealthInsuranceSections f={features} />}
 
                 {/* Disclaimer */}
-                <div className="flex items-start gap-2.5 text-sm text-gray-400 px-1">
-                  <Clock size={14} className="shrink-0 mt-0.5" />
+                <div className="flex items-start gap-2 text-label text-gray-400 px-1">
+                  <Clock size={12} className="shrink-0 mt-0.5" />
                   <p>
                     Information is for general guidance only. Rates and terms may change.
                     Please verify details on the provider&apos;s official website before applying.
                   </p>
                 </div>
               </div>
+            </div>
           </div>
-        </div>
         </>
       )}
     </Layout>
