@@ -77,7 +77,7 @@ export default function Tax() {
       </section>
 
       {/* Quick nav */}
-      <section className="bg-white border-b border-surface-100 sticky top-[calc(3.5rem+1.75rem)] sm:top-[calc(3.5rem+1.75rem)] z-20">
+      <section className="bg-white border-b border-surface-100 sticky top-[6.25rem] z-20">
         <div className="max-w-content-xl mx-auto px-4 sm:px-8">
           <div className="flex gap-1 overflow-x-auto py-2 scrollbar-hide">
             {TAX_SECTIONS.map((sec) => (
