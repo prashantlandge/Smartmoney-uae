@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import { Check, X, ChevronDown, ChevronUp, ExternalLink, Lightbulb, ArrowRightLeft, Award, Percent, Star, Clock } from 'lucide-react';
+import Link from 'next/link';
+import { Check, X, ExternalLink, ArrowRightLeft, Award, Percent, Star, Clock } from 'lucide-react';
 import ProviderLogo from '@/components/ui/ProviderLogo';
 import Badge from '@/components/ui/Badge';
 import { trackEvent } from '@/lib/tracker';
@@ -41,8 +41,6 @@ export default function ProductCard({ product, featureLabels = {} }: Props) {
   const { t } = useTranslation('common');
   const { add, remove, has, isFull } = useCompare();
   const isSelected = has(product.id);
-  const [expanded, setExpanded] = useState(false);
-
   const toggleCompare = () => {
     if (isSelected) remove(product.id);
     else add(product);
@@ -69,7 +67,6 @@ export default function ProductCard({ product, featureLabels = {} }: Props) {
   const BadgeIcon = product.badge ? BADGE_ICONS[product.badge.type] : null;
   const featureEntries = Object.entries(product.features);
   const visibleFeatures = featureEntries.slice(0, 4);
-  const extraFeatures = featureEntries.slice(4);
 
   return (
     <div className={`bg-white rounded-card border transition-all duration-200 hover:shadow-elevated ${
@@ -139,13 +136,12 @@ export default function ProductCard({ product, featureLabels = {} }: Props) {
           >
             {t('apply_now')} <ExternalLink size={12} />
           </a>
-          <button
-            onClick={() => setExpanded(!expanded)}
+          <Link
+            href={`/products/${product.id}`}
             className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-button text-xs font-medium border border-surface-200 text-gray-600 hover:border-gray-300 hover:bg-surface-50 transition-colors flex-1 lg:w-full"
           >
-            {expanded ? 'Less' : 'Details'}
-            {expanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
-          </button>
+            View Details
+          </Link>
           <button
             onClick={toggleCompare}
             disabled={!isSelected && isFull}
@@ -161,36 +157,10 @@ export default function ProductCard({ product, featureLabels = {} }: Props) {
         </div>
       </div>
 
-      {/* Expandable details */}
-      {expanded && (
-        <div className="border-t border-surface-100 px-5 py-4 bg-surface-50/50 animate-fade-in">
-          {/* Description */}
-          {product.description && (
-            <div className="flex items-start gap-2 mb-3">
-              <Lightbulb size={16} className="text-amber-500 shrink-0 mt-0.5" />
-              <div>
-                <span className="text-xs font-semibold text-gray-700">What this means for you: </span>
-                <span className="text-xs text-gray-600 leading-relaxed">{product.description}</span>
-              </div>
-            </div>
-          )}
-
-          {/* Extra features as pills */}
-          {extraFeatures.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-2">
-              {extraFeatures.map(([key, value]) => (
-                <span
-                  key={key}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-white border border-surface-200 rounded-button text-xs text-gray-700 font-medium"
-                >
-                  {featureLabels[key] || key.replace(/_/g, ' ')}:{' '}
-                  <span className="text-gray-900 font-semibold">
-                    {typeof value === 'boolean' ? (value ? 'Yes' : 'No') : String(value)}
-                  </span>
-                </span>
-              ))}
-            </div>
-          )}
+      {/* Description preview */}
+      {product.description && (
+        <div className="border-t border-surface-100 px-5 py-3">
+          <p className="text-xs text-gray-500 line-clamp-1">{product.description}</p>
         </div>
       )}
     </div>

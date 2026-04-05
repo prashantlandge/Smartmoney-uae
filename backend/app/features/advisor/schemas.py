@@ -33,3 +33,25 @@ class ProviderRecommendation(BaseModel):
 
 class RecommendResponse(BaseModel):
     recommendations: list[ProviderRecommendation]
+
+
+class ProductRecommendRequest(BaseModel):
+    salary_aed: float = 10000
+    nationality: str = "IN"
+    islamic_preference: bool = False
+    spending_categories: list[str] = []  # e.g. ["dining", "travel", "groceries"]
+    risk_tolerance: str = "moderate"  # conservative, moderate, aggressive
+    category: Optional[str] = None  # filter to specific category
+
+
+class ProductRecommendation(BaseModel):
+    product_id: str
+    product_name: str
+    provider_name: str
+    score: int
+    reason: str
+    highlight: str = ""
+
+
+class ProductRecommendResponse(BaseModel):
+    recommendations: list[ProductRecommendation]

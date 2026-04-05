@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Sparkles } from 'lucide-react';
 import HeroSearch from '@/components/search/HeroSearch';
 import FlagIcon from '@/components/ui/FlagIcon';
 
@@ -80,6 +80,13 @@ export default function Header() {
 
           {/* Right side */}
           <div className="flex items-center gap-2">
+            <Link
+              href="/recommend"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold bg-brand-primary text-white rounded-button hover:bg-brand-primary-600 transition-colors shadow-sm"
+            >
+              <Sparkles size={12} />
+              Smart Recommend
+            </Link>
             <button
               onClick={switchLocale}
               className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold border border-gray-200 rounded-button hover:bg-surface-50 transition-colors"
@@ -105,6 +112,14 @@ export default function Header() {
             <div className="px-1 py-2">
               <HeroSearch compact />
             </div>
+            <Link
+              href="/recommend"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-2 mx-1 mt-2 px-3 py-2.5 rounded-button text-sm font-bold bg-brand-primary text-white"
+            >
+              <Sparkles size={14} />
+              Smart Recommend
+            </Link>
             <div className="mt-2 space-y-0.5">
               {NAV_ITEMS.map((item) => {
                 const isActive = router.pathname === item.href;
