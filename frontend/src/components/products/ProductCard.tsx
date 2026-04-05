@@ -69,15 +69,15 @@ export default function ProductCard({ product, featureLabels = {} }: Props) {
     <div className="bg-white rounded-card border border-surface-200 shadow-sm hover:shadow-card-hover transition-all duration-150 overflow-hidden">
       <div className="p-4 sm:p-5">
         {/* Row 1: Logo + Name + Badge + CTA */}
-        <div className="flex items-start gap-3 sm:gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           {/* Logo */}
           <ProviderLogo name={product.provider_name} logoUrl={product.provider_logo} size={44} />
 
           {/* Name + Provider + Badges */}
           <div className="flex-1 min-w-0">
-            <div className="flex items-start justify-between gap-2">
-              <div>
-                <h3 className="font-semibold text-brand-dark text-base leading-tight">
+            <div className="flex items-center justify-between gap-2">
+              <div className="min-w-0">
+                <h3 className="font-semibold text-brand-dark text-base leading-tight truncate">
                   {product.product_name}
                 </h3>
                 <p className="text-body-sm text-gray-500 mt-0.5">{product.provider_name}</p>

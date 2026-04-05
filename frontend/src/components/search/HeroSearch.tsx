@@ -86,7 +86,7 @@ export default function HeroSearch({ compact = false }: HeroSearchProps) {
     <div ref={containerRef} className={`relative w-full ${compact ? 'max-w-md' : 'max-w-2xl mx-auto'}`}>
       {/* Search Input */}
       <div className="relative">
-        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+        <span className="absolute start-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
           <Search size={compact ? 16 : 20} />
         </span>
         <input

@@ -1,6 +1,6 @@
 import Image from 'next/image';
+import { Package } from 'lucide-react';
 
-// Maps category keys to their illustrated SVG files
 const CATEGORY_ILLUSTRATIONS: Record<string, string> = {
   remittance: '/images/categories/remittance.svg',
   credit_card: '/images/categories/credit-cards.svg',
@@ -25,7 +25,13 @@ export default function CategoryIllustration({
 }: CategoryIllustrationProps) {
   const src = CATEGORY_ILLUSTRATIONS[category];
 
-  if (!src) return null;
+  if (!src) {
+    return (
+      <div className={`inline-flex items-center justify-center ${className}`}>
+        <Package size={size * 0.6} className="text-gray-400" />
+      </div>
+    );
+  }
 
   return (
     <div className={`inline-flex items-center justify-center ${className}`}>

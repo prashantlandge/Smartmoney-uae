@@ -114,12 +114,12 @@ export default function Home() {
             <h2 className="text-heading-sm font-bold text-brand-dark">{t('explore_products')}</h2>
             <span className="text-label text-gray-400">6 Categories</span>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {CATEGORIES.map((cat) => (
               <Link
                 key={cat.key}
                 href={cat.href}
-                className={`group flex flex-col items-center text-center p-3 rounded-card border transition-all ${cat.color}`}
+                className={`group flex flex-col items-center text-center p-3 rounded-card border transition-all h-full ${cat.color}`}
               >
                 <div className="w-9 h-9 flex items-center justify-center mb-1.5">
                   <CategoryIllustration category={cat.categoryKey} size={26} />
@@ -162,7 +162,7 @@ export default function Home() {
           <h2 className="text-heading-sm font-bold text-brand-dark text-center mb-5">How SmartMoney Works</h2>
           <div className="grid sm:grid-cols-3 gap-3">
             {HOW_IT_WORKS.map((step, i) => (
-              <div key={step.title} className="flex items-start gap-3 p-3.5 rounded-card bg-surface-50 border border-surface-100">
+              <div key={step.title} className="flex items-start gap-3 p-3.5 rounded-card bg-surface-50 border border-surface-100 h-full">
                 <div className="w-9 h-9 rounded-button bg-brand-nav flex items-center justify-center shrink-0">
                   <step.icon size={16} className="text-white" />
                 </div>

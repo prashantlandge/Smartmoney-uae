@@ -109,10 +109,11 @@ export default function RateChart({ days = 7 }: Props) {
           />
           <Tooltip
             contentStyle={{
-              borderRadius: 12,
-              border: 'none',
-              boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
+              borderRadius: 8,
+              border: '1px solid #E5E7EB',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
               fontSize: 12,
+              zIndex: 100,
             }}
           />
           <Legend

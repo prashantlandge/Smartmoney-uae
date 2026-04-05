@@ -148,7 +148,7 @@ export default function Header() {
                         onMouseEnter={() => handleMouseEnter(item.key)}
                         onMouseLeave={handleMouseLeave}
                       >
-                        <div className="bg-white rounded-card shadow-elevated border border-surface-200 py-2 min-w-[280px] animate-fade-in">
+                        <div className="bg-white rounded-card shadow-elevated border border-surface-200 py-2 min-w-[280px] max-w-[90vw] animate-fade-in">
                           {/* View All link */}
                           <Link
                             href={item.href}

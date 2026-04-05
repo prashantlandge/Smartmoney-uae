@@ -42,7 +42,7 @@ export default function RemittanceCalculator() {
 
       {/* Input Section */}
       <div className="card-elevated mb-4">
-        <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-end">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-end">
           {/* Send Amount */}
           <div className="flex-1">
             <label className="block text-sm font-medium text-gray-600 mb-1.5">
