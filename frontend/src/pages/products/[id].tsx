@@ -8,6 +8,7 @@ import { useState, useEffect, type ReactNode } from 'react';
 import Layout from '@/components/layout/Layout';
 import ProviderLogo from '@/components/ui/ProviderLogo';
 import Badge from '@/components/ui/Badge';
+import StarRating, { generateRating } from '@/components/ui/StarRating';
 import { SkeletonCard } from '@/components/ui/Skeleton';
 import EmptyState from '@/components/ui/EmptyState';
 import { trackEvent } from '@/lib/tracker';
@@ -647,16 +648,38 @@ export default function ProductDetailPage() {
       )}
 
       {product && (
-        <div className="bg-surface-50 min-h-[60vh]">
-          <div className="max-w-content-xl mx-auto px-4 sm:px-6 py-10">
-            <div className="lg:grid lg:grid-cols-[1fr_340px] lg:gap-10">
+        <>
+        {/* Sticky CTA bar */}
+        <div className="bg-white border-b border-surface-200 sticky top-16 z-20">
+          <div className="max-w-content-lg mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3 min-w-0">
+              <ProviderLogo name={product.provider_name} logoUrl={product.provider_logo} size={36} />
+              <div className="min-w-0">
+                <p className="text-sm font-bold text-gray-900 truncate">{product.product_name}</p>
+                <p className="text-xs text-gray-500">{product.provider_name}</p>
+              </div>
+            </div>
+            <a
+              href={affiliateHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleApply}
+              className="btn-primary text-sm py-2.5 px-5 gap-2 shrink-0 shadow-glow-accent"
+            >
+              Apply Now <ExternalLink size={14} />
+            </a>
+          </div>
+        </div>
 
-              {/* Main content */}
+        <div className="bg-surface-50 min-h-[60vh]">
+          <div className="max-w-content-lg mx-auto px-4 sm:px-6 py-10">
+
+              {/* Full-width content */}
               <div className="space-y-7">
 
                 {/* ── Hero Section ── */}
-                <div className="bg-white rounded-2xl border border-surface-200 p-7 sm:p-8">
-                  <div className="flex items-start gap-5">
+                <div className="bg-white rounded-card border border-surface-200 p-7 sm:p-8">
+                  <div className="flex items-start gap-5 mb-6">
                     <ProviderLogo name={product.provider_name} logoUrl={product.provider_logo} size={72} />
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-2 mb-2">
@@ -670,35 +693,61 @@ export default function ProductDetailPage() {
                           <Badge variant={product.badge.type as any}>{product.badge.label}</Badge>
                         )}
                       </div>
-                      <h1 className="text-2xl font-bold text-gray-900">{product.product_name}</h1>
-                      <p className="text-base text-gray-500 mt-1">{product.provider_name}</p>
+                      <h1 className="font-display text-2xl sm:text-3xl font-extrabold text-gray-900">{product.product_name}</h1>
+                      <div className="flex items-center gap-3 mt-2">
+                        <p className="text-base text-gray-500">{product.provider_name}</p>
+                        <StarRating rating={generateRating(features as Record<string, unknown>)} size={14} />
+                      </div>
                     </div>
                   </div>
 
                   {/* Key highlight cards */}
                   {highlights.length > 0 && (
-                    <div className={`mt-6 grid gap-4 ${highlights.length <= 2 ? 'grid-cols-2' : highlights.length === 3 ? 'grid-cols-3' : 'grid-cols-2 sm:grid-cols-4'}`}>
+                    <div className={`grid gap-4 ${highlights.length <= 2 ? 'grid-cols-2' : highlights.length === 3 ? 'grid-cols-3' : 'grid-cols-2 sm:grid-cols-4'}`}>
                       {highlights.map((h) => (
                         <HighlightCard key={h.label} label={h.label} value={h.value} color={h.color} />
                       ))}
                     </div>
                   )}
+
+                  {/* Apply CTA inline */}
+                  <div className="mt-6 pt-6 border-t border-surface-100 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                    <a
+                      href={affiliateHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={handleApply}
+                      className="btn-primary text-base py-3.5 px-8 gap-2 shadow-glow-accent justify-center"
+                    >
+                      Apply Now <ExternalLink size={16} />
+                    </a>
+                    <Link
+                      href={categoryRoute}
+                      className="btn-secondary py-3.5 px-6 justify-center"
+                    >
+                      <ArrowLeft size={16} />
+                      All {categoryLabel}
+                    </Link>
+                    <p className="text-xs text-gray-400 sm:ml-auto">
+                      You&apos;ll be redirected to {product.provider_name}
+                    </p>
+                  </div>
                 </div>
 
                 {/* ── Overview Section ── */}
                 {(product.description || feat(features, 'best_for') || feat(features, 'structure_type')) && (
                   <Section icon={Lightbulb} iconColor="text-amber-500" title="Overview">
                     {product.description && (
-                      <p className="text-sm text-gray-600 leading-relaxed">{product.description}</p>
+                      <p className="text-base text-gray-600 leading-relaxed">{product.description}</p>
                     )}
                     {feat(features, 'best_for') && (
-                      <div className="mt-3">
+                      <div className="mt-4">
                         <Badge variant="info">Best for: {formatValue(feat(features, 'best_for')!)}</Badge>
                       </div>
                     )}
                     {feat(features, 'structure_type') && (
                       <div className="mt-3 flex items-center gap-2">
-                        <span className="text-xs font-semibold text-gray-500">Structure:</span>
+                        <span className="text-sm font-semibold text-gray-500">Structure:</span>
                         <Badge variant="islamic">{formatValue(feat(features, 'structure_type')!)}</Badge>
                       </div>
                     )}
@@ -713,62 +762,17 @@ export default function ProductDetailPage() {
                 {product.product_type === 'health_insurance' && <HealthInsuranceSections f={features} />}
 
                 {/* Disclaimer */}
-                <div className="flex items-start gap-2 text-xs text-gray-400 px-1">
-                  <Clock size={12} className="shrink-0 mt-0.5" />
+                <div className="flex items-start gap-2.5 text-sm text-gray-400 px-1">
+                  <Clock size={14} className="shrink-0 mt-0.5" />
                   <p>
                     Information is for general guidance only. Rates and terms may change.
                     Please verify details on the provider&apos;s official website before applying.
                   </p>
                 </div>
               </div>
-
-              {/* ── Sidebar — Apply CTA + provider info ── */}
-              <div className="mt-8 lg:mt-0">
-                <div className="sticky top-20 space-y-5">
-                  {/* Apply card */}
-                  <div className="bg-white rounded-2xl border border-surface-200 p-6">
-                    <a
-                      href={affiliateHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={handleApply}
-                      className="btn-primary w-full justify-center text-base py-3.5 gap-2 shadow-glow-primary"
-                    >
-                      Apply Now <ExternalLink size={16} />
-                    </a>
-                    <p className="text-xs text-gray-400 text-center mt-3">
-                      You&apos;ll be redirected to {product.provider_name}
-                    </p>
-                  </div>
-
-                  {/* Provider info */}
-                  <div className="bg-white rounded-2xl border border-surface-200 p-6">
-                    <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">About the Provider</h3>
-                    <div className="flex items-center gap-4">
-                      <ProviderLogo name={product.provider_name} logoUrl={product.provider_logo} size={48} />
-                      <div>
-                        <p className="text-base font-bold text-gray-900">{product.provider_name}</p>
-                        <p className="text-sm text-gray-500">Licensed in UAE</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Quick links */}
-                  <div className="bg-white rounded-2xl border border-surface-200 p-6">
-                    <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Related</h3>
-                    <Link
-                      href={categoryRoute}
-                      className="flex items-center gap-2 text-sm text-brand-primary hover:text-brand-primary-700 font-semibold transition-colors"
-                    >
-                      <ArrowLeft size={16} />
-                      All {categoryLabel}
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
+        </>
       )}
     </Layout>
   );

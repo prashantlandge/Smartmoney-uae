@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,10 +8,20 @@
   html {
     font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   html[dir='rtl'] {
     direction: rtl;
+  }
+
+  body {
+    @apply text-gray-700 bg-white;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Plus Jakarta Sans', 'Noto Sans Arabic', sans-serif;
   }
 
   ::selection {
@@ -17,7 +29,6 @@
     color: #004332;
   }
 
-  /* Better focus defaults for accessibility */
   :focus-visible {
     outline: 2px solid rgba(0, 128, 94, 0.5);
     outline-offset: 2px;
@@ -28,6 +39,14 @@
   /* ===== BUTTONS ===== */
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-button
+           bg-accent text-white font-semibold text-sm
+           shadow-sm hover:shadow-md hover:bg-accent-hover
+           active:scale-[0.98] transition-all duration-200
+           focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2;
+  }
+
+  .btn-primary-green {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-button
            bg-brand-primary text-white font-semibold text-sm
            shadow-sm hover:shadow-md hover:bg-brand-primary-600
            active:scale-[0.98] transition-all duration-200
@@ -36,16 +55,16 @@
 
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-button
-           bg-white text-brand-primary font-semibold text-sm
-           border-2 border-brand-primary
-           hover:bg-brand-primary hover:text-white
+           bg-white text-gray-700 font-semibold text-sm
+           border border-surface-300
+           hover:border-gray-400 hover:bg-surface-50
            active:scale-[0.98] transition-all duration-200
            focus-visible:ring-2 focus-visible:ring-brand-primary/50 focus-visible:ring-offset-2;
   }
 
   .btn-outline {
     @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-button
-           border-2 border-brand-primary text-brand-primary font-semibold text-sm
+           border border-brand-primary text-brand-primary font-semibold text-sm
            hover:bg-brand-primary hover:text-white
            active:scale-[0.98] transition-all duration-200
            focus-visible:ring-2 focus-visible:ring-brand-primary/50 focus-visible:ring-offset-2;
@@ -53,44 +72,32 @@
 
   .btn-ghost {
     @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-button
-           bg-transparent text-gray-700 font-medium text-sm
+           bg-transparent text-gray-600 font-medium text-sm
            hover:bg-surface-100 active:scale-[0.98]
            transition-all duration-200;
   }
 
-  .btn-danger {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-button
-           bg-error text-white font-semibold text-sm
-           shadow-sm hover:shadow-md hover:bg-error-dark
-           active:scale-[0.98] transition-all duration-200;
-  }
-
   /* ===== CARDS ===== */
   .card {
-    @apply bg-white rounded-card shadow-card p-5;
+    @apply bg-white rounded-card shadow-card border border-surface-200 p-6;
   }
 
   .card-hover {
-    @apply bg-white rounded-card shadow-card p-5
+    @apply bg-white rounded-card shadow-card border border-surface-200 p-6
            hover:shadow-card-hover hover:-translate-y-0.5
            transition-all duration-200;
   }
 
   .card-elevated {
-    @apply bg-white rounded-card shadow-elevated p-6;
-  }
-
-  .card-glass {
-    @apply bg-white/70 backdrop-blur-xl border border-white/20
-           rounded-card shadow-elevated p-5;
+    @apply bg-white rounded-card shadow-elevated border border-surface-100 p-8;
   }
 
   /* ===== INPUTS ===== */
   .input-field {
-    @apply w-full px-4 py-3 rounded-button border border-gray-300
-           bg-white text-gray-900 text-body-lg
-           placeholder:text-gray-400 placeholder:transition-colors
-           focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary
+    @apply w-full px-4 py-3 rounded-button border border-surface-300
+           bg-white text-gray-900 text-body-md
+           placeholder:text-gray-400
+           focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary
            focus-visible:outline-none
            transition-all duration-200;
   }
@@ -101,37 +108,17 @@
            rounded-badge text-xs font-semibold;
   }
 
-  .badge-success {
-    @apply badge bg-success-light text-success-dark;
-  }
-
-  .badge-warning {
-    @apply badge bg-warning-light text-warning-dark;
-  }
-
-  .badge-error {
-    @apply badge bg-error-light text-error-dark;
-  }
-
-  .badge-info {
-    @apply badge bg-info-light text-info-dark;
-  }
-
-  .badge-islamic {
-    @apply badge bg-emerald-100 text-emerald-800;
-  }
-
-  .badge-ai {
-    @apply badge bg-brand-primary-50 text-brand-primary-700;
-  }
-
-  .badge-new {
-    @apply badge bg-brand-gold-50 text-amber-800;
-  }
+  .badge-success { @apply badge bg-success-light text-success-dark; }
+  .badge-warning { @apply badge bg-warning-light text-warning-dark; }
+  .badge-error { @apply badge bg-error-light text-error-dark; }
+  .badge-info { @apply badge bg-info-light text-info-dark; }
+  .badge-islamic { @apply badge bg-emerald-100 text-emerald-800; }
+  .badge-ai { @apply badge bg-brand-primary-50 text-brand-primary-700; }
+  .badge-new { @apply badge bg-brand-gold-50 text-amber-800; }
 
   /* ===== LAYOUT ===== */
   .section-padding {
-    @apply py-16 sm:py-20 px-4 sm:px-6;
+    @apply py-20 sm:py-28 px-4 sm:px-6;
   }
 
   .container-content {
@@ -167,17 +154,5 @@
 
   .animate-scroll:hover {
     animation-play-state: paused;
-  }
-
-  /* ===== ANIMATED GRADIENT ===== */
-  @keyframes gradient-shift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  .animate-gradient {
-    background-size: 200% 200%;
-    animation: gradient-shift 8s ease infinite;
   }
 }

@@ -45,7 +45,7 @@ export default function Header() {
             <div className="w-9 h-9 bg-gradient-to-br from-brand-primary to-brand-primary-700 rounded-xl flex items-center justify-center shadow-sm">
               <span className="text-white font-bold text-sm">SM</span>
             </div>
-            <span className="font-bold text-brand-dark text-lg hidden sm:block tracking-tight">
+            <span className="font-display font-extrabold text-gray-900 text-lg hidden sm:block tracking-tight">
               SmartMoney<span className="text-brand-primary"> UAE</span>
             </span>
           </Link>
@@ -82,7 +82,7 @@ export default function Header() {
           <div className="flex items-center gap-2">
             <Link
               href="/recommend"
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold bg-brand-primary text-white rounded-button hover:bg-brand-primary-600 transition-colors shadow-sm"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold bg-accent text-white rounded-button hover:bg-accent-hover transition-colors shadow-sm"
             >
               <Sparkles size={12} />
               Smart Recommend
