@@ -56,11 +56,10 @@ export default function HeroSearch({ compact = false }: HeroSearchProps) {
   }, [results, query]);
 
   const navigateToResult = useCallback(
-    (productType: string) => {
-      const route = CATEGORY_ROUTES[productType] || '/';
+    (productId: string) => {
       setIsOpen(false);
       setQuery('');
-      router.push(route);
+      router.push(`/products/${productId}`);
     },
     [router]
   );
@@ -76,7 +75,7 @@ export default function HeroSearch({ compact = false }: HeroSearchProps) {
       setActiveIndex((prev) => (prev > 0 ? prev - 1 : results.length - 1));
     } else if (e.key === 'Enter' && activeIndex >= 0) {
       e.preventDefault();
-      navigateToResult(results[activeIndex].product_type);
+      navigateToResult(results[activeIndex].id);
     } else if (e.key === 'Escape') {
       setIsOpen(false);
       inputRef.current?.blur();
@@ -128,7 +127,7 @@ export default function HeroSearch({ compact = false }: HeroSearchProps) {
                     className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${
                       idx === activeIndex ? 'bg-brand-primary-50' : 'hover:bg-surface-50'
                     }`}
-                    onClick={() => navigateToResult(product.product_type)}
+                    onClick={() => navigateToResult(product.id)}
                     onMouseEnter={() => setActiveIndex(idx)}
                   >
                     <CategoryIcon category={product.product_type} size={20} />

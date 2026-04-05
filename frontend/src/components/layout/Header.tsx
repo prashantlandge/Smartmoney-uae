@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import { useState, useEffect } from 'react';
-import { Menu, X, Sparkles, ChevronDown } from 'lucide-react';
+import { useState } from 'react';
+import { Menu, X, Sparkles, Search } from 'lucide-react';
 import HeroSearch from '@/components/search/HeroSearch';
 import FlagIcon from '@/components/ui/FlagIcon';
 
@@ -91,14 +91,16 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Secondary bar — search (desktop) */}
-      <div className="hidden lg:block bg-white border-b border-surface-200">
-        <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-2">
-          <div className="max-w-md">
-            <HeroSearch compact />
+      {/* Secondary bar — search (desktop, hidden on homepage since hero has search) */}
+      {router.pathname !== '/' && (
+        <div className="hidden lg:block bg-white border-b border-surface-200">
+          <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-2">
+            <div className="max-w-md">
+              <HeroSearch compact />
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Mobile Nav */}
       {mobileOpen && (
