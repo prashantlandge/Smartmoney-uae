@@ -40,29 +40,12 @@ export default function ProductFilters({ products, filters, onChange }: Props) {
 
   const activeCount =
     (filters.islamicOnly ? 1 : 0) +
-    filters.providers.length +
-    (filters.sortBy !== 'relevance' ? 1 : 0);
+    filters.providers.length;
 
-  const clearAll = () => onChange({ ...DEFAULT_FILTERS });
+  const clearAll = () => onChange({ ...DEFAULT_FILTERS, sortBy: filters.sortBy });
 
   const filterContent = (
     <div className="space-y-5">
-      {/* Sort */}
-      <div>
-        <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-          Sort By
-        </label>
-        <select
-          value={filters.sortBy}
-          onChange={(e) => onChange({ ...filters, sortBy: e.target.value as FilterState['sortBy'] })}
-          className="input-field text-body-sm py-2.5"
-        >
-          <option value="relevance">Relevance</option>
-          <option value="name">Product Name</option>
-          <option value="provider">Provider</option>
-        </select>
-      </div>
-
       {/* Islamic filter */}
       {islamicCount > 0 && (
         <div>
