@@ -82,7 +82,7 @@ export default function CashbackCalculator() {
 
   return (
     <div className="bg-white rounded-card border border-surface-200 overflow-hidden">
-      <div className="px-5 py-3 bg-gradient-to-r from-indigo-600 to-indigo-500 flex items-center gap-2 text-white">
+      <div className="px-5 py-3 bg-gradient-to-r from-brand-nav to-brand-nav-dark flex items-center gap-2 text-white">
         <Percent size={16} />
         <h3 className="text-sm font-bold">Cashback Calculator</h3>
       </div>

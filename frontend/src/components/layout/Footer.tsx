@@ -9,7 +9,7 @@ export default function Footer() {
   return (
     <footer className="bg-gray-800 text-white">
       <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-8 sm:py-10">
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-6 gap-6">
           {/* Brand */}
           <div className="col-span-2">
             <div className="mb-3">
@@ -57,12 +57,25 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* Tools */}
+          <div>
+            <h4 className="font-semibold text-body-sm mb-3 text-white/90">Tools</h4>
+            <ul className="space-y-2 text-body-sm text-gray-400">
+              <li><Link href="/calculators" className="hover:text-white transition-colors">{t('nav_calculators')}</Link></li>
+              <li><Link href="/calculators#emi" className="hover:text-white transition-colors">EMI Calculator</Link></li>
+              <li><Link href="/calculators#cashback" className="hover:text-white transition-colors">Cashback Calculator</Link></li>
+              <li><Link href="/tax" className="hover:text-white transition-colors">{t('nav_tax')}</Link></li>
+              <li><Link href="/tax#vat" className="hover:text-white transition-colors">VAT Calculator</Link></li>
+            </ul>
+          </div>
+
           {/* Company */}
           <div>
             <h4 className="font-semibold text-body-sm mb-3 text-white/90">{t('footer_company')}</h4>
             <ul className="space-y-2 text-body-sm text-gray-400">
               <li><Link href="/about" className="hover:text-white transition-colors">{t('nav_about')}</Link></li>
               <li><Link href="/contact" className="hover:text-white transition-colors">{t('nav_contact')}</Link></li>
+              <li><Link href="/recommend" className="hover:text-white transition-colors">Smart Compare</Link></li>
             </ul>
           </div>
         </div>

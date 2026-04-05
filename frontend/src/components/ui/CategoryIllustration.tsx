@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Package } from 'lucide-react';
+import { Package, Calculator, Scale } from 'lucide-react';
 
 const CATEGORY_ILLUSTRATIONS: Record<string, string> = {
   remittance: '/images/categories/remittance.svg',
@@ -10,6 +10,11 @@ const CATEGORY_ILLUSTRATIONS: Record<string, string> = {
   islamic_finance: '/images/categories/islamic-finance.svg',
   car_insurance: '/images/categories/car-insurance.svg',
   health_insurance: '/images/categories/health-insurance.svg',
+};
+
+const ICON_CATEGORIES: Record<string, typeof Calculator> = {
+  calculators: Calculator,
+  tax: Scale,
 };
 
 interface CategoryIllustrationProps {
@@ -24,6 +29,15 @@ export default function CategoryIllustration({
   className = '',
 }: CategoryIllustrationProps) {
   const src = CATEGORY_ILLUSTRATIONS[category];
+  const IconComponent = ICON_CATEGORIES[category];
+
+  if (!src && IconComponent) {
+    return (
+      <div className={`inline-flex items-center justify-center ${className}`}>
+        <IconComponent size={size * 0.6} className="text-brand-nav" />
+      </div>
+    );
+  }
 
   if (!src) {
     return (

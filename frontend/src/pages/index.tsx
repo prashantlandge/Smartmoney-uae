@@ -9,7 +9,7 @@ import RemittanceCalculator from '@/components/remittance/RemittanceCalculator';
 import RateChart from '@/components/rates/RateChart';
 import RateTrend from '@/components/rates/RateTrend';
 import CategoryIllustration from '@/components/ui/CategoryIllustration';
-import { ChevronRight, Sparkles, Shield, RefreshCw, Zap, BadgeCheck, Search, BarChart3, PiggyBank } from 'lucide-react';
+import { ChevronRight, Sparkles, Shield, RefreshCw, Zap, BadgeCheck, Search, BarChart3, PiggyBank, Calculator, Scale } from 'lucide-react';
 import TrustLogos from '@/components/ui/TrustLogos';
 import TabbedShowcase from '@/components/homepage/TabbedShowcase';
 
@@ -20,6 +20,8 @@ const CATEGORIES = [
   { key: 'islamic_finance', categoryKey: 'islamic_finance', href: '/islamic-finance', desc: 'Shariah-compliant', color: 'bg-emerald-50 border-emerald-100 hover:bg-emerald-100' },
   { key: 'car_insurance', categoryKey: 'car_insurance', href: '/car-insurance', desc: 'Comprehensive cover', color: 'bg-amber-50 border-amber-100 hover:bg-amber-100' },
   { key: 'health_insurance', categoryKey: 'health_insurance', href: '/health-insurance', desc: 'DHA/HAAD plans', color: 'bg-rose-50 border-rose-100 hover:bg-rose-100' },
+  { key: 'calculators', categoryKey: 'calculators', href: '/calculators', desc: 'EMI, cashback & more', color: 'bg-indigo-50 border-indigo-100 hover:bg-indigo-100' },
+  { key: 'tax', categoryKey: 'tax', href: '/tax', desc: 'VAT & corporate tax', color: 'bg-slate-50 border-slate-200 hover:bg-slate-100' },
 ];
 
 const TRUST_STATS = [
@@ -112,9 +114,9 @@ export default function Home() {
         <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-6 sm:py-8">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-heading-sm font-bold text-brand-dark">{t('explore_products')}</h2>
-            <span className="text-label text-gray-400">6 Categories</span>
+            <span className="text-label text-gray-400">8 Categories</span>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
             {CATEGORIES.map((cat) => (
               <Link
                 key={cat.key}

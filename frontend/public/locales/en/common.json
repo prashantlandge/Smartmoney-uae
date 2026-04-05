@@ -30,7 +30,9 @@
     "islamic_finance": "Islamic Finance",
     "car_insurance": "Car Insurance",
     "health_insurance": "Health Insurance",
-    "business_banking": "Business Banking"
+    "business_banking": "Business Banking",
+    "calculators": "Calculators",
+    "tax": "Tax Tools"
   },
   "no_results": "No rates available right now. Please try again shortly.",
 
@@ -40,6 +42,9 @@
   "nav_islamic_finance": "Islamic Finance",
   "nav_car_insurance": "Car Insurance",
   "nav_health_insurance": "Health Insurance",
+  "nav_calculators": "Calculators",
+  "nav_tax": "Tax",
+  "nav_rates": "Rates",
   "nav_about": "About",
   "nav_contact": "Contact",
 

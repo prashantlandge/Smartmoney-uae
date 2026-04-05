@@ -22,6 +22,8 @@ const QUICK_CATEGORIES = [
   { key: 'islamic_finance', label: 'Islamic Finance', href: '/islamic-finance' },
   { key: 'car_insurance', label: 'Car Insurance', href: '/car-insurance' },
   { key: 'health_insurance', label: 'Health Insurance', href: '/health-insurance' },
+  { key: 'calculators', label: 'Calculators', href: '/calculators' },
+  { key: 'tax', label: 'Tax Tools', href: '/tax' },
 ];
 
 interface HeroSearchProps {

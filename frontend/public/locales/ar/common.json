@@ -30,7 +30,9 @@
     "islamic_finance": "التمويل الإسلامي",
     "car_insurance": "تأمين السيارات",
     "health_insurance": "التأمين الصحي",
-    "business_banking": "الخدمات المصرفية للأعمال"
+    "business_banking": "الخدمات المصرفية للأعمال",
+    "calculators": "الحاسبات",
+    "tax": "أدوات الضرائب"
   },
   "no_results": "لا توجد أسعار متاحة حالياً.",
 
@@ -40,6 +42,9 @@
   "nav_islamic_finance": "التمويل الإسلامي",
   "nav_car_insurance": "تأمين السيارات",
   "nav_health_insurance": "التأمين الصحي",
+  "nav_calculators": "الحاسبات",
+  "nav_tax": "الضرائب",
+  "nav_rates": "الأسعار",
   "nav_about": "من نحن",
   "nav_contact": "اتصل بنا",
 
