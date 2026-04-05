@@ -20,6 +20,8 @@ import FlagIcon from '@/components/ui/FlagIcon';
 import AnimatedSection, { StaggerContainer, StaggerItem } from '@/components/ui/AnimatedSection';
 import TrustLogos from '@/components/ui/TrustLogos';
 import Newsletter from '@/components/ui/Newsletter';
+import TabbedShowcase from '@/components/homepage/TabbedShowcase';
+import FinancialTips from '@/components/homepage/FinancialTips';
 
 const CATEGORIES = [
   { key: 'remittance', categoryKey: 'remittance', href: '/', highlighted: true },
@@ -208,6 +210,19 @@ export default function Home() {
         </Container>
       </section>
 
+      {/* ===== TOP PRODUCTS SHOWCASE ===== */}
+      <section className="section-padding bg-white">
+        <Container size="lg">
+          <AnimatedSection>
+            <SectionHeading
+              title="Top Picks for You"
+              subtitle="Hand-picked financial products compared across categories"
+            />
+          </AnimatedSection>
+          <TabbedShowcase />
+        </Container>
+      </section>
+
       {/* ===== HOW IT WORKS ===== */}
       <section className="section-padding bg-white">
         <Container size="lg">
@@ -303,6 +318,19 @@ export default function Home() {
               </Link>
             </div>
           </AnimatedSection>
+        </Container>
+      </section>
+
+      {/* ===== FINANCIAL TIPS ===== */}
+      <section className="section-padding bg-surface-50">
+        <Container size="lg">
+          <AnimatedSection>
+            <SectionHeading
+              title="Financial Tips & Guides"
+              subtitle="Expert insights to help you make smarter money decisions in the UAE"
+            />
+          </AnimatedSection>
+          <FinancialTips />
         </Container>
       </section>
 

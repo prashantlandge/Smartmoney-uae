@@ -1,9 +1,14 @@
 import { useTranslation } from 'next-i18next';
-import { Check, X, ArrowRightLeft } from 'lucide-react';
+import { Check, X, ArrowRightLeft, Award, Percent, Star, Clock } from 'lucide-react';
 import ProviderLogo from '@/components/ui/ProviderLogo';
 import Badge from '@/components/ui/Badge';
 import { trackEvent } from '@/lib/tracker';
 import { useCompare } from '@/context/CompareContext';
+
+export interface ProductBadge {
+  type: 'best' | 'cashback' | 'promoted' | 'limited' | 'new';
+  label: string;
+}
 
 export interface Product {
   id: string;
@@ -15,7 +20,16 @@ export interface Product {
   features: Record<string, string | number | boolean>;
   affiliate_link: string;
   is_islamic: boolean;
+  badge?: ProductBadge;
 }
+
+const BADGE_ICONS: Record<string, typeof Award> = {
+  best: Award,
+  cashback: Percent,
+  promoted: Star,
+  limited: Clock,
+  new: Star,
+};
 
 interface Props {
   product: Product;
@@ -53,8 +67,22 @@ export default function ProductCard({ product, featureLabels = {} }: Props) {
     // use as-is
   }
 
+  const BadgeIcon = product.badge ? BADGE_ICONS[product.badge.type] : null;
+
   return (
-    <div className="card-hover group">
+    <div className={`card-hover group relative ${product.badge?.type === 'best' ? 'ring-2 ring-lime-300' : ''}`}>
+      {/* Product badge */}
+      {product.badge && (
+        <div className="mb-3 -mt-1">
+          <Badge
+            variant={product.badge.type as any}
+            icon={BadgeIcon ? <BadgeIcon size={11} /> : undefined}
+          >
+            {product.badge.label}
+          </Badge>
+        </div>
+      )}
+
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex items-center gap-3">
           <ProviderLogo name={product.provider_name} logoUrl={product.provider_logo} size={44} />
