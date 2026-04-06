@@ -15,13 +15,22 @@ from app.features.eligibility.router import router as eligibility_router
 from app.features.scrapers.router import router as scraper_router
 from app.features.scrapers.scheduler import start_scheduler, stop_scheduler
 from app.features.admin.router import router as admin_router
+from app.features.feedback.router import router as feedback_router
+from app.features.segmentation.router import router as segmentation_router
+from app.features.segmentation.scheduler import start_intelligence_scheduler, stop_intelligence_scheduler
+from app.features.forecasting.router import router as forecasting_router
+from app.features.embeddings.router import router as embeddings_router
+from app.features.experiments.router import router as experiments_router
+from app.features.personalization.router import router as personalization_router
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await create_pool()
     start_scheduler()
+    start_intelligence_scheduler()
     yield
+    stop_intelligence_scheduler()
     stop_scheduler()
     await close_pool()
     await close_redis()
@@ -51,6 +60,12 @@ app.include_router(products_router, prefix="/api/products", tags=["products"])
 app.include_router(eligibility_router, prefix="/api/eligibility", tags=["eligibility"])
 app.include_router(scraper_router, prefix="/api/scrapers", tags=["scrapers"])
 app.include_router(admin_router, prefix="/api/admin", tags=["admin"])
+app.include_router(feedback_router, prefix="/api/feedback", tags=["feedback"])
+app.include_router(segmentation_router, prefix="/api/segmentation", tags=["segmentation"])
+app.include_router(forecasting_router, prefix="/api/forecast", tags=["forecast"])
+app.include_router(embeddings_router, prefix="/api/search", tags=["search"])
+app.include_router(experiments_router, prefix="/api/experiments", tags=["experiments"])
+app.include_router(personalization_router, prefix="/api/personalize", tags=["personalization"])
 
 
 @app.get("/api/health")

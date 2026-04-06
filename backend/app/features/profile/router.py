@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from app.db.connection import get_pool
 from app.features.profile.schemas import ProfileCreateRequest, ProfileResponse
+from app.features.segmentation.schemas import QuizStateResponse
 
 router = APIRouter()
 
@@ -60,3 +61,42 @@ async def get_profile(session_id: str):
     if not row:
         raise HTTPException(status_code=404, detail="Profile not found")
     return ProfileResponse(**dict(row))
+
+
+@router.get("/{session_id}/quiz-state", response_model=QuizStateResponse)
+async def get_quiz_state(session_id: str):
+    """Get progressive profiling state for returning users."""
+    pool = await get_pool()
+    row = await pool.fetchrow(
+        """SELECT monthly_salary_aed, nationality, quiz_completed_at
+           FROM user_profiles WHERE session_id = $1""",
+        session_id,
+    )
+    if not row or not row["quiz_completed_at"]:
+        return QuizStateResponse(
+            returning_user=False,
+            known_fields=[],
+            suggested_skip_steps=[],
+        )
+
+    known = []
+    skip = []
+    salary = None
+    nationality = None
+
+    if row["monthly_salary_aed"]:
+        known.append("salary")
+        skip.append(0)
+        salary = float(row["monthly_salary_aed"])
+    if row["nationality"]:
+        known.append("nationality")
+        skip.append(1)
+        nationality = row["nationality"]
+
+    return QuizStateResponse(
+        returning_user=True,
+        known_fields=known,
+        suggested_skip_steps=skip,
+        salary_aed=salary,
+        nationality=nationality,
+    )

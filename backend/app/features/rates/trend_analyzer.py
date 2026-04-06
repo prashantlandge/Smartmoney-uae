@@ -69,6 +69,21 @@ async def get_best_time_to_send(
     send_currency: str = "AED",
     receive_currency: str = "INR",
 ) -> BestTimeResponse:
+    # Try predictive forecast first
+    try:
+        from app.features.forecasting.rate_forecast import get_best_time_prediction
+        prediction = await get_best_time_prediction(send_currency, receive_currency)
+        if prediction.get("has_forecast"):
+            return BestTimeResponse(
+                recommendation=prediction["recommendation"],
+                best_day=prediction.get("best_date"),
+                avg_rate_at_best_time=prediction.get("predicted_rate"),
+                data_points_analyzed=0,
+            )
+    except Exception:
+        pass
+
+    # Fall back to historical day-of-week analysis
     pool = await get_pool()
 
     # Analyze by day of week over last 30 days

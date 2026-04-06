@@ -54,6 +54,18 @@ export function trackEvent(eventType: string, eventData: Record<string, unknown>
   flushTimer = setTimeout(flush, 5000);
 }
 
+export function trackRecommendationClick(
+  productId: string,
+  score: number,
+  source: 'quiz' | 'chat' | 'comparison' | 'organic' = 'organic',
+) {
+  trackEvent('click_recommendation', {
+    product_id: productId,
+    recommendation_score: score,
+    source,
+  });
+}
+
 // Flush on page unload
 if (typeof window !== 'undefined') {
   window.addEventListener('beforeunload', flush);

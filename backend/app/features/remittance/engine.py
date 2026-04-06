@@ -94,7 +94,11 @@ async def _fetch_db_mid_market() -> float | None:
     return None
 
 
-async def compare_rates(send_amount_aed: float, receive_currency: str = "INR") -> RemittanceCompareResponse:
+async def compare_rates(
+    send_amount_aed: float,
+    receive_currency: str = "INR",
+    session_id: str | None = None,
+) -> RemittanceCompareResponse:
     # 1. Check cache first
     cached = await get_cached_result(send_amount_aed, receive_currency)
     if cached:
@@ -155,8 +159,41 @@ async def compare_rates(send_amount_aed: float, receive_currency: str = "INR") -
             )
         )
 
-    # 5. Sort by recipient receives (best first)
-    provider_results.sort(key=lambda p: p.recipient_receives_inr, reverse=True)
+    # 5. Sort by recipient receives (best first), personalized if session_id provided
+    personalized = False
+    if session_id:
+        try:
+            from app.features.segmentation.engine import get_user_segment
+            segment, _ = await get_user_segment(session_id)
+            if segment == "fee_sensitive":
+                provider_results.sort(key=lambda p: p.fee_aed)
+                personalized = True
+            elif segment == "speed_first":
+                # Sort by speed (parse hours from formatted string)
+                def speed_key(p: ProviderResult) -> int:
+                    s = p.transfer_speed.lower()
+                    if "minute" in s:
+                        return 0
+                    if "1 hour" in s:
+                        return 1
+                    if "hour" in s:
+                        try:
+                            return int(s.split()[0])
+                        except (ValueError, IndexError):
+                            return 24
+                    if "day" in s:
+                        try:
+                            return int(s.split()[0]) * 24
+                        except (ValueError, IndexError):
+                            return 48
+                    return 24
+                provider_results.sort(key=speed_key)
+                personalized = True
+        except Exception:
+            pass
+
+    if not personalized:
+        provider_results.sort(key=lambda p: p.recipient_receives_inr, reverse=True)
 
     # 6. Calculate savings vs worst provider
     if provider_results:

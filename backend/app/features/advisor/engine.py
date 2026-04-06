@@ -1,6 +1,8 @@
 """Claude API integration for AI-powered financial advisor."""
 
 import json
+import re
+import logging
 import anthropic
 from app.config import settings
 from app.features.advisor.prompts import SYSTEM_CHAT_EN, SYSTEM_CHAT_AR, SYSTEM_RECOMMEND
@@ -10,6 +12,44 @@ from app.features.advisor.schemas import (
 )
 from app.features.remittance.engine import compare_rates
 from app.db.connection import get_pool
+from app.features.events.reader import get_browsing_summary
+from app.features.segmentation.engine import get_user_segment
+
+logger = logging.getLogger(__name__)
+
+
+def _extract_json_array(raw: str) -> list[dict]:
+    """Robustly extract a JSON array from Claude's response text."""
+    raw = raw.strip()
+    # Try direct parse
+    try:
+        result = json.loads(raw)
+        if isinstance(result, list):
+            return result
+    except json.JSONDecodeError:
+        pass
+    # Strip markdown fences
+    if "```" in raw:
+        match = re.search(r'```(?:json)?\s*\n?(.*?)```', raw, re.DOTALL)
+        if match:
+            try:
+                result = json.loads(match.group(1).strip())
+                if isinstance(result, list):
+                    return result
+            except json.JSONDecodeError:
+                pass
+    # Find array brackets in text
+    bracket_start = raw.find('[')
+    bracket_end = raw.rfind(']')
+    if bracket_start != -1 and bracket_end > bracket_start:
+        try:
+            result = json.loads(raw[bracket_start:bracket_end + 1])
+            if isinstance(result, list):
+                return result
+        except json.JSONDecodeError:
+            pass
+    logger.warning("Failed to extract JSON array from Claude response: %s", raw[:200])
+    return []
 
 
 def _get_client() -> anthropic.Anthropic:
@@ -68,8 +108,25 @@ async def chat(
             f"preferred_speed={profile.get('preferred_speed', 'unknown')}"
         )
 
+    # Add behavioral segment context
+    try:
+        segment, confidence = await get_user_segment(session_id)
+        profile_text += f", behavioral_segment={segment} (confidence={confidence:.0%})"
+    except Exception:
+        pass
+
+    # Inject browsing history for personalized context
+    browsing_context = ""
+    try:
+        browsing_context = await get_browsing_summary(session_id)
+    except Exception:
+        pass
+
     system_prompt = SYSTEM_CHAT_AR if language == "ar" else SYSTEM_CHAT_EN
-    user_content = f"{rate_context}\n{profile_text}\n\nUser question: {message}"
+    user_content = f"{rate_context}\n{profile_text}"
+    if browsing_context:
+        user_content += f"\n\nUser browsing history: {browsing_context}"
+    user_content += f"\n\nUser question: {message}"
 
     response = client.messages.create(
         model="claude-sonnet-4-20250514",
@@ -112,6 +169,21 @@ async def get_recommendations(
     profile = await _get_user_profile(session_id)
     rates = await compare_rates(send_amount_aed, receive_currency)
 
+    # Inject browsing history for personalized recommendations
+    browsing_context = ""
+    try:
+        browsing_context = await get_browsing_summary(session_id)
+    except Exception:
+        pass
+
+    # Add segment to profile context
+    segment_info = None
+    try:
+        segment, confidence = await get_user_segment(session_id)
+        segment_info = {"segment": segment, "confidence": confidence}
+    except Exception:
+        pass
+
     profile_json = json.dumps(
         {
             "nationality": profile.get("nationality", "IN") if profile else "IN",
@@ -119,6 +191,7 @@ async def get_recommendations(
             "employer": profile.get("employer_category") if profile else None,
             "transfer_frequency": profile.get("transfer_frequency") if profile else None,
             "preferred_speed": profile.get("preferred_speed") if profile else None,
+            "behavioral_segment": segment_info,
         },
         default=str,
     )
@@ -143,24 +216,24 @@ async def get_recommendations(
         messages=[
             {
                 "role": "user",
-                "content": f"User profile: {profile_json}\n\nProviders: {providers_json}",
+                "content": f"User profile: {profile_json}\n\nProviders: {providers_json}"
+                + (f"\n\nUser browsing history: {browsing_context}" if browsing_context else ""),
             }
         ],
     )
 
-    try:
-        raw = response.content[0].text.strip()
-        # Handle potential markdown code blocks
-        if raw.startswith("```"):
-            raw = raw.split("\n", 1)[1].rsplit("```", 1)[0].strip()
-        recommendations = json.loads(raw)
-        return [
-            ProviderRecommendation(
-                provider_name=r["provider_name"],
-                score=r["score"],
-                reason=r["reason"],
+    raw = response.content[0].text
+    recommendations = _extract_json_array(raw)
+    result = []
+    for r in recommendations:
+        try:
+            result.append(
+                ProviderRecommendation(
+                    provider_name=r["provider_name"],
+                    score=r["score"],
+                    reason=r["reason"],
+                )
             )
-            for r in recommendations
-        ]
-    except (json.JSONDecodeError, KeyError):
-        return []
+        except (KeyError, TypeError):
+            continue
+    return result

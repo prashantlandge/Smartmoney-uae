@@ -1,10 +1,45 @@
 """AI-powered product recommendation engine using Claude."""
 
 import json
+import re
+import logging
 from app.config import settings
 from app.db.connection import get_pool
 from app.features.advisor.schemas import ProductRecommendation
 import anthropic
+
+logger = logging.getLogger(__name__)
+
+
+def _extract_json_array(raw: str) -> list[dict]:
+    """Robustly extract a JSON array from Claude's response text."""
+    raw = raw.strip()
+    try:
+        result = json.loads(raw)
+        if isinstance(result, list):
+            return result
+    except json.JSONDecodeError:
+        pass
+    if "```" in raw:
+        match = re.search(r'```(?:json)?\s*\n?(.*?)```', raw, re.DOTALL)
+        if match:
+            try:
+                result = json.loads(match.group(1).strip())
+                if isinstance(result, list):
+                    return result
+            except json.JSONDecodeError:
+                pass
+    bracket_start = raw.find('[')
+    bracket_end = raw.rfind(']')
+    if bracket_start != -1 and bracket_end > bracket_start:
+        try:
+            result = json.loads(raw[bracket_start:bracket_end + 1])
+            if isinstance(result, list):
+                return result
+        except json.JSONDecodeError:
+            pass
+    logger.warning("Failed to extract JSON array from Claude response: %s", raw[:200])
+    return []
 
 
 SYSTEM_PRODUCT_RECOMMEND = """You are a UAE financial product recommendation engine.
@@ -85,6 +120,20 @@ async def get_product_recommendations(
             "description": r["description_en"] or "",
         })
 
+    # Inject segment context if available
+    segment_context = ""
+    try:
+        from app.features.segmentation.engine import get_user_segment
+        # Use session_id from profile if available (passed via quiz)
+        if profile.get("session_id"):
+            segment, confidence = await get_user_segment(profile["session_id"])
+            segment_context = (
+                f"\n\nUser behavioral segment: {segment} (confidence: {confidence:.0%}). "
+                f"Prioritize products matching this behavioral pattern."
+            )
+    except Exception:
+        pass
+
     client = anthropic.Anthropic(api_key=settings.anthropic_api_key)
 
     response = client.messages.create(
@@ -93,25 +142,26 @@ async def get_product_recommendations(
         system=SYSTEM_PRODUCT_RECOMMEND,
         messages=[{
             "role": "user",
-            "content": f"User profile: {json.dumps(profile)}\n\nAvailable products: {json.dumps(products_data)}",
+            "content": f"User profile: {json.dumps(profile)}\n\nAvailable products: {json.dumps(products_data)}"
+            + segment_context,
         }],
     )
 
-    try:
-        raw = response.content[0].text.strip()
-        if raw.startswith("```"):
-            raw = raw.split("\n", 1)[1].rsplit("```", 1)[0].strip()
-        recs = json.loads(raw)
-        return [
-            ProductRecommendation(
-                product_id=r["product_id"],
-                product_name=r["product_name"],
-                provider_name=r["provider_name"],
-                score=r["score"],
-                reason=r["reason"],
-                highlight=r.get("highlight", ""),
+    raw = response.content[0].text
+    recs = _extract_json_array(raw)
+    result = []
+    for r in recs[:5]:
+        try:
+            result.append(
+                ProductRecommendation(
+                    product_id=r["product_id"],
+                    product_name=r["product_name"],
+                    provider_name=r["provider_name"],
+                    score=r["score"],
+                    reason=r["reason"],
+                    highlight=r.get("highlight", ""),
+                )
             )
-            for r in recs[:5]
-        ]
-    except (json.JSONDecodeError, KeyError):
-        return []
+        except (KeyError, TypeError):
+            continue
+    return result

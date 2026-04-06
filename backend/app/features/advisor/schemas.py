@@ -36,6 +36,7 @@ class RecommendResponse(BaseModel):
 
 
 class ProductRecommendRequest(BaseModel):
+    session_id: Optional[str] = None
     salary_aed: float = 10000
     nationality: str = "IN"
     islamic_preference: bool = False

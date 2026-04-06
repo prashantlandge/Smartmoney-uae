@@ -3,10 +3,12 @@ import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
 import {
   Sparkles, ChevronRight, ChevronLeft, Loader2, Trophy, ArrowRight,
-  Banknote, Globe, Moon, ShoppingBag, Shield, X,
+  Banknote, Globe, Moon, ShoppingBag, Shield, X, ThumbsUp, ThumbsDown,
 } from 'lucide-react';
 import ProviderLogo from '@/components/ui/ProviderLogo';
 import Badge from '@/components/ui/Badge';
+import { getSessionId } from '@/lib/session';
+import { trackEvent } from '@/lib/tracker';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? '';
 
@@ -64,6 +66,7 @@ export default function SmartRecommendQuiz({ onClose, className = '' }: Props) {
   const [islamicPref, setIslamicPref] = useState(false);
   const [spending, setSpending] = useState<string[]>([]);
   const [riskTolerance, setRiskTolerance] = useState('moderate');
+  const [feedbackGiven, setFeedbackGiven] = useState<Record<string, string>>({});
 
   const toggleSpending = (val: string) => {
     setSpending((prev) =>
@@ -84,6 +87,7 @@ export default function SmartRecommendQuiz({ onClose, className = '' }: Props) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          session_id: getSessionId(),
           salary_aed: salary,
           nationality,
           islamic_preference: islamicPref,
@@ -94,6 +98,13 @@ export default function SmartRecommendQuiz({ onClose, className = '' }: Props) {
       if (res.ok) {
         const data = await res.json();
         setResults(data.recommendations);
+        trackEvent('quiz_complete', {
+          salary_aed: salary,
+          nationality,
+          islamic_preference: islamicPref,
+          spending_categories: spending,
+          risk_tolerance: riskTolerance,
+        });
       } else {
         setResults([]);
       }
@@ -101,6 +112,24 @@ export default function SmartRecommendQuiz({ onClose, className = '' }: Props) {
       setResults([]);
     }
     setLoading(false);
+  };
+
+  const handleFeedback = async (productId: string, feedback: 'up' | 'down') => {
+    setFeedbackGiven((prev) => ({ ...prev, [productId]: feedback }));
+    try {
+      await fetch(`${API_BASE}/api/feedback`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          session_id: getSessionId(),
+          recommendation_id: productId,
+          recommendation_type: 'product',
+          feedback,
+        }),
+      });
+    } catch {
+      // silently fail
+    }
   };
 
   const steps = [
@@ -274,6 +303,29 @@ export default function SmartRecommendQuiz({ onClose, className = '' }: Props) {
                         <p className="text-xs text-brand-primary font-medium mt-1">{rec.highlight}</p>
                       )}
                       <p className="text-xs text-gray-400 mt-0.5 line-clamp-1">{rec.reason}</p>
+                      {/* Feedback buttons */}
+                      <div className="flex items-center gap-2 mt-1.5">
+                        {feedbackGiven[rec.product_id] ? (
+                          <span className="text-[10px] text-gray-400">Thanks for your feedback!</span>
+                        ) : (
+                          <>
+                            <button
+                              onClick={(e) => { e.preventDefault(); handleFeedback(rec.product_id, 'up'); }}
+                              className="p-1 rounded hover:bg-green-50 text-gray-400 hover:text-green-600 transition-colors"
+                              title="Helpful"
+                            >
+                              <ThumbsUp size={12} />
+                            </button>
+                            <button
+                              onClick={(e) => { e.preventDefault(); handleFeedback(rec.product_id, 'down'); }}
+                              className="p-1 rounded hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors"
+                              title="Not helpful"
+                            >
+                              <ThumbsDown size={12} />
+                            </button>
+                          </>
+                        )}
+                      </div>
                     </div>
                     <ArrowRight size={14} className="text-gray-300 group-hover:text-brand-primary shrink-0 mt-2" />
                   </Link>
