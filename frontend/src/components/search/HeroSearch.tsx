@@ -85,8 +85,8 @@ export default function HeroSearch({ compact = false }: HeroSearchProps) {
     <div ref={containerRef} className={`relative w-full ${compact ? 'max-w-md' : 'max-w-2xl mx-auto'}`}>
       {/* Search Input */}
       <div className="relative">
-        <span className="absolute start-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
-          <Search size={compact ? 16 : 20} />
+        <span className="absolute start-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+          <Search size={compact ? 16 : 18} />
         </span>
         <input
           ref={inputRef}
@@ -99,7 +99,7 @@ export default function HeroSearch({ compact = false }: HeroSearchProps) {
           className={`w-full bg-white/90 backdrop-blur-sm text-gray-900 border-0 shadow-elevated focus:ring-2 focus:ring-brand-primary/40 outline-none transition-all ${
             compact
               ? 'rounded-button pl-10 pr-4 py-2.5 text-sm'
-              : 'rounded-xl pl-11 pr-5 py-3 text-sm sm:text-base'
+              : 'rounded-xl pl-10 pr-4 py-2.5 text-sm'
           }`}
         />
         {loading && (

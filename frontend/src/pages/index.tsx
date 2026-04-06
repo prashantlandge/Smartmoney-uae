@@ -48,29 +48,29 @@ export default function Home() {
 
       {/* ===== HERO ===== */}
       <section className="bg-gradient-to-br from-brand-nav via-brand-nav to-brand-nav-dark text-white">
-        <div className="max-w-content-xl mx-auto px-4 sm:px-6 py-6 sm:py-8 text-center">
-          <div className="inline-flex items-center gap-1.5 bg-white/15 text-white text-label font-semibold px-2.5 py-1 rounded-pill mb-2.5">
+        <div className="max-w-content-xl mx-auto px-4 sm:px-6 py-5 sm:py-7 text-center">
+          <div className="inline-flex items-center gap-1.5 bg-white/15 text-white text-label font-semibold px-2.5 py-1 rounded-pill mb-2">
             <Sparkles size={11} />
             {t('hero_badge')}
           </div>
-          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 leading-tight max-w-2xl mx-auto">
+          <h1 className="text-lg sm:text-2xl lg:text-3xl font-bold mb-1.5 leading-tight max-w-2xl mx-auto">
             {t('hero_title')}
           </h1>
-          <p className="text-sm text-white/70 max-w-xl mx-auto mb-4">
+          <p className="text-xs sm:text-sm text-white/70 max-w-xl mx-auto mb-3">
             {t('hero_subtitle')}
           </p>
-          <div className="max-w-lg mx-auto mb-4">
+          <div className="max-w-lg mx-auto mb-3">
             <HeroSearch />
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+          <div className="grid grid-cols-4 max-w-lg mx-auto sm:max-w-none sm:flex sm:items-center sm:justify-center sm:gap-6">
             {TRUST_STATS.map((s) => (
-              <div key={s.label} className="flex items-center gap-1.5 text-white/80">
-                <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center">
-                  <s.icon size={13} className="text-white" />
+              <div key={s.label} className="flex flex-col sm:flex-row items-center gap-0.5 sm:gap-1.5 text-white/80">
+                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/10 flex items-center justify-center">
+                  <s.icon size={12} className="text-white" />
                 </div>
-                <div className="text-start">
-                  <p className="text-xs sm:text-sm font-bold leading-tight">{s.value}</p>
-                  <p className="text-[10px] sm:text-label text-white/50">{s.label}</p>
+                <div className="text-center sm:text-start">
+                  <p className="text-[10px] sm:text-xs font-bold leading-tight">{s.value}</p>
+                  <p className="text-[8px] sm:text-[10px] text-white/50 leading-tight">{s.label}</p>
                 </div>
               </div>
             ))}
@@ -97,17 +97,17 @@ export default function Home() {
             <h2 className="text-heading-md font-bold text-brand-dark mb-0.5">{t('explore_title')}</h2>
             <p className="text-body-sm text-gray-500">{t('explore_subtitle')}</p>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
+          <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-5 gap-2">
             {CATEGORIES.map((cat) => {
               const Icon = cat.icon;
               return (
-                <Link key={cat.label} href={cat.href} className={`group flex items-center gap-2.5 p-3 rounded-card border transition-all ${cat.color}`}>
-                  <div className="w-9 h-9 rounded-lg bg-white shadow-sm flex items-center justify-center shrink-0 group-hover:shadow-card transition-shadow">
-                    <Icon size={18} className="text-brand-nav" />
+                <Link key={cat.label} href={cat.href} className={`group flex flex-col sm:flex-row items-center sm:items-center gap-1.5 sm:gap-2.5 p-2.5 sm:p-3 rounded-card border transition-all ${cat.color}`}>
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-white shadow-sm flex items-center justify-center shrink-0 group-hover:shadow-card transition-shadow">
+                    <Icon size={16} className="text-brand-nav" />
                   </div>
-                  <div className="min-w-0">
-                    <p className="text-body-sm font-semibold text-brand-dark leading-tight">{cat.label}</p>
-                    <p className="text-label text-gray-400 hidden sm:block">{cat.desc}</p>
+                  <div className="min-w-0 text-center sm:text-start">
+                    <p className="text-[11px] sm:text-body-sm font-semibold text-brand-dark leading-tight">{cat.label}</p>
+                    <p className="text-label text-gray-400 hidden lg:block">{cat.desc}</p>
                   </div>
                 </Link>
               );
@@ -126,35 +126,35 @@ export default function Home() {
             <h2 className="text-heading-md font-bold text-brand-dark mb-0.5">{t('how_title')}</h2>
             <p className="text-body-sm text-gray-500">{t('how_subtitle')}</p>
           </div>
-          <div className="grid sm:grid-cols-3 gap-3 mb-5">
+          <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-4">
             {HOW_STEPS.map((step) => (
-              <div key={step.title} className="text-center p-4 rounded-card bg-surface-50 border border-surface-100">
-                <div className="w-10 h-10 rounded-full bg-brand-nav mx-auto mb-2 flex items-center justify-center">
-                  <step.icon size={18} className="text-white" />
+              <div key={step.title} className="text-center p-2.5 sm:p-4 rounded-card bg-surface-50 border border-surface-100">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-brand-nav mx-auto mb-1.5 flex items-center justify-center">
+                  <step.icon size={16} className="text-white" />
                 </div>
-                <span className="text-label font-bold text-brand-nav">{t('step')} {step.num}</span>
-                <h3 className="text-body-sm font-bold text-brand-dark mt-0.5 mb-0.5">{step.title}</h3>
-                <p className="text-label text-gray-500 leading-relaxed">{step.desc}</p>
+                <span className="text-[10px] sm:text-label font-bold text-brand-nav">{t('step')} {step.num}</span>
+                <h3 className="text-[11px] sm:text-body-sm font-bold text-brand-dark mt-0.5 mb-0.5">{step.title}</h3>
+                <p className="text-[10px] sm:text-label text-gray-500 leading-relaxed hidden sm:block">{step.desc}</p>
               </div>
             ))}
           </div>
-          <div className="bg-brand-nav/5 rounded-card border border-brand-nav/10 p-4">
-            <div className="grid grid-cols-4 gap-3 text-center">
+          <div className="bg-brand-nav/5 rounded-card border border-brand-nav/10 p-3 sm:p-4">
+            <div className="grid grid-cols-4 gap-2 sm:gap-3 text-center">
               <div>
-                <p className="text-heading-lg font-bold text-brand-nav">20+</p>
-                <p className="text-label text-gray-500">{t('stats_providers')}</p>
+                <p className="text-heading-sm sm:text-heading-lg font-bold text-brand-nav">20+</p>
+                <p className="text-[10px] sm:text-label text-gray-500">{t('stats_providers')}</p>
               </div>
               <div>
-                <p className="text-heading-lg font-bold text-brand-nav">50+</p>
-                <p className="text-label text-gray-500">{t('stats_products')}</p>
+                <p className="text-heading-sm sm:text-heading-lg font-bold text-brand-nav">50+</p>
+                <p className="text-[10px] sm:text-label text-gray-500">{t('stats_products')}</p>
               </div>
               <div>
-                <p className="text-heading-lg font-bold text-brand-nav">8</p>
-                <p className="text-label text-gray-500">{t('stats_categories')}</p>
+                <p className="text-heading-sm sm:text-heading-lg font-bold text-brand-nav">8</p>
+                <p className="text-[10px] sm:text-label text-gray-500">{t('stats_categories')}</p>
               </div>
               <div>
-                <p className="text-heading-lg font-bold text-brand-nav">15 min</p>
-                <p className="text-label text-gray-500">{t('stats_refresh')}</p>
+                <p className="text-heading-sm sm:text-heading-lg font-bold text-brand-nav">15 min</p>
+                <p className="text-[10px] sm:text-label text-gray-500">{t('stats_refresh')}</p>
               </div>
             </div>
           </div>
