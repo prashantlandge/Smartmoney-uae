@@ -140,13 +140,13 @@ export default function RemittanceCalculator() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200 text-xs text-gray-500 uppercase tracking-wider">
-                  <th className="py-2.5 px-3 text-start font-medium">{t('provider')}</th>
-                  <th className="py-2.5 px-3 text-center font-medium">{t('exchange_rate')}</th>
-                  <th className="py-2.5 px-3 text-center font-medium">{t('fee')}</th>
-                  <th className="py-2.5 px-3 text-center font-medium">{t('recipient_gets')}</th>
-                  <th className="py-2.5 px-3 text-center font-medium hidden sm:table-cell">{t('speed')}</th>
-                  <th className="py-2.5 px-3 text-end font-medium"></th>
+                <tr className="border-b border-gray-200 text-[10px] sm:text-xs text-gray-500 uppercase tracking-wider">
+                  <th className="py-2.5 px-2 sm:px-3 text-start font-medium">{t('provider')}</th>
+                  <th className="py-2.5 px-2 sm:px-3 text-center font-medium hidden sm:table-cell">{t('exchange_rate')}</th>
+                  <th className="py-2.5 px-2 sm:px-3 text-center font-medium">{t('fee')}</th>
+                  <th className="py-2.5 px-2 sm:px-3 text-center font-medium">{t('recipient_gets')}</th>
+                  <th className="py-2.5 px-2 sm:px-3 text-center font-medium hidden sm:table-cell">{t('speed')}</th>
+                  <th className="py-2.5 px-2 sm:px-3 text-end font-medium"></th>
                 </tr>
               </thead>
               <tbody>

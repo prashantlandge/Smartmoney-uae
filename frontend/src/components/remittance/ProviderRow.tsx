@@ -39,67 +39,69 @@ export default function ProviderRow({ provider, rank, isBest, sendAmount }: Prop
   return (
     <tr className={`border-b border-gray-100 last:border-0 transition-colors h-[72px] ${isBest ? 'bg-success-light' : 'hover:bg-surface-50'}`}>
       {/* Provider */}
-      <td className="py-3 px-3 align-middle">
-        <div className="flex items-center gap-2.5">
+      <td className="py-2 sm:py-3 px-2 sm:px-3 align-middle">
+        <div className="flex items-center gap-1.5 sm:gap-2.5">
           <div className="relative shrink-0">
-            <ProviderLogo name={provider.provider_name} size={36} />
-            <span className="absolute -top-1 -end-1 w-5 h-5 bg-white shadow-sm rounded-full flex items-center justify-center text-caption font-bold text-gray-600 border border-surface-200">
+            <ProviderLogo name={provider.provider_name} size={32} />
+            <span className="absolute -top-1 -end-1 w-4 h-4 sm:w-5 sm:h-5 bg-white shadow-sm rounded-full flex items-center justify-center text-[9px] sm:text-caption font-bold text-gray-600 border border-surface-200">
               {rank}
             </span>
           </div>
           <div className="min-w-0">
-            <div className="flex items-center gap-1.5">
-              <span className="font-medium text-sm truncate">{provider.provider_name}</span>
+            <div className="flex items-center gap-1">
+              <span className="font-medium text-xs sm:text-sm truncate max-w-[80px] sm:max-w-none">{provider.provider_name}</span>
               {isBest && (
-                <Badge variant="ai">{t('ai_best_for_you')}</Badge>
+                <Badge variant="ai" className="text-[9px] sm:text-xs">{t('ai_best_for_you')}</Badge>
               )}
             </div>
-            <SmartInsight matchScore={provider.match_score ?? null} matchReason={provider.match_reason ?? null} />
+            <div className="hidden sm:block">
+              <SmartInsight matchScore={provider.match_score ?? null} matchReason={provider.match_reason ?? null} />
+            </div>
           </div>
         </div>
       </td>
 
-      {/* Exchange Rate */}
-      <td className="py-3 px-3 text-sm text-center font-medium align-middle">
+      {/* Exchange Rate - hidden on mobile */}
+      <td className="py-2 sm:py-3 px-2 sm:px-3 text-xs sm:text-sm text-center font-medium align-middle hidden sm:table-cell">
         {provider.exchange_rate.toFixed(4)}
       </td>
 
       {/* Fee */}
-      <td className="py-3 px-3 text-sm text-center align-middle">
+      <td className="py-2 sm:py-3 px-2 sm:px-3 text-xs sm:text-sm text-center align-middle">
         {provider.fee_aed === 0 ? (
-          <Badge variant="success">Free</Badge>
+          <Badge variant="success" className="text-[10px] sm:text-xs">Free</Badge>
         ) : (
-          <span className="whitespace-nowrap">AED {provider.fee_aed.toFixed(2)}</span>
+          <span className="whitespace-nowrap text-xs sm:text-sm">AED {provider.fee_aed.toFixed(0)}</span>
         )}
       </td>
 
       {/* Recipient Gets */}
-      <td className="py-3 px-3 text-center align-middle">
-        <span className="font-bold text-sm">
-          {provider.recipient_receives_inr.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
+      <td className="py-2 sm:py-3 px-2 sm:px-3 text-center align-middle">
+        <span className="font-bold text-xs sm:text-sm">
+          {provider.recipient_receives_inr.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
         </span>
         {provider.cost_vs_mid_market_percent > 0 ? (
-          <div className="text-caption text-error mt-0.5 whitespace-nowrap">
-            -{provider.cost_vs_mid_market_percent.toFixed(2)}% vs mid
+          <div className="text-[9px] sm:text-caption text-error mt-0.5 whitespace-nowrap">
+            -{provider.cost_vs_mid_market_percent.toFixed(1)}%
           </div>
         ) : (
-          <div className="text-caption text-transparent mt-0.5 select-none">&nbsp;</div>
+          <div className="text-[9px] sm:text-caption text-transparent mt-0.5 select-none">&nbsp;</div>
         )}
       </td>
 
-      {/* Speed */}
-      <td className="py-3 px-3 text-sm text-center text-gray-600 hidden sm:table-cell align-middle">
+      {/* Speed - hidden on mobile */}
+      <td className="py-2 sm:py-3 px-2 sm:px-3 text-xs sm:text-sm text-center text-gray-600 hidden sm:table-cell align-middle">
         <span className="whitespace-nowrap">{provider.transfer_speed}</span>
       </td>
 
       {/* CTA */}
-      <td className="py-3 px-3 text-end align-middle">
+      <td className="py-2 sm:py-3 px-1.5 sm:px-3 text-end align-middle">
         <a
           href={affiliateHref}
           target="_blank"
           rel="noopener noreferrer"
           onClick={handleClick}
-          className="btn-primary text-xs py-2 px-3 whitespace-nowrap"
+          className="btn-primary text-[10px] sm:text-xs py-1.5 sm:py-2 px-2 sm:px-3 whitespace-nowrap"
         >
           {t('action')}
         </a>

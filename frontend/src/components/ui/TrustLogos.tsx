@@ -22,15 +22,15 @@ export default function TrustLogos() {
         <p className="text-center text-label text-gray-400 uppercase tracking-wider font-semibold mb-4">
           {t('trust_logos_title')}
         </p>
-        <div className="flex items-center justify-center flex-wrap gap-x-8 gap-y-3">
+        <div className="grid grid-cols-5 sm:flex sm:items-center sm:justify-center sm:flex-wrap gap-x-4 sm:gap-x-8 gap-y-3 sm:gap-y-3">
           {PROVIDERS.map((p) => (
-            <div key={p.name} className="grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all" title={p.name}>
+            <div key={p.name} className="flex items-center justify-center grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all" title={p.name}>
               <Image
                 src={p.logo}
                 alt={p.name}
                 width={80}
                 height={32}
-                className="h-7 sm:h-8 w-auto object-contain"
+                className="h-5 sm:h-8 w-auto max-w-[56px] sm:max-w-[80px] object-contain"
               />
             </div>
           ))}
