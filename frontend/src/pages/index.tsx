@@ -1,9 +1,9 @@
-import Head from 'next/head';
 import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { GetStaticProps } from 'next';
 import Layout from '@/components/layout/Layout';
+import SEOHead from '@/components/ui/SEOHead';
 import HeroSearch from '@/components/search/HeroSearch';
 import RemittanceCalculator from '@/components/remittance/RemittanceCalculator';
 import TrustLogos from '@/components/ui/TrustLogos';
@@ -40,13 +40,11 @@ export default function Home() {
 
   return (
     <Layout>
-      <Head>
-        <title>{t('site_name')} — {t('hero_title')}</title>
-        <meta name="description" content={t('hero_subtitle')} />
-        <link rel="alternate" hrefLang="en" href="/en" />
-        <link rel="alternate" hrefLang="ar" href="/ar" />
-        <link rel="alternate" hrefLang="x-default" href="/en" />
-      </Head>
+      <SEOHead
+        title="Compare Best Financial Products in UAE"
+        description="Compare remittance rates, credit cards, loans, and insurance from 20+ UAE providers. Live rates updated every 15 minutes."
+        path="/"
+      />
 
       {/* ===== HERO ===== */}
       <section className="bg-gradient-to-br from-brand-nav via-brand-nav to-brand-nav-dark text-white">

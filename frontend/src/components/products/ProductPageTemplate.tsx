@@ -4,6 +4,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
 import Layout from '@/components/layout/Layout';
+import SEOHead from '@/components/ui/SEOHead';
 import ProductCard from '@/components/products/ProductCard';
 import { useProducts } from '@/hooks/useProducts';
 import CategoryIllustration from '@/components/ui/CategoryIllustration';
@@ -53,6 +54,9 @@ interface Props {
   heroIcon: string;
   featureLabels?: Record<string, string>;
   calculatorSlot?: ReactNode;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoPath?: string;
 }
 
 export default function ProductPageTemplate({
@@ -62,6 +66,9 @@ export default function ProductPageTemplate({
   heroIcon,
   featureLabels = {},
   calculatorSlot,
+  seoTitle,
+  seoDescription,
+  seoPath,
 }: Props) {
   const { t } = useTranslation('common');
   const { products, loading, error } = useProducts(category);
@@ -114,10 +121,14 @@ export default function ProductPageTemplate({
   return (
     <CompareProvider>
       <Layout>
-        <Head>
-          <title>{t(titleKey)} — SmartMoney UAE</title>
-          <meta name="description" content={heroDesc} />
-        </Head>
+        {seoTitle && seoDescription && seoPath ? (
+          <SEOHead title={seoTitle} description={seoDescription} path={seoPath} />
+        ) : (
+          <Head>
+            <title>{t(titleKey)} — SmartMoney UAE</title>
+            <meta name="description" content={heroDesc} />
+          </Head>
+        )}
 
         {/* Colored gradient hero — BankBazaar style */}
         <section className={`bg-gradient-to-r ${heroGradient} text-white`}>

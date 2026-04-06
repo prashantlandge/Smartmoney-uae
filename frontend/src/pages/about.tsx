@@ -1,9 +1,9 @@
-import Head from 'next/head';
 import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { GetStaticProps } from 'next';
 import Layout from '@/components/layout/Layout';
+import SEOHead from '@/components/ui/SEOHead';
 import Container from '@/components/ui/Container';
 import SectionHeading from '@/components/ui/SectionHeading';
 import CountUp from '@/components/ui/CountUp';
@@ -20,9 +20,11 @@ export default function AboutPage() {
 
   return (
     <Layout>
-      <Head>
-        <title>{t('about_title')} — SmartMoney UAE</title>
-      </Head>
+      <SEOHead
+        title="About SmartMoney UAE"
+        description="UAE's trusted financial comparison platform for expats and residents."
+        path="/about"
+      />
 
       <section className="bg-gradient-to-br from-brand-nav via-brand-nav to-brand-nav-dark text-white py-8 sm:py-10 px-4">
         <Container size="md">

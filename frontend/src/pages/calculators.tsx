@@ -1,9 +1,9 @@
-import Head from 'next/head';
 import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { GetStaticProps } from 'next';
 import Layout from '@/components/layout/Layout';
+import SEOHead from '@/components/ui/SEOHead';
 import AdSlot from '@/components/ui/AdSlot';
 import EmiCalculator from '@/components/calculators/EmiCalculator';
 import CashbackCalculator from '@/components/calculators/CashbackCalculator';
@@ -30,10 +30,11 @@ export default function Calculators() {
 
   return (
     <Layout>
-      <Head>
-        <title>{t('calc_page_title')} — {t('site_name')}</title>
-        <meta name="description" content={t('calc_page_meta')} />
-      </Head>
+      <SEOHead
+        title="Financial Calculators"
+        description="Free EMI calculator, cashback calculator, fuel cost calculator and more for UAE residents."
+        path="/calculators"
+      />
 
       {/* Hero */}
       <section className="bg-gradient-to-br from-brand-nav via-brand-nav to-brand-nav-dark text-white">

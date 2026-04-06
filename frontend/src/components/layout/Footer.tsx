@@ -66,6 +66,8 @@ export default function Footer() {
               <li><Link href="/about" className="hover:text-white transition-colors">{t('nav_about')}</Link></li>
               <li><Link href="/contact" className="hover:text-white transition-colors">{t('nav_contact')}</Link></li>
               <li><Link href="/" className="hover:text-white transition-colors">{t('nav_home')}</Link></li>
+              <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+              <li><Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
             </ul>
           </div>
         </div>

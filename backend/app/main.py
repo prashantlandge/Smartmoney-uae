@@ -14,6 +14,7 @@ from app.features.products.router import router as products_router
 from app.features.eligibility.router import router as eligibility_router
 from app.features.scrapers.router import router as scraper_router
 from app.features.scrapers.scheduler import start_scheduler, stop_scheduler
+from app.features.admin.router import router as admin_router
 
 
 @asynccontextmanager
@@ -49,6 +50,7 @@ app.include_router(events_router, prefix="/api/events", tags=["events"])
 app.include_router(products_router, prefix="/api/products", tags=["products"])
 app.include_router(eligibility_router, prefix="/api/eligibility", tags=["eligibility"])
 app.include_router(scraper_router, prefix="/api/scrapers", tags=["scrapers"])
+app.include_router(admin_router, prefix="/api/admin", tags=["admin"])
 
 
 @app.get("/api/health")

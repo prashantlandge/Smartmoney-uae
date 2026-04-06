@@ -8,3 +8,4 @@ export { default as ProviderLogo } from './ProviderLogo';
 export { default as EmptyState } from './EmptyState';
 export { default as CountUp } from './CountUp';
 export { default as CategoryIllustration } from './CategoryIllustration';
+export { default as SEOHead } from './SEOHead';

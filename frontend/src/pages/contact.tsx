@@ -1,9 +1,9 @@
-import Head from 'next/head';
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { GetStaticProps } from 'next';
 import Layout from '@/components/layout/Layout';
+import SEOHead from '@/components/ui/SEOHead';
 import Container from '@/components/ui/Container';
 import { CheckCircle, Mail, Clock, MessageSquare } from 'lucide-react';
 
@@ -18,9 +18,11 @@ export default function ContactPage() {
 
   return (
     <Layout>
-      <Head>
-        <title>{t('contact_title')} — SmartMoney UAE</title>
-      </Head>
+      <SEOHead
+        title="Contact Us"
+        description="Get in touch with SmartMoney UAE for questions, feedback, or partnership inquiries."
+        path="/contact"
+      />
 
       <section className="bg-gradient-to-br from-brand-nav via-brand-nav to-brand-nav-dark text-white py-8 sm:py-10 px-4">
         <Container size="md">

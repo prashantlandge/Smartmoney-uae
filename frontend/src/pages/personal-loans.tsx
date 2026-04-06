@@ -20,6 +20,9 @@ export default function PersonalLoansPage() {
       subtitleKey="pl_subtitle"
       heroIcon="personal_loans"
       featureLabels={FEATURE_LABELS}
+      seoTitle="Best Personal Loans in UAE 2026"
+      seoDescription="Compare personal loan rates from UAE banks. Check eligibility, interest rates, and processing fees."
+      seoPath="/personal-loans"
       calculatorSlot={
         <>
           <EligibilityChecker />

@@ -21,6 +21,9 @@ export default function CreditCardsPage() {
       subtitleKey="cc_subtitle"
       heroIcon="credit_cards"
       featureLabels={FEATURE_LABELS}
+      seoTitle="Best Credit Cards in UAE 2026"
+      seoDescription="Compare cashback, travel, rewards credit cards from UAE banks. Find the best card for your salary and lifestyle."
+      seoPath="/credit-cards"
       calculatorSlot={
         <>
           <EligibilityChecker />
