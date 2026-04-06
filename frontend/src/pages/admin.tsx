@@ -107,22 +107,22 @@ export default function AdminPage() {
             {/* Stat cards */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
               <StatCard
-                icon={<Package size={22} className="text-brand-primary" />}
+                icon={<Package size={22} className="text-brand-nav" />}
                 label="Total Products"
                 value={totalProducts}
               />
               <StatCard
-                icon={<MousePointerClick size={22} className="text-brand-primary" />}
+                icon={<MousePointerClick size={22} className="text-brand-nav" />}
                 label="Total Clicks"
                 value={stats.clicks.total}
               />
               <StatCard
-                icon={<CalendarClock size={22} className="text-brand-primary" />}
+                icon={<CalendarClock size={22} className="text-brand-nav" />}
                 label="Today's Clicks"
                 value={stats.clicks.today}
               />
               <StatCard
-                icon={<Users size={22} className="text-brand-primary" />}
+                icon={<Users size={22} className="text-brand-nav" />}
                 label="Total Sessions"
                 value={stats.total_sessions}
               />
@@ -195,7 +195,7 @@ export default function AdminPage() {
                             <td className="py-2 text-gray-400">{i + 1}</td>
                             <td className="py-2 font-medium text-brand-dark">{p.name}</td>
                             <td className="py-2">
-                              <span className="inline-block px-2 py-0.5 bg-brand-primary-50 text-brand-primary text-xs rounded-full">
+                              <span className="inline-block px-2 py-0.5 bg-brand-nav-50 text-brand-nav text-xs rounded-full">
                                 {p.category}
                               </span>
                             </td>
@@ -229,7 +229,7 @@ export default function AdminPage() {
                           </div>
                           <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                             <div
-                              className="h-full bg-brand-primary rounded-full transition-all"
+                              className="h-full bg-brand-nav rounded-full transition-all"
                               style={{ width: `${pct}%` }}
                             />
                           </div>
@@ -287,10 +287,10 @@ function StatCard({
 }) {
   return (
     <div className="card-hover text-center">
-      <div className="w-12 h-12 rounded-2xl bg-brand-primary-50 flex items-center justify-center mx-auto mb-3">
+      <div className="w-12 h-12 rounded-2xl bg-brand-nav-50 flex items-center justify-center mx-auto mb-3">
         {icon}
       </div>
-      <div className="text-2xl font-bold text-brand-primary mb-0.5">
+      <div className="text-2xl font-bold text-brand-nav mb-0.5">
         {value.toLocaleString()}
       </div>
       <div className="text-sm text-gray-500">{label}</div>

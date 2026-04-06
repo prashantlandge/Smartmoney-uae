@@ -136,7 +136,7 @@ export default function Calculators() {
               <h3 className="text-sm font-bold text-white">{t('calc_cta_title')}</h3>
               <p className="text-label text-white/60">{t('calc_cta_desc')}</p>
             </div>
-            <Link href="/recommend" className="flex items-center gap-1.5 px-4 py-2 bg-brand-primary text-white text-sm font-semibold rounded-button hover:bg-brand-primary-600 transition-colors">
+            <Link href="/recommend" className="flex items-center gap-1.5 px-4 py-2 bg-brand-nav text-white text-sm font-semibold rounded-button hover:bg-brand-nav-600 transition-colors">
               {t('nav_smart_compare')} <ArrowRight size={14} />
             </Link>
           </div>

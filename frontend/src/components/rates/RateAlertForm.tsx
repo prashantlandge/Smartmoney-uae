@@ -39,7 +39,7 @@ export default function RateAlertForm({ currentRate }: Props) {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="w-full mt-3 py-2.5 px-4 bg-brand-primary-50 text-brand-primary text-sm font-medium rounded-button hover:bg-brand-primary-100 transition-colors flex items-center justify-center gap-2"
+        className="w-full mt-3 py-2.5 px-4 bg-brand-nav-50 text-brand-nav text-sm font-medium rounded-button hover:bg-brand-nav-100 transition-colors flex items-center justify-center gap-2"
       >
         <Bell size={16} />
         {t('rate_alert_title')}

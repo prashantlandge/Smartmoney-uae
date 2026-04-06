@@ -159,7 +159,7 @@ export default function TermsPage() {
             <h2 className="text-heading-lg font-bold text-brand-dark mb-4">10. Contact</h2>
             <p className="text-body-lg text-gray-600 leading-relaxed">
               If you have any questions about these Terms of Service, please contact us at{' '}
-              <a href="mailto:hello@smartmoney.ae" className="text-brand-primary hover:underline">
+              <a href="mailto:hello@smartmoney.ae" className="text-brand-nav hover:underline">
                 hello@smartmoney.ae
               </a>.
             </p>

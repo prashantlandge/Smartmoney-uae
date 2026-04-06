@@ -47,7 +47,7 @@ export default function ContactPage() {
                   <p className="text-body-sm text-gray-500 mb-4">{t('contact_success')}</p>
                   <button
                     onClick={() => setSubmitted(false)}
-                    className="btn-ghost text-brand-primary"
+                    className="btn-ghost text-brand-nav"
                   >
                     {t('contact_send_another')}
                   </button>
@@ -87,8 +87,8 @@ export default function ContactPage() {
             <div className="space-y-4">
               <div className="card-hover">
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-brand-primary-50 flex items-center justify-center shrink-0">
-                    <Mail size={18} className="text-brand-primary" />
+                  <div className="w-10 h-10 rounded-xl bg-brand-nav-50 flex items-center justify-center shrink-0">
+                    <Mail size={18} className="text-brand-nav" />
                   </div>
                   <div>
                     <h3 className="text-heading-sm font-semibold text-brand-dark mb-1">{t('contact_email_us')}</h3>
@@ -98,8 +98,8 @@ export default function ContactPage() {
               </div>
               <div className="card-hover">
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-card bg-brand-primary-50 flex items-center justify-center shrink-0">
-                    <Clock size={18} className="text-brand-primary" />
+                  <div className="w-10 h-10 rounded-card bg-brand-nav-50 flex items-center justify-center shrink-0">
+                    <Clock size={18} className="text-brand-nav" />
                   </div>
                   <div>
                     <h3 className="text-heading-sm font-semibold text-brand-dark mb-1">{t('contact_response_time')}</h3>
@@ -109,8 +109,8 @@ export default function ContactPage() {
               </div>
               <div className="card-hover">
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-card bg-brand-primary-50 flex items-center justify-center shrink-0">
-                    <MessageSquare size={18} className="text-brand-primary" />
+                  <div className="w-10 h-10 rounded-card bg-brand-nav-50 flex items-center justify-center shrink-0">
+                    <MessageSquare size={18} className="text-brand-nav" />
                   </div>
                   <div>
                     <h3 className="text-heading-sm font-semibold text-brand-dark mb-1">{t('contact_live_chat')}</h3>

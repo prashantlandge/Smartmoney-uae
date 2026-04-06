@@ -144,8 +144,8 @@ export default function SmartRecommendQuiz({ onClose, className = '' }: Props) {
             onClick={() => setSalary(opt.value)}
             className={`w-full text-start px-4 py-3 rounded-xl text-sm font-medium transition-all border ${
               salary === opt.value
-                ? 'border-brand-primary bg-brand-primary-50 text-brand-primary'
-                : 'border-surface-200 text-gray-700 hover:border-brand-primary/30'
+                ? 'border-brand-nav bg-brand-nav-50 text-brand-nav'
+                : 'border-surface-200 text-gray-700 hover:border-brand-nav/30'
             }`}
           >
             <Banknote size={14} className="inline me-2" />
@@ -166,8 +166,8 @@ export default function SmartRecommendQuiz({ onClose, className = '' }: Props) {
             onClick={() => setNationality(opt.value)}
             className={`text-start px-4 py-3 rounded-xl text-sm font-medium transition-all border ${
               nationality === opt.value
-                ? 'border-brand-primary bg-brand-primary-50 text-brand-primary'
-                : 'border-surface-200 text-gray-700 hover:border-brand-primary/30'
+                ? 'border-brand-nav bg-brand-nav-50 text-brand-nav'
+                : 'border-surface-200 text-gray-700 hover:border-brand-nav/30'
             }`}
           >
             {opt.label}
@@ -183,12 +183,12 @@ export default function SmartRecommendQuiz({ onClose, className = '' }: Props) {
 
       <div className="space-y-4">
         {/* Islamic preference */}
-        <label className="flex items-center gap-3 cursor-pointer p-3 rounded-xl border border-surface-200 hover:border-brand-primary/30 transition-colors">
+        <label className="flex items-center gap-3 cursor-pointer p-3 rounded-xl border border-surface-200 hover:border-brand-nav/30 transition-colors">
           <input
             type="checkbox"
             checked={islamicPref}
             onChange={(e) => setIslamicPref(e.target.checked)}
-            className="w-4 h-4 rounded border-gray-300 text-brand-primary focus:ring-brand-primary"
+            className="w-4 h-4 rounded border-gray-300 text-brand-nav focus:ring-brand-nav"
           />
           <Moon size={16} className="text-emerald-600" />
           <span className="text-sm text-gray-700">Prefer Islamic / Shariah-compliant products</span>
@@ -204,8 +204,8 @@ export default function SmartRecommendQuiz({ onClose, className = '' }: Props) {
                 onClick={() => toggleSpending(opt.value)}
                 className={`text-start px-3 py-2.5 rounded-xl text-xs font-medium transition-all border ${
                   spending.includes(opt.value)
-                    ? 'border-brand-primary bg-brand-primary-50 text-brand-primary'
-                    : 'border-surface-200 text-gray-600 hover:border-brand-primary/30'
+                    ? 'border-brand-nav bg-brand-nav-50 text-brand-nav'
+                    : 'border-surface-200 text-gray-600 hover:border-brand-nav/30'
                 }`}
               >
                 {opt.icon} {opt.label}
@@ -228,8 +228,8 @@ export default function SmartRecommendQuiz({ onClose, className = '' }: Props) {
                 onClick={() => setRiskTolerance(opt.value)}
                 className={`flex-1 text-center px-3 py-2.5 rounded-xl text-xs font-medium transition-all border ${
                   riskTolerance === opt.value
-                    ? 'border-brand-primary bg-brand-primary-50 text-brand-primary'
-                    : 'border-surface-200 text-gray-600 hover:border-brand-primary/30'
+                    ? 'border-brand-nav bg-brand-nav-50 text-brand-nav'
+                    : 'border-surface-200 text-gray-600 hover:border-brand-nav/30'
                 }`}
               >
                 <opt.icon size={14} className="mx-auto mb-1" />
@@ -265,7 +265,7 @@ export default function SmartRecommendQuiz({ onClose, className = '' }: Props) {
         {results !== null ? (
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <Trophy size={16} className="text-brand-primary" />
+              <Trophy size={16} className="text-brand-nav" />
               <h3 className="text-sm font-bold text-gray-900">Your Personalized Picks</h3>
             </div>
 
@@ -279,7 +279,7 @@ export default function SmartRecommendQuiz({ onClose, className = '' }: Props) {
                   <Link
                     key={rec.product_id}
                     href={`/products/${rec.product_id}`}
-                    className="flex items-start gap-3 p-3 rounded-xl border border-surface-200 hover:border-brand-primary/30 hover:shadow-card transition-all group"
+                    className="flex items-start gap-3 p-3 rounded-xl border border-surface-200 hover:border-brand-nav/30 hover:shadow-card transition-all group"
                   >
                     <div className="relative">
                       <ProviderLogo name={rec.provider_name} size={36} />
@@ -291,7 +291,7 @@ export default function SmartRecommendQuiz({ onClose, className = '' }: Props) {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-0.5">
-                        <span className="text-sm font-semibold text-gray-900 group-hover:text-brand-primary transition-colors">
+                        <span className="text-sm font-semibold text-gray-900 group-hover:text-brand-nav transition-colors">
                           {rec.product_name}
                         </span>
                         <Badge variant="best" className="text-[10px]">
@@ -300,7 +300,7 @@ export default function SmartRecommendQuiz({ onClose, className = '' }: Props) {
                       </div>
                       <p className="text-xs text-gray-500">{rec.provider_name}</p>
                       {rec.highlight && (
-                        <p className="text-xs text-brand-primary font-medium mt-1">{rec.highlight}</p>
+                        <p className="text-xs text-brand-nav font-medium mt-1">{rec.highlight}</p>
                       )}
                       <p className="text-xs text-gray-400 mt-0.5 line-clamp-1">{rec.reason}</p>
                       {/* Feedback buttons */}
@@ -327,7 +327,7 @@ export default function SmartRecommendQuiz({ onClose, className = '' }: Props) {
                         )}
                       </div>
                     </div>
-                    <ArrowRight size={14} className="text-gray-300 group-hover:text-brand-primary shrink-0 mt-2" />
+                    <ArrowRight size={14} className="text-gray-300 group-hover:text-brand-nav shrink-0 mt-2" />
                   </Link>
                 ))}
               </div>
@@ -335,14 +335,14 @@ export default function SmartRecommendQuiz({ onClose, className = '' }: Props) {
 
             <button
               onClick={() => { setResults(null); setStep(0); }}
-              className="text-xs text-brand-primary hover:text-brand-primary-700 font-medium mt-4 transition-colors"
+              className="text-xs text-brand-nav hover:text-brand-nav-700 font-medium mt-4 transition-colors"
             >
               Start over
             </button>
           </div>
         ) : loading ? (
           <div className="text-center py-10">
-            <Loader2 size={24} className="animate-spin mx-auto text-brand-primary mb-3" />
+            <Loader2 size={24} className="animate-spin mx-auto text-brand-nav mb-3" />
             <p className="text-sm text-gray-600 font-medium">Analyzing your profile...</p>
             <p className="text-xs text-gray-400 mt-1">Our AI is matching you with the best products</p>
           </div>
@@ -354,7 +354,7 @@ export default function SmartRecommendQuiz({ onClose, className = '' }: Props) {
                 <div
                   key={i}
                   className={`h-1 flex-1 rounded-full transition-colors ${
-                    i <= step ? 'bg-brand-primary' : 'bg-surface-200'
+                    i <= step ? 'bg-brand-nav' : 'bg-surface-200'
                   }`}
                 />
               ))}

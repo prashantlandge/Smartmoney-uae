@@ -38,7 +38,7 @@ const CATEGORY_ICONS: Record<string, FC<LucideProps>> = {
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
-  remittance: 'text-brand-primary',
+  remittance: 'text-brand-nav',
   credit_card: 'text-indigo-600',
   credit_cards: 'text-indigo-600',
   personal_loan: 'text-cyan-600',
@@ -50,7 +50,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 
 // Gradient backgrounds for professional look (PaisaBazaar-inspired)
 const CATEGORY_GRADIENTS: Record<string, string> = {
-  remittance: 'from-brand-primary/15 to-emerald-50',
+  remittance: 'from-brand-nav/15 to-emerald-50',
   credit_card: 'from-indigo-50 to-violet-50',
   credit_cards: 'from-indigo-50 to-violet-50',
   personal_loan: 'from-cyan-50 to-sky-50',
@@ -62,7 +62,7 @@ const CATEGORY_GRADIENTS: Record<string, string> = {
 
 // Ring/border accent for category cards
 const CATEGORY_RING: Record<string, string> = {
-  remittance: 'ring-brand-primary/20',
+  remittance: 'ring-brand-nav/20',
   credit_card: 'ring-indigo-200',
   credit_cards: 'ring-indigo-200',
   personal_loan: 'ring-cyan-200',
@@ -73,7 +73,7 @@ const CATEGORY_RING: Record<string, string> = {
 };
 
 const CATEGORY_BG_COLORS: Record<string, string> = {
-  remittance: 'bg-brand-primary-50',
+  remittance: 'bg-brand-nav-50',
   credit_card: 'bg-indigo-50',
   credit_cards: 'bg-indigo-50',
   personal_loan: 'bg-cyan-50',

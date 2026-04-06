@@ -104,8 +104,8 @@ export default function Tax() {
           <div className="grid sm:grid-cols-3 gap-3">
             <div className="bg-white rounded-card border border-surface-200 p-4">
               <div className="flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 rounded-lg bg-brand-primary-50 flex items-center justify-center">
-                  <CheckCircle size={16} className="text-brand-primary" />
+                <div className="w-8 h-8 rounded-lg bg-brand-nav-50 flex items-center justify-center">
+                  <CheckCircle size={16} className="text-brand-nav" />
                 </div>
                 <h3 className="text-sm font-bold text-brand-dark">{t('tax_no_income')}</h3>
               </div>
@@ -162,7 +162,7 @@ export default function Tax() {
                 <ul className="space-y-1.5">
                   {guide.points.map((point, i) => (
                     <li key={i} className="flex items-start gap-2 text-xs text-gray-600">
-                      <CheckCircle size={13} className="text-brand-primary shrink-0 mt-0.5" />
+                      <CheckCircle size={13} className="text-brand-nav shrink-0 mt-0.5" />
                       {point}
                     </li>
                   ))}
@@ -191,7 +191,7 @@ export default function Tax() {
               <h3 className="text-sm font-bold text-white">{t('tax_cta_title')}</h3>
               <p className="text-label text-white/60">{t('tax_cta_desc')}</p>
             </div>
-            <Link href="/" className="flex items-center gap-1.5 px-4 py-2 bg-brand-primary text-white text-sm font-semibold rounded-button hover:bg-brand-primary-600 transition-colors">
+            <Link href="/" className="flex items-center gap-1.5 px-4 py-2 bg-brand-nav text-white text-sm font-semibold rounded-button hover:bg-brand-nav-600 transition-colors">
               {t('tax_cta_button')} <ArrowRight size={14} />
             </Link>
           </div>

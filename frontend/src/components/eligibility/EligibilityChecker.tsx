@@ -67,8 +67,8 @@ export default function EligibilityChecker({ onResults }: Props) {
         className="w-full px-5 py-3 flex items-center justify-between hover:bg-surface-50 transition-colors"
       >
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-brand-primary-50 flex items-center justify-center">
-            <Shield size={16} className="text-brand-primary" />
+          <div className="w-8 h-8 rounded-lg bg-brand-nav-50 flex items-center justify-center">
+            <Shield size={16} className="text-brand-nav" />
           </div>
           <div className="text-start">
             <h3 className="text-sm font-bold text-gray-900">Eligibility Checker</h3>
@@ -77,7 +77,7 @@ export default function EligibilityChecker({ onResults }: Props) {
         </div>
         <div className="flex items-center gap-2">
           {checked && (
-            <span className="text-xs font-semibold text-brand-primary bg-brand-primary-50 px-2 py-1 rounded-badge">
+            <span className="text-xs font-semibold text-brand-nav bg-brand-nav-50 px-2 py-1 rounded-badge">
               {summary.eligible}/{summary.total} eligible
             </span>
           )}

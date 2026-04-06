@@ -17,7 +17,7 @@ const PROVIDERS = [
 export default function TrustLogos() {
   const { t } = useTranslation('common');
   return (
-    <div className="bg-surface-50 border-y border-surface-100 py-3">
+    <div className="border-b border-surface-200 py-3">
       <div className="max-w-content-xl mx-auto px-4 sm:px-6">
         <p className="text-center text-[10px] sm:text-label text-gray-400 uppercase tracking-wider font-semibold mb-2.5">
           {t('trust_logos_title')}

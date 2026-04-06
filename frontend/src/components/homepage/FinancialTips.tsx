@@ -60,7 +60,7 @@ export default function FinancialTips() {
         <Link
           key={article.title}
           href={article.href}
-          className="group flex gap-5 p-5 sm:p-6 bg-white rounded-2xl border border-surface-200 hover:shadow-card-hover hover:border-brand-primary/20 hover:-translate-y-0.5 transition-all duration-200"
+          className="group flex gap-5 p-5 sm:p-6 bg-white rounded-2xl border border-surface-200 hover:shadow-card-hover hover:border-brand-nav/20 hover:-translate-y-0.5 transition-all duration-200"
         >
           {/* Icon */}
           <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${article.iconColor} flex items-center justify-center shrink-0`}>
@@ -70,7 +70,7 @@ export default function FinancialTips() {
           {/* Content */}
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2.5 mb-2">
-              <span className="text-xs font-bold text-brand-primary uppercase tracking-wider">
+              <span className="text-xs font-bold text-brand-nav uppercase tracking-wider">
                 {article.category}
               </span>
               <span className="text-xs text-gray-400 flex items-center gap-1">
@@ -78,7 +78,7 @@ export default function FinancialTips() {
                 {article.readTime}
               </span>
             </div>
-            <h4 className="text-base font-bold text-gray-900 group-hover:text-brand-primary transition-colors line-clamp-2 mb-1.5">
+            <h4 className="text-base font-bold text-gray-900 group-hover:text-brand-nav transition-colors line-clamp-2 mb-1.5">
               {article.title}
             </h4>
             <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">

@@ -185,7 +185,7 @@ export default function TabbedShowcase() {
           <div
             key={product.name}
             className={`bg-white rounded-card border p-4 hover:shadow-card-hover transition-all flex flex-col ${
-              idx === 0 ? 'border-brand-primary/30 ring-1 ring-brand-primary/10' : 'border-surface-200'
+              idx === 0 ? 'border-brand-nav/30 ring-1 ring-brand-nav/10' : 'border-surface-200'
             }`}
           >
             {/* Badge */}
@@ -208,7 +208,7 @@ export default function TabbedShowcase() {
             <ul className="space-y-1.5 mb-4 flex-1">
               {product.features.map((feat) => (
                 <li key={feat} className="flex items-start gap-2 text-body-sm text-gray-600">
-                  <Check size={14} className="text-brand-primary shrink-0 mt-0.5" />
+                  <Check size={14} className="text-brand-nav shrink-0 mt-0.5" />
                   {feat}
                 </li>
               ))}

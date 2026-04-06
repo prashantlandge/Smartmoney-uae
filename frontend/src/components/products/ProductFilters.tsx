@@ -54,7 +54,7 @@ export default function ProductFilters({ products, filters, onChange }: Props) {
               type="checkbox"
               checked={filters.islamicOnly}
               onChange={(e) => onChange({ ...filters, islamicOnly: e.target.checked })}
-              className="w-4 h-4 rounded border-gray-300 text-brand-primary focus:ring-brand-primary"
+              className="w-4 h-4 rounded border-gray-300 text-brand-nav focus:ring-brand-nav"
             />
             <span className="text-sm text-gray-700 group-hover:text-gray-900 transition-colors">
               {t('islamic_compliant')} only
@@ -79,7 +79,7 @@ export default function ProductFilters({ products, filters, onChange }: Props) {
                     type="checkbox"
                     checked={filters.providers.includes(name)}
                     onChange={() => toggleProvider(name)}
-                    className="w-4 h-4 rounded border-gray-300 text-brand-primary focus:ring-brand-primary"
+                    className="w-4 h-4 rounded border-gray-300 text-brand-nav focus:ring-brand-nav"
                   />
                   <span className="text-sm text-gray-700 group-hover:text-gray-900 transition-colors flex-1 truncate">
                     {name}
@@ -96,7 +96,7 @@ export default function ProductFilters({ products, filters, onChange }: Props) {
       {activeCount > 0 && (
         <button
           onClick={clearAll}
-          className="text-xs text-brand-primary hover:text-brand-primary-700 font-medium transition-colors"
+          className="text-xs text-brand-nav hover:text-brand-nav-700 font-medium transition-colors"
         >
           Clear all filters
         </button>
@@ -116,7 +116,7 @@ export default function ProductFilters({ products, filters, onChange }: Props) {
             <SlidersHorizontal size={16} />
             Filters & Sort
             {activeCount > 0 && (
-              <span className="w-5 h-5 rounded-full bg-brand-primary text-white text-caption flex items-center justify-center">
+              <span className="w-5 h-5 rounded-full bg-brand-nav text-white text-caption flex items-center justify-center">
                 {activeCount}
               </span>
             )}
@@ -139,7 +139,7 @@ export default function ProductFilters({ products, filters, onChange }: Props) {
               Filters
             </h3>
             {activeCount > 0 && (
-              <span className="text-caption text-brand-primary font-medium">
+              <span className="text-caption text-brand-nav font-medium">
                 {activeCount} active
               </span>
             )}

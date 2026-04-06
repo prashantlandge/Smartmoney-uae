@@ -71,9 +71,9 @@ export default function CorporateTaxCalculator() {
         </div>
 
         <div className="space-y-3">
-          <div className={`rounded-xl p-4 text-center border ${isFreezone ? 'bg-brand-primary-50 border-brand-primary-100' : 'bg-surface-50 border-surface-200'}`}>
+          <div className={`rounded-xl p-4 text-center border ${isFreezone ? 'bg-brand-nav-50 border-brand-nav-100' : 'bg-surface-50 border-surface-200'}`}>
             <p className="text-xs text-gray-500 font-medium mb-1">Estimated Corporate Tax</p>
-            <p className={`text-display-lg font-bold ${isFreezone ? 'text-brand-primary' : 'text-brand-dark'}`}>
+            <p className={`text-display-lg font-bold ${isFreezone ? 'text-brand-nav' : 'text-brand-dark'}`}>
               {fmt(result.tax)}
             </p>
             <p className="text-label text-gray-400 mt-1">
@@ -88,7 +88,7 @@ export default function CorporateTaxCalculator() {
             </div>
             <div className="bg-surface-50 rounded-xl p-3 text-center">
               <p className="text-label text-gray-500">Tax-Free Threshold</p>
-              <p className="text-sm font-bold text-brand-primary">{fmt(result.threshold)}</p>
+              <p className="text-sm font-bold text-brand-nav">{fmt(result.threshold)}</p>
             </div>
           </div>
 

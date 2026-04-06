@@ -77,8 +77,8 @@ export default function PrivacyPage() {
               We use the following third-party services that may collect data about your visit:
             </p>
             <ul className="list-disc list-inside space-y-2 text-body-lg text-gray-600 mb-3">
-              <li><strong>Google Analytics:</strong> We use Google Analytics to collect anonymised usage statistics. Google Analytics uses cookies to track visitor interactions. Data may be processed on servers outside the UAE. For more information, see <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:underline">Google&apos;s Privacy Policy</a>.</li>
-              <li><strong>Google AdSense:</strong> We use Google AdSense to display advertisements. AdSense may use cookies and web beacons to serve ads based on your prior visits to our website or other websites. You can opt out of personalised advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:underline">Google Ads Settings</a>.</li>
+              <li><strong>Google Analytics:</strong> We use Google Analytics to collect anonymised usage statistics. Google Analytics uses cookies to track visitor interactions. Data may be processed on servers outside the UAE. For more information, see <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-brand-nav hover:underline">Google&apos;s Privacy Policy</a>.</li>
+              <li><strong>Google AdSense:</strong> We use Google AdSense to display advertisements. AdSense may use cookies and web beacons to serve ads based on your prior visits to our website or other websites. You can opt out of personalised advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="text-brand-nav hover:underline">Google Ads Settings</a>.</li>
               <li><strong>Affiliate networks:</strong> When you click on a product link, you may be redirected through affiliate network tracking systems. These networks may set their own cookies to attribute referrals. Each provider and affiliate network has its own privacy policy.</li>
             </ul>
             <p className="text-body-lg text-gray-600 leading-relaxed">
@@ -164,7 +164,7 @@ export default function PrivacyPage() {
             <div className="bg-surface-50 rounded-card p-5">
               <p className="text-body-lg text-gray-600 mb-1"><strong>SmartMoney UAE</strong></p>
               <p className="text-body-lg text-gray-600">
-                Email: <a href="mailto:hello@smartmoney.ae" className="text-brand-primary hover:underline">hello@smartmoney.ae</a>
+                Email: <a href="mailto:hello@smartmoney.ae" className="text-brand-nav hover:underline">hello@smartmoney.ae</a>
               </p>
             </div>
           </div>

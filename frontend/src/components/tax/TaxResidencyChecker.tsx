@@ -63,8 +63,8 @@ export default function TaxResidencyChecker() {
                   onClick={() => handleAnswer(q.id, true)}
                   className={`flex items-center gap-1.5 px-4 py-1.5 rounded-button text-xs font-medium border transition-colors ${
                     answers[q.id] === true
-                      ? 'border-brand-primary bg-brand-primary-50 text-brand-primary'
-                      : 'border-surface-200 text-gray-500 hover:border-brand-primary/30'
+                      ? 'border-brand-nav bg-brand-nav-50 text-brand-nav'
+                      : 'border-surface-200 text-gray-500 hover:border-brand-nav/30'
                   }`}
                 >
                   <Check size={12} /> Yes
@@ -87,13 +87,13 @@ export default function TaxResidencyChecker() {
         {allAnswered && (
           <div className={`rounded-xl p-4 border animate-fade-in ${
             result === 'likely_resident'
-              ? 'bg-brand-primary-50 border-brand-primary-100'
+              ? 'bg-brand-nav-50 border-brand-nav-100'
               : result === 'possible_resident'
               ? 'bg-warning-light border-yellow-200'
               : 'bg-surface-50 border-surface-200'
           }`}>
             <h4 className={`text-sm font-bold mb-1 ${
-              result === 'likely_resident' ? 'text-brand-primary' :
+              result === 'likely_resident' ? 'text-brand-nav' :
               result === 'possible_resident' ? 'text-warning-dark' : 'text-gray-700'
             }`}>
               {result === 'likely_resident' && '✓ Likely a UAE Tax Resident'}

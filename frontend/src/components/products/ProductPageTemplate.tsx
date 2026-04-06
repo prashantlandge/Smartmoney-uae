@@ -206,7 +206,7 @@ export default function ProductPageTemplate({
                     onClick={() => toggleProvider(name)}
                     className={`flex items-center gap-1 px-2.5 py-1 rounded-badge text-label font-semibold whitespace-nowrap transition-all ${
                       active
-                        ? 'bg-brand-primary text-white'
+                        ? 'bg-brand-nav text-white'
                         : 'bg-surface-100 text-gray-600 hover:bg-surface-200'
                     }`}
                   >
@@ -227,7 +227,7 @@ export default function ProductPageTemplate({
               {activeFilterCount > 0 && (
                 <button
                   onClick={clearFilters}
-                  className="text-label font-semibold text-brand-primary hover:text-brand-primary-700 whitespace-nowrap"
+                  className="text-label font-semibold text-brand-nav hover:text-brand-nav-700 whitespace-nowrap"
                 >
                   {t('clear_all')}
                 </button>
@@ -245,7 +245,7 @@ export default function ProductPageTemplate({
                         onClick={() => toggleProvider(name)}
                         className={`px-2.5 py-1 rounded-badge text-label font-semibold whitespace-nowrap transition-all ${
                           active
-                            ? 'bg-brand-primary text-white'
+                            ? 'bg-brand-nav text-white'
                             : 'bg-surface-100 text-gray-600 hover:bg-surface-200'
                         }`}
                       >

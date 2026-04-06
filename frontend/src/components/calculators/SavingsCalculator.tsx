@@ -81,9 +81,9 @@ export default function SavingsCalculator() {
               <p className="text-sm font-bold text-gray-900">{fmt(result.deposited)}</p>
             </div>
             <div className="bg-surface-50 rounded-xl p-3 text-center">
-              <TrendingUp size={14} className="mx-auto text-brand-primary mb-1" />
+              <TrendingUp size={14} className="mx-auto text-brand-nav mb-1" />
               <p className="text-label text-gray-500">Interest Earned</p>
-              <p className="text-sm font-bold text-brand-primary">{fmt(result.interest)}</p>
+              <p className="text-sm font-bold text-brand-nav">{fmt(result.interest)}</p>
             </div>
           </div>
           <p className="text-label text-gray-400 text-center">

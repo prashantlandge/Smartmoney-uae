@@ -25,11 +25,11 @@ export default function Home() {
   ];
 
   const CATEGORIES = [
-    { label: t('categories.remittance'), href: '/', icon: ArrowLeftRight, desc: t('cat_remittance_desc'), color: 'bg-blue-50/80 hover:bg-blue-100/80 border-blue-100' },
-    { label: t('categories.credit_cards'), href: '/credit-cards', icon: CreditCard, desc: t('cat_cards_desc'), color: 'bg-indigo-50/80 hover:bg-indigo-100/80 border-indigo-100' },
-    { label: t('nav_loans'), href: '/personal-loans', icon: Wallet, desc: t('cat_loans_desc'), color: 'bg-blue-50/80 hover:bg-blue-100/80 border-blue-100' },
-    { label: t('nav_insurance'), href: '/car-insurance', icon: Shield, desc: t('cat_insurance_desc'), color: 'bg-indigo-50/80 hover:bg-indigo-100/80 border-indigo-100' },
-    { label: t('nav_tools'), href: '/calculators', icon: Calculator, desc: t('cat_tools_desc'), color: 'bg-blue-50/80 hover:bg-blue-100/80 border-blue-100' },
+    { label: t('categories.remittance'), href: '/', icon: ArrowLeftRight, desc: t('cat_remittance_desc') },
+    { label: t('categories.credit_cards'), href: '/credit-cards', icon: CreditCard, desc: t('cat_cards_desc') },
+    { label: t('nav_loans'), href: '/personal-loans', icon: Wallet, desc: t('cat_loans_desc') },
+    { label: t('nav_insurance'), href: '/car-insurance', icon: Shield, desc: t('cat_insurance_desc') },
+    { label: t('nav_tools'), href: '/calculators', icon: Calculator, desc: t('cat_tools_desc') },
   ];
 
   const HOW_STEPS = [
@@ -91,7 +91,7 @@ export default function Home() {
       <TrustLogos />
 
       {/* ===== CATEGORIES ===== */}
-      <section className="bg-surface-50 border-b border-surface-100">
+      <section>
         <div className="max-w-content-xl mx-auto px-4 sm:px-6 py-5 sm:py-6">
           <div className="text-center mb-4">
             <h2 className="text-heading-md font-bold text-brand-dark mb-0.5">{t('explore_title')}</h2>
@@ -101,7 +101,7 @@ export default function Home() {
             {CATEGORIES.map((cat) => {
               const Icon = cat.icon;
               return (
-                <Link key={cat.label} href={cat.href} className={`group flex flex-col sm:flex-row items-center sm:items-center gap-1.5 sm:gap-2.5 p-2.5 sm:p-3 rounded-card border transition-all ${cat.color}`}>
+                <Link key={cat.label} href={cat.href} className="group flex flex-col sm:flex-row items-center sm:items-center gap-1.5 sm:gap-2.5 p-2.5 sm:p-3 rounded-card border border-surface-200 bg-white hover:bg-surface-50 hover:border-surface-300 transition-all">
                   <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-white shadow-sm flex items-center justify-center shrink-0 group-hover:shadow-card transition-shadow">
                     <Icon size={16} className="text-brand-nav" />
                   </div>
@@ -120,7 +120,7 @@ export default function Home() {
       <AdSlot slot="HOME_TOP_AD_UNIT_ID" format="horizontal" className="max-w-content-xl mx-auto px-4 sm:px-6" />
 
       {/* ===== HOW IT WORKS + STATS ===== */}
-      <section className="bg-brand-nav/[0.03] border-b border-brand-nav/10">
+      <section className="border-t border-surface-200">
         <div className="max-w-content-xl mx-auto px-4 sm:px-6 py-5 sm:py-6">
           <div className="text-center mb-4">
             <h2 className="text-heading-md font-bold text-brand-dark mb-0.5">{t('how_title')}</h2>
@@ -128,7 +128,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-4">
             {HOW_STEPS.map((step) => (
-              <div key={step.title} className="text-center p-2.5 sm:p-4 rounded-card bg-white border border-brand-nav/10">
+              <div key={step.title} className="text-center p-2.5 sm:p-4 rounded-card bg-white border border-surface-200">
                 <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-brand-nav mx-auto mb-1.5 flex items-center justify-center">
                   <step.icon size={16} className="text-white" />
                 </div>
@@ -138,7 +138,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <div className="bg-brand-nav/5 rounded-card border border-brand-nav/10 p-3 sm:p-4">
+          <div className="bg-surface-50 rounded-card border border-surface-200 p-3 sm:p-4">
             <div className="grid grid-cols-4 gap-2 sm:gap-3 text-center">
               <div>
                 <p className="text-heading-sm sm:text-heading-lg font-bold text-brand-nav">20+</p>
@@ -161,27 +161,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== NEWSLETTER ===== */}
-      <section className="bg-brand-nav">
-        <div className="max-w-content-xl mx-auto px-4 sm:px-6 py-3.5">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-2.5">
-            <div className="text-center sm:text-start">
-              <h3 className="text-sm font-bold text-white">{t('newsletter_title')}</h3>
-              <p className="text-label text-white/60">{t('newsletter_subtitle')}</p>
-            </div>
-            <form onSubmit={(e) => e.preventDefault()} className="flex gap-2 w-full sm:w-auto">
-              <input
-                type="email"
-                placeholder={t('newsletter_placeholder')}
-                className="flex-1 sm:w-48 px-3 py-1.5 bg-white/10 border border-white/20 rounded-button text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-white/30"
-              />
-              <button type="submit" className="px-3 py-1.5 bg-white text-brand-nav text-sm font-semibold rounded-button hover:bg-white/90 transition-colors">
-                {t('newsletter_button')}
-              </button>
-            </form>
-          </div>
-        </div>
-      </section>
       {/* ===== AD SLOT ===== */}
       <AdSlot slot="HOME_BOTTOM_AD_UNIT_ID" format="horizontal" className="max-w-content-xl mx-auto px-4 sm:px-6" />
     </Layout>

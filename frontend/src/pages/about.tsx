@@ -40,7 +40,7 @@ export default function AboutPage() {
           {/* Mission */}
           <div className="mb-12">
             <h2 className="text-heading-lg font-bold text-brand-dark mb-4">{t('about_mission_title')}</h2>
-            <div className="border-s-4 border-brand-primary ps-5">
+            <div className="border-s-4 border-brand-nav ps-5">
               <p className="text-body-lg text-gray-600 leading-relaxed">{t('about_mission')}</p>
             </div>
           </div>
@@ -49,10 +49,10 @@ export default function AboutPage() {
           <div className="grid sm:grid-cols-3 gap-5 mb-12">
             {stats.map((stat) => (
               <div key={stat.label} className="card-hover text-center">
-                <div className="w-12 h-12 rounded-2xl bg-brand-primary-50 flex items-center justify-center mx-auto mb-3">
-                  <stat.icon size={22} className="text-brand-primary" />
+                <div className="w-12 h-12 rounded-2xl bg-brand-nav-50 flex items-center justify-center mx-auto mb-3">
+                  <stat.icon size={22} className="text-brand-nav" />
                 </div>
-                <div className="text-display-lg font-bold text-brand-primary mb-0.5">
+                <div className="text-display-lg font-bold text-brand-nav mb-0.5">
                   <CountUp end={stat.value} suffix={stat.suffix} />
                 </div>
                 <div className="text-body-sm text-gray-500">{stat.label}</div>
@@ -66,7 +66,7 @@ export default function AboutPage() {
             <ul className="space-y-4">
               {['about_why_1', 'about_why_2', 'about_why_3', 'about_why_4'].map((key) => (
                 <li key={key} className="flex items-start gap-3">
-                  <div className="w-7 h-7 bg-brand-primary rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-7 h-7 bg-brand-nav rounded-lg flex items-center justify-center shrink-0 mt-0.5">
                     <Check size={14} className="text-white" />
                   </div>
                   <span className="text-body-lg text-gray-600">{t(key)}</span>

@@ -112,7 +112,7 @@ export default function CompareModal({ onClose }: Props) {
     if (value === undefined || value === null) return <span className="text-gray-300">—</span>;
     if (typeof value === 'boolean') {
       return value ? (
-        <Check size={16} className="text-brand-primary mx-auto" />
+        <Check size={16} className="text-brand-nav mx-auto" />
       ) : (
         <X size={16} className="text-gray-300 mx-auto" />
       );
@@ -130,7 +130,7 @@ export default function CompareModal({ onClose }: Props) {
           <div>
             <h2 className="text-heading-md font-bold text-gray-900">Compare Products</h2>
             <p className="text-xs text-gray-400 mt-0.5">
-              <Trophy size={11} className="inline text-brand-primary" /> highlights the better value in each row
+              <Trophy size={11} className="inline text-brand-nav" /> highlights the better value in each row
             </p>
           </div>
           <button
@@ -146,7 +146,7 @@ export default function CompareModal({ onClose }: Props) {
           <table className="w-full border-collapse">
             <thead className="sticky top-0 bg-white z-10">
               <tr className="border-b border-surface-200">
-                <th className="text-start ps-6 py-5 w-44 text-xs font-semibold text-brand-primary uppercase tracking-wider">
+                <th className="text-start ps-6 py-5 w-44 text-xs font-semibold text-brand-nav uppercase tracking-wider">
                   Feature
                 </th>
                 {items.map((product) => (
@@ -193,7 +193,7 @@ export default function CompareModal({ onClose }: Props) {
                           }`}
                         >
                           {isBest ? (
-                            <span className="inline-flex items-center justify-center gap-1.5 font-bold text-brand-primary">
+                            <span className="inline-flex items-center justify-center gap-1.5 font-bold text-brand-nav">
                               <Trophy size={13} className="shrink-0" />
                               {formatted}
                             </span>

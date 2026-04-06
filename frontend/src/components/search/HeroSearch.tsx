@@ -96,7 +96,7 @@ export default function HeroSearch({ compact = false }: HeroSearchProps) {
           onFocus={() => query.length >= 2 && results.length > 0 && setIsOpen(true)}
           onKeyDown={handleKeyDown}
           placeholder={t('search_placeholder')}
-          className={`w-full bg-white/90 backdrop-blur-sm text-gray-900 border-0 shadow-elevated focus:ring-2 focus:ring-brand-primary/40 outline-none transition-all ${
+          className={`w-full bg-white/90 backdrop-blur-sm text-gray-900 border-0 shadow-elevated focus:ring-2 focus:ring-brand-nav/40 outline-none transition-all ${
             compact
               ? 'rounded-button pl-10 pr-4 py-2.5 text-sm'
               : 'rounded-xl pl-10 pr-4 py-2.5 text-sm'
@@ -104,7 +104,7 @@ export default function HeroSearch({ compact = false }: HeroSearchProps) {
         />
         {loading && (
           <span className={`absolute top-1/2 -translate-y-1/2 ${compact ? 'right-3' : 'right-5'}`}>
-            <span className="block w-5 h-5 border-2 border-brand-primary border-t-transparent rounded-full animate-spin" />
+            <span className="block w-5 h-5 border-2 border-brand-nav border-t-transparent rounded-full animate-spin" />
           </span>
         )}
       </div>
@@ -124,7 +124,7 @@ export default function HeroSearch({ compact = false }: HeroSearchProps) {
                 <li key={product.id}>
                   <button
                     className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${
-                      idx === activeIndex ? 'bg-brand-primary-50' : 'hover:bg-surface-50'
+                      idx === activeIndex ? 'bg-brand-nav/5' : 'hover:bg-surface-50'
                     }`}
                     onClick={() => navigateToResult(product.id)}
                     onMouseEnter={() => setActiveIndex(idx)}

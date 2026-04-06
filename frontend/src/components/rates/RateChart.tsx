@@ -81,7 +81,7 @@ export default function RateChart({ days = 7 }: Props) {
               onClick={() => setSelectedDays(d)}
               className={`px-3 py-1.5 text-xs font-medium rounded-badge transition-all ${
                 selectedDays === d
-                  ? 'bg-brand-primary text-white shadow-sm'
+                  ? 'bg-brand-nav text-white shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >

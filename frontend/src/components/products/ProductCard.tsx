@@ -125,7 +125,7 @@ export default function ProductCard({ product, featureLabels = {} }: Props) {
                   <div className="text-sm font-semibold text-brand-dark mt-0.5">
                     {typeof value === 'boolean' ? (
                       value ? (
-                        <Check size={15} className="text-brand-primary" />
+                        <Check size={15} className="text-brand-nav" />
                       ) : (
                         <X size={15} className="text-gray-300" />
                       )
@@ -160,7 +160,7 @@ export default function ProductCard({ product, featureLabels = {} }: Props) {
                       </span>
                       <span className="text-sm font-semibold text-brand-dark">
                         {typeof value === 'boolean' ? (
-                          value ? <span className="text-brand-primary">Yes</span> : <span className="text-gray-400">No</span>
+                          value ? <span className="text-brand-nav">Yes</span> : <span className="text-gray-400">No</span>
                         ) : String(value)}
                       </span>
                     </div>
@@ -194,8 +194,8 @@ export default function ProductCard({ product, featureLabels = {} }: Props) {
             disabled={!isSelected && isFull}
             className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-button text-sm font-medium transition-all border ${
               isSelected
-                ? 'bg-brand-primary-50 border-brand-primary text-brand-primary-700'
-                : 'border-surface-200 text-gray-500 hover:border-brand-primary hover:text-brand-primary disabled:opacity-40'
+                ? 'bg-brand-nav-50 border-brand-nav text-brand-nav-700'
+                : 'border-surface-200 text-gray-500 hover:border-brand-nav hover:text-brand-nav disabled:opacity-40'
             }`}
           >
             {isSelected ? <Check size={14} /> : <ArrowRightLeft size={14} />}
