@@ -81,14 +81,14 @@ export default function InsuranceEstimator({ type }: Props) {
 
   const isCarType = type === 'car';
   const Icon = isCarType ? Car : HeartPulse;
-  const gradient = 'from-brand-nav to-brand-nav-dark';
-  const accentBg = 'bg-brand-nav/5 border-brand-nav/10';
-  const accentText = 'text-brand-nav';
-  const accentLabel = 'text-brand-nav';
-  const accent = 'accent-brand-nav';
+  const gradient = 'from-primary to-primary-600';
+  const accentBg = 'bg-primary/5 border-primary/10';
+  const accentText = 'text-primary';
+  const accentLabel = 'text-primary';
+  const accent = 'accent-primary';
 
   return (
-    <div className="bg-white rounded-card border border-surface-200 overflow-hidden">
+    <div className="bg-white rounded-card border border-gray-200 overflow-hidden">
       <div className={`px-5 py-3 bg-gradient-to-r ${gradient} flex items-center gap-2 text-white`}>
         <Icon size={16} />
         <h3 className="text-sm font-bold">
@@ -136,8 +136,8 @@ export default function InsuranceEstimator({ type }: Props) {
                       onClick={() => setCoverType(opt.value)}
                       className={`flex-1 py-2 rounded-button text-xs font-medium border transition-colors ${
                         coverType === opt.value
-                          ? 'border-brand-nav bg-brand-nav/5 text-brand-nav'
-                          : 'border-surface-200 text-gray-600 hover:border-brand-nav/30'
+                          ? 'border-primary bg-primary/5 text-primary'
+                          : 'border-gray-200 text-gray-600 hover:border-primary/30'
                       }`}
                     >
                       {opt.label}
@@ -180,8 +180,8 @@ export default function InsuranceEstimator({ type }: Props) {
                       onClick={() => setCoverage(opt.value)}
                       className={`flex-1 py-2 rounded-button text-xs font-medium border transition-colors ${
                         coverage === opt.value
-                          ? 'border-brand-nav bg-brand-nav/5 text-brand-nav'
-                          : 'border-surface-200 text-gray-600 hover:border-brand-nav/30'
+                          ? 'border-primary bg-primary/5 text-primary'
+                          : 'border-gray-200 text-gray-600 hover:border-primary/30'
                       }`}
                     >
                       {opt.label}

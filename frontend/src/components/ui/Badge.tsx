@@ -8,7 +8,7 @@ const VARIANT_CLASSES: Record<BadgeVariant, string> = {
   error: 'bg-error-light text-error-dark',
   info: 'bg-info-light text-info-dark',
   islamic: 'bg-emerald-100 text-emerald-800',
-  ai: 'bg-brand-nav-50 text-brand-nav-700',
+  ai: 'bg-primary-50 text-primary-700',
   new: 'bg-yellow-50 text-yellow-800',
   best: 'bg-yellow-100 text-yellow-800',
   cashback: 'bg-amber-50 text-amber-700 border border-amber-200',

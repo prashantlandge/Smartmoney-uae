@@ -37,13 +37,13 @@ export default function ProviderRow({ provider, rank, isBest, sendAmount }: Prop
   };
 
   return (
-    <tr className={`border-b border-gray-100 last:border-0 transition-colors h-[72px] ${isBest ? 'bg-success-light' : 'hover:bg-surface-50'}`}>
+    <tr className={`border-b border-gray-100 last:border-0 transition-colors h-[72px] ${isBest ? 'bg-success-light' : 'hover:bg-gray-50'}`}>
       {/* Provider */}
       <td className="py-2 sm:py-3 px-2 sm:px-3 align-middle">
         <div className="flex items-center gap-1.5 sm:gap-2.5">
           <div className="relative shrink-0">
             <ProviderLogo name={provider.provider_name} size={32} />
-            <span className="absolute -top-1 -end-1 w-4 h-4 sm:w-5 sm:h-5 bg-white shadow-sm rounded-full flex items-center justify-center text-[9px] sm:text-caption font-bold text-gray-600 border border-surface-200">
+            <span className="absolute -top-1 -end-1 w-4 h-4 sm:w-5 sm:h-5 bg-white shadow-sm rounded-full flex items-center justify-center text-[9px] sm:text-caption font-bold text-gray-600 border border-gray-200">
               {rank}
             </span>
           </div>

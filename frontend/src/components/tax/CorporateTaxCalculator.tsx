@@ -23,8 +23,8 @@ export default function CorporateTaxCalculator() {
   const fmt = (n: number) => `AED ${n.toLocaleString('en-AE', { maximumFractionDigits: 0 })}`;
 
   return (
-    <div className="bg-white rounded-card border border-surface-200 overflow-hidden">
-      <div className="px-5 py-3 bg-gradient-to-r from-brand-nav to-brand-nav-dark flex items-center gap-2 text-white">
+    <div className="bg-white rounded-card border border-gray-200 overflow-hidden">
+      <div className="px-5 py-3 bg-gradient-to-r from-primary to-primary-600 flex items-center gap-2 text-white">
         <Briefcase size={16} />
         <h3 className="text-sm font-bold">UAE Corporate Tax Calculator (9%)</h3>
       </div>
@@ -38,7 +38,7 @@ export default function CorporateTaxCalculator() {
             </label>
             <input type="range" min={100000} max={10000000} step={50000} value={revenue}
               onChange={(e) => setRevenue(Number(e.target.value))}
-              className="w-full accent-brand-nav" />
+              className="w-full accent-primary" />
             <div className="flex justify-between text-label text-gray-400">
               <span>AED 100K</span><span>AED 10M</span>
             </div>
@@ -51,7 +51,7 @@ export default function CorporateTaxCalculator() {
             </label>
             <input type="range" min={0} max={revenue} step={50000} value={Math.min(expenses, revenue)}
               onChange={(e) => setExpenses(Number(e.target.value))}
-              className="w-full accent-brand-nav" />
+              className="w-full accent-primary" />
           </div>
 
           <div>
@@ -60,7 +60,7 @@ export default function CorporateTaxCalculator() {
                 type="checkbox"
                 checked={isFreezone}
                 onChange={(e) => setIsFreezone(e.target.checked)}
-                className="w-4 h-4 rounded accent-brand-nav"
+                className="w-4 h-4 rounded accent-primary"
               />
               <span className="text-xs text-gray-600">Qualifying Free Zone entity</span>
             </label>
@@ -71,9 +71,9 @@ export default function CorporateTaxCalculator() {
         </div>
 
         <div className="space-y-3">
-          <div className={`rounded-xl p-4 text-center border ${isFreezone ? 'bg-brand-nav-50 border-brand-nav-100' : 'bg-surface-50 border-surface-200'}`}>
+          <div className={`rounded-xl p-4 text-center border ${isFreezone ? 'bg-primary-50 border-primary-100' : 'bg-gray-50 border-gray-200'}`}>
             <p className="text-xs text-gray-500 font-medium mb-1">Estimated Corporate Tax</p>
-            <p className={`text-display-lg font-bold ${isFreezone ? 'text-brand-nav' : 'text-brand-dark'}`}>
+            <p className={`text-display-lg font-bold ${isFreezone ? 'text-primary' : 'text-gray-900'}`}>
               {fmt(result.tax)}
             </p>
             <p className="text-label text-gray-400 mt-1">
@@ -82,13 +82,13 @@ export default function CorporateTaxCalculator() {
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            <div className="bg-surface-50 rounded-xl p-3 text-center">
+            <div className="bg-gray-50 rounded-xl p-3 text-center">
               <p className="text-label text-gray-500">Taxable Income</p>
               <p className="text-sm font-bold text-gray-900">{fmt(result.taxableIncome)}</p>
             </div>
-            <div className="bg-surface-50 rounded-xl p-3 text-center">
+            <div className="bg-gray-50 rounded-xl p-3 text-center">
               <p className="text-label text-gray-500">Tax-Free Threshold</p>
-              <p className="text-sm font-bold text-brand-nav">{fmt(result.threshold)}</p>
+              <p className="text-sm font-bold text-primary">{fmt(result.threshold)}</p>
             </div>
           </div>
 

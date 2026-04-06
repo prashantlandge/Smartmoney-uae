@@ -21,8 +21,8 @@ export default function SavingsCalculator() {
   const fmt = (n: number) => `AED ${n.toLocaleString('en-AE', { maximumFractionDigits: 0 })}`;
 
   return (
-    <div className="bg-white rounded-card border border-surface-200 overflow-hidden">
-      <div className="px-5 py-3 bg-gradient-to-r from-brand-nav to-brand-nav-dark flex items-center gap-2 text-white">
+    <div className="bg-white rounded-card border border-gray-200 overflow-hidden">
+      <div className="px-5 py-3 bg-gradient-to-r from-primary to-primary-600 flex items-center gap-2 text-white">
         <PiggyBank size={16} />
         <h3 className="text-sm font-bold">Savings Calculator</h3>
       </div>
@@ -36,7 +36,7 @@ export default function SavingsCalculator() {
             </label>
             <input type="range" min={500} max={50000} step={500} value={monthlyDeposit}
               onChange={(e) => setMonthlyDeposit(Number(e.target.value))}
-              className="w-full accent-brand-nav" />
+              className="w-full accent-primary" />
             <div className="flex justify-between text-label text-gray-400">
               <span>AED 500</span><span>AED 50K</span>
             </div>
@@ -49,7 +49,7 @@ export default function SavingsCalculator() {
             </label>
             <input type="range" min={1} max={30} step={1} value={years}
               onChange={(e) => setYears(Number(e.target.value))}
-              className="w-full accent-brand-nav" />
+              className="w-full accent-primary" />
             <div className="flex justify-between text-label text-gray-400">
               <span>1 yr</span><span>30 yrs</span>
             </div>
@@ -62,7 +62,7 @@ export default function SavingsCalculator() {
             </label>
             <input type="range" min={1} max={15} step={0.25} value={rate}
               onChange={(e) => setRate(Number(e.target.value))}
-              className="w-full accent-brand-nav" />
+              className="w-full accent-primary" />
             <div className="flex justify-between text-label text-gray-400">
               <span>1%</span><span>15%</span>
             </div>
@@ -70,20 +70,20 @@ export default function SavingsCalculator() {
         </div>
 
         <div className="space-y-3">
-          <div className="bg-brand-nav/5 rounded-xl p-4 text-center border border-brand-nav/10">
-            <p className="text-xs text-brand-nav font-medium mb-1">Total Value</p>
-            <p className="text-display-lg font-bold text-brand-nav">{fmt(result.total)}</p>
+          <div className="bg-primary/5 rounded-xl p-4 text-center border border-primary/10">
+            <p className="text-xs text-primary font-medium mb-1">Total Value</p>
+            <p className="text-display-lg font-bold text-primary">{fmt(result.total)}</p>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <div className="bg-surface-50 rounded-xl p-3 text-center">
+            <div className="bg-gray-50 rounded-xl p-3 text-center">
               <PiggyBank size={14} className="mx-auto text-gray-400 mb-1" />
               <p className="text-label text-gray-500">You Invest</p>
               <p className="text-sm font-bold text-gray-900">{fmt(result.deposited)}</p>
             </div>
-            <div className="bg-surface-50 rounded-xl p-3 text-center">
-              <TrendingUp size={14} className="mx-auto text-brand-nav mb-1" />
+            <div className="bg-gray-50 rounded-xl p-3 text-center">
+              <TrendingUp size={14} className="mx-auto text-primary mb-1" />
               <p className="text-label text-gray-500">Interest Earned</p>
-              <p className="text-sm font-bold text-brand-nav">{fmt(result.interest)}</p>
+              <p className="text-sm font-bold text-primary">{fmt(result.interest)}</p>
             </div>
           </div>
           <p className="text-label text-gray-400 text-center">

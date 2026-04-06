@@ -16,7 +16,7 @@ export default function RecommendPage() {
         <meta name="description" content={t('recommend_meta')} />
       </Head>
 
-      <section className="bg-gradient-to-br from-brand-nav via-brand-nav to-brand-nav-dark text-white">
+      <section className="bg-gradient-to-br from-primary via-primary to-primary-600 text-white">
         <div className="max-w-content-lg mx-auto px-4 sm:px-8 py-8 text-center">
           <div className="inline-flex items-center gap-1.5 bg-white/15 text-white text-label font-semibold px-3 py-1.5 rounded-badge mb-3">
             <Sparkles size={12} />
@@ -29,7 +29,7 @@ export default function RecommendPage() {
         </div>
       </section>
 
-      <section className="bg-surface-50 py-10 px-4">
+      <section className="bg-gray-50 py-10 px-4">
         <div className="max-w-lg mx-auto">
           <SmartRecommendQuiz />
         </div>

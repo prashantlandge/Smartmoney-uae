@@ -81,8 +81,8 @@ export default function CashbackCalculator() {
   const fmt = (n: number) => `AED ${n.toLocaleString('en-AE', { maximumFractionDigits: 0 })}`;
 
   return (
-    <div className="bg-white rounded-card border border-surface-200 overflow-hidden">
-      <div className="px-5 py-3 bg-gradient-to-r from-brand-nav to-brand-nav-dark flex items-center gap-2 text-white">
+    <div className="bg-white rounded-card border border-gray-200 overflow-hidden">
+      <div className="px-5 py-3 bg-gradient-to-r from-primary to-primary-600 flex items-center gap-2 text-white">
         <Percent size={16} />
         <h3 className="text-sm font-bold">Cashback Calculator</h3>
       </div>
@@ -111,27 +111,27 @@ export default function CashbackCalculator() {
         </div>
 
         {/* Results table */}
-        <div className="border border-surface-200 rounded-xl overflow-hidden">
+        <div className="border border-gray-200 rounded-xl overflow-hidden">
           <div className="grid grid-cols-[1fr_auto_auto_auto] gap-0 text-xs">
             {/* Header */}
-            <div className="px-3 py-2 bg-surface-50 font-semibold text-gray-600">Card</div>
-            <div className="px-3 py-2 bg-surface-50 font-semibold text-gray-600 text-end">Monthly</div>
-            <div className="px-3 py-2 bg-surface-50 font-semibold text-gray-600 text-end">Annual</div>
-            <div className="px-3 py-2 bg-surface-50 font-semibold text-gray-600 text-end">Net Benefit</div>
+            <div className="px-3 py-2 bg-gray-50 font-semibold text-gray-600">Card</div>
+            <div className="px-3 py-2 bg-gray-50 font-semibold text-gray-600 text-end">Monthly</div>
+            <div className="px-3 py-2 bg-gray-50 font-semibold text-gray-600 text-end">Annual</div>
+            <div className="px-3 py-2 bg-gray-50 font-semibold text-gray-600 text-end">Net Benefit</div>
 
             {results.map((card, idx) => (
               <>
-                <div key={`${card.name}-name`} className={`px-3 py-2.5 border-t border-surface-100 ${idx === 0 ? 'bg-emerald-50' : ''}`}>
+                <div key={`${card.name}-name`} className={`px-3 py-2.5 border-t border-gray-100 ${idx === 0 ? 'bg-emerald-50' : ''}`}>
                   <p className="font-semibold text-gray-900">{card.name}</p>
                   <p className="text-caption text-gray-400">{card.provider} · Fee: {fmt(card.annualFee)}/yr</p>
                 </div>
-                <div key={`${card.name}-monthly`} className={`px-3 py-2.5 border-t border-surface-100 text-end font-medium ${idx === 0 ? 'bg-emerald-50' : ''}`}>
+                <div key={`${card.name}-monthly`} className={`px-3 py-2.5 border-t border-gray-100 text-end font-medium ${idx === 0 ? 'bg-emerald-50' : ''}`}>
                   {fmt(card.monthlyCashback)}
                 </div>
-                <div key={`${card.name}-annual`} className={`px-3 py-2.5 border-t border-surface-100 text-end font-medium ${idx === 0 ? 'bg-emerald-50' : ''}`}>
+                <div key={`${card.name}-annual`} className={`px-3 py-2.5 border-t border-gray-100 text-end font-medium ${idx === 0 ? 'bg-emerald-50' : ''}`}>
                   {fmt(card.annualCashback)}
                 </div>
-                <div key={`${card.name}-net`} className={`px-3 py-2.5 border-t border-surface-100 text-end font-bold ${
+                <div key={`${card.name}-net`} className={`px-3 py-2.5 border-t border-gray-100 text-end font-bold ${
                   idx === 0 ? 'bg-emerald-50 text-emerald-700' : card.netBenefit >= 0 ? 'text-emerald-600' : 'text-red-500'
                 }`}>
                   {card.netBenefit >= 0 ? '+' : ''}{fmt(card.netBenefit)}

@@ -22,7 +22,7 @@ export default function StarRating({ rating, showNumber = true, size = 14, class
         {/* Empty star background */}
         <Star
           size={size}
-          className="absolute inset-0 text-surface-300"
+          className="absolute inset-0 text-gray-300"
           fill="currentColor"
           strokeWidth={0}
         />

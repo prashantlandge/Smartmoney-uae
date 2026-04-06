@@ -74,14 +74,14 @@ export default function RateChart({ days = 7 }: Props) {
         <h3 className="text-heading-sm font-semibold text-gray-700">
           {t('rate_chart_title', { days: selectedDays })}
         </h3>
-        <div className="flex gap-1 bg-surface-100 rounded-button p-0.5">
+        <div className="flex gap-1 bg-gray-100 rounded-button p-0.5">
           {[7, 30].map((d) => (
             <button
               key={d}
               onClick={() => setSelectedDays(d)}
               className={`px-3 py-1.5 text-xs font-medium rounded-badge transition-all ${
                 selectedDays === d
-                  ? 'bg-brand-nav text-white shadow-sm'
+                  ? 'bg-primary text-white shadow-sm'
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >

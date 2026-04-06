@@ -24,8 +24,8 @@ export default function CurrencySelector({ value, onChange }: Props) {
           onClick={() => onChange(c.code)}
           className={`flex items-center gap-1.5 px-3 py-2 rounded-button text-xs font-medium transition-all ${
             value === c.code
-              ? 'bg-brand-nav text-white shadow-sm'
-              : 'bg-surface-100 text-gray-600 hover:bg-surface-200'
+              ? 'bg-primary text-white shadow-sm'
+              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
           }`}
         >
           <FlagIcon code={c.code} size={16} />

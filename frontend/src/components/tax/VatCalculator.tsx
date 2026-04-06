@@ -19,8 +19,8 @@ export default function VatCalculator() {
   const fmt = (n: number) => `AED ${n.toLocaleString('en-AE', { maximumFractionDigits: 2 })}`;
 
   return (
-    <div className="bg-white rounded-card border border-surface-200 overflow-hidden">
-      <div className="px-5 py-3 bg-gradient-to-r from-brand-nav to-brand-nav-dark flex items-center gap-2 text-white">
+    <div className="bg-white rounded-card border border-gray-200 overflow-hidden">
+      <div className="px-5 py-3 bg-gradient-to-r from-primary to-primary-600 flex items-center gap-2 text-white">
         <Receipt size={16} />
         <h3 className="text-sm font-bold">UAE VAT Calculator (5%)</h3>
       </div>
@@ -39,8 +39,8 @@ export default function VatCalculator() {
                   onClick={() => setMode(opt.value)}
                   className={`flex-1 py-2 rounded-button text-xs font-medium border transition-colors ${
                     mode === opt.value
-                      ? 'border-brand-nav bg-brand-nav/5 text-brand-nav'
-                      : 'border-surface-200 text-gray-600 hover:border-brand-nav/30'
+                      ? 'border-primary bg-primary/5 text-primary'
+                      : 'border-gray-200 text-gray-600 hover:border-primary/30'
                   }`}
                 >
                   {opt.label}
@@ -67,19 +67,19 @@ export default function VatCalculator() {
         </div>
 
         <div className="space-y-3">
-          <div className="bg-brand-nav/5 rounded-xl p-4 border border-brand-nav/10">
+          <div className="bg-primary/5 rounded-xl p-4 border border-primary/10">
             <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
               <span>{mode === 'add' ? 'Original Amount' : 'Amount excl. VAT'}</span>
               <span className="font-semibold text-gray-900">{fmt(result.original)}</span>
             </div>
             <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
               <span>VAT (5%)</span>
-              <span className="font-semibold text-brand-nav">{fmt(result.vat)}</span>
+              <span className="font-semibold text-primary">{fmt(result.vat)}</span>
             </div>
-            <div className="border-t border-brand-nav/10 pt-2 mt-2">
+            <div className="border-t border-primary/10 pt-2 mt-2">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-bold text-gray-700">{mode === 'add' ? 'Total incl. VAT' : 'Total Amount'}</span>
-                <span className="text-lg font-bold text-brand-nav">{fmt(result.total)}</span>
+                <span className="text-lg font-bold text-primary">{fmt(result.total)}</span>
               </div>
             </div>
           </div>

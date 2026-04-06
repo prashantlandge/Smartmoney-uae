@@ -16,11 +16,11 @@ import CompareTray from '@/components/products/CompareTray';
 import { Package, Search, SlidersHorizontal, ChevronRight, X } from 'lucide-react';
 
 const HERO_COLORS: Record<string, string> = {
-  'credit-cards': 'from-brand-nav via-brand-nav to-brand-nav-dark',
-  'personal-loans': 'from-brand-nav via-brand-nav to-brand-nav-dark',
-  'islamic-finance': 'from-brand-nav via-brand-nav to-brand-nav-dark',
-  'car-insurance': 'from-brand-nav via-brand-nav to-brand-nav-dark',
-  'health-insurance': 'from-brand-nav via-brand-nav to-brand-nav-dark',
+  'credit-cards': 'from-primary via-primary to-primary-600',
+  'personal-loans': 'from-primary via-primary to-primary-600',
+  'islamic-finance': 'from-primary via-primary to-primary-600',
+  'car-insurance': 'from-primary via-primary to-primary-600',
+  'health-insurance': 'from-primary via-primary to-primary-600',
 };
 
 const HERO_DESCRIPTIONS: Record<string, string> = {
@@ -77,7 +77,7 @@ export default function ProductPageTemplate({
   const [sortBy, setSortBy] = useState<SortBy>('relevance');
   const [searchQuery, setSearchQuery] = useState('');
   const [showMobileFilters, setShowMobileFilters] = useState(false);
-  const heroGradient = HERO_COLORS[category] || 'from-brand-nav to-brand-nav-dark';
+  const heroGradient = HERO_COLORS[category] || 'from-primary to-primary-600';
   const categoryKey = SLUG_TO_KEY[category] || category;
   const heroDesc = HERO_DESCRIPTIONS[category] || t(subtitleKey);
 
@@ -151,7 +151,7 @@ export default function ProductPageTemplate({
         </section>
 
         {/* Sticky toolbar */}
-        <section className="border-b border-surface-200 bg-white sticky top-14 z-20">
+        <section className="border-b border-gray-200 bg-white sticky top-14 z-20">
           <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-2">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-1.5">
               <p className="text-body-sm text-gray-500 font-medium">
@@ -191,7 +191,7 @@ export default function ProductPageTemplate({
                   className={`flex items-center gap-1 px-2.5 py-1 rounded-badge text-label font-semibold whitespace-nowrap transition-all ${
                     islamicOnly
                       ? 'bg-emerald-600 text-white'
-                      : 'bg-surface-100 text-gray-600 hover:bg-surface-200'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
                   {t('islamic_only')}
@@ -206,8 +206,8 @@ export default function ProductPageTemplate({
                     onClick={() => toggleProvider(name)}
                     className={`flex items-center gap-1 px-2.5 py-1 rounded-badge text-label font-semibold whitespace-nowrap transition-all ${
                       active
-                        ? 'bg-brand-nav text-white'
-                        : 'bg-surface-100 text-gray-600 hover:bg-surface-200'
+                        ? 'bg-primary text-white'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                     }`}
                   >
                     {name}
@@ -218,7 +218,7 @@ export default function ProductPageTemplate({
               {providerNames.length > 8 && (
                 <button
                   onClick={() => setShowMobileFilters(!showMobileFilters)}
-                  className="flex items-center gap-1 px-2.5 py-1 rounded-badge text-label font-semibold bg-surface-100 text-gray-600 hover:bg-surface-200 whitespace-nowrap"
+                  className="flex items-center gap-1 px-2.5 py-1 rounded-badge text-label font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap"
                 >
                   <SlidersHorizontal size={11} />
                   {t('more_filters')}
@@ -227,7 +227,7 @@ export default function ProductPageTemplate({
               {activeFilterCount > 0 && (
                 <button
                   onClick={clearFilters}
-                  className="text-label font-semibold text-brand-nav hover:text-brand-nav-700 whitespace-nowrap"
+                  className="text-label font-semibold text-primary hover:text-primary-700 whitespace-nowrap"
                 >
                   {t('clear_all')}
                 </button>
@@ -235,7 +235,7 @@ export default function ProductPageTemplate({
             </div>
 
             {showMobileFilters && (
-              <div className="mt-1.5 pt-1.5 border-t border-surface-100 animate-fade-in">
+              <div className="mt-1.5 pt-1.5 border-t border-gray-100 animate-fade-in">
                 <div className="flex flex-wrap gap-1.5">
                   {providerNames.slice(8).map(name => {
                     const active = selectedProviders.includes(name);
@@ -245,8 +245,8 @@ export default function ProductPageTemplate({
                         onClick={() => toggleProvider(name)}
                         className={`px-2.5 py-1 rounded-badge text-label font-semibold whitespace-nowrap transition-all ${
                           active
-                            ? 'bg-brand-nav text-white'
-                            : 'bg-surface-100 text-gray-600 hover:bg-surface-200'
+                            ? 'bg-primary text-white'
+                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                         }`}
                       >
                         {name}
@@ -260,7 +260,7 @@ export default function ProductPageTemplate({
         </section>
 
         {/* Products List */}
-        <section className="bg-surface-50 min-h-[60vh]">
+        <section className="bg-gray-50 min-h-[60vh]">
           <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-5">
             {loading && (
               <div className="space-y-3">
@@ -300,7 +300,7 @@ export default function ProductPageTemplate({
         </div>
 
         {calculatorSlot && (
-          <section className="bg-white border-t border-surface-200">
+          <section className="bg-white border-t border-gray-200">
             <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-6">
               {calculatorSlot}
             </div>

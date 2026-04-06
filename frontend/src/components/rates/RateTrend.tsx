@@ -27,7 +27,7 @@ export default function RateTrend() {
   const isUp = trend.direction === 'up';
   const isDown = trend.direction === 'down';
   const Icon = isUp ? TrendingUp : isDown ? TrendingDown : Minus;
-  const bgColor = isUp ? 'bg-success-light' : isDown ? 'bg-error-light' : 'bg-surface-100';
+  const bgColor = isUp ? 'bg-success-light' : isDown ? 'bg-error-light' : 'bg-gray-100';
   const textColor = isUp ? 'text-success' : isDown ? 'text-error' : 'text-gray-500';
   const iconBg = isUp ? 'bg-success/10' : isDown ? 'bg-error/10' : 'bg-gray-200';
   const trendKey = `rate_trend_${trend.direction}`;

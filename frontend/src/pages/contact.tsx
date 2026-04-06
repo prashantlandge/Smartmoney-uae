@@ -24,7 +24,7 @@ export default function ContactPage() {
         path="/contact"
       />
 
-      <section className="bg-gradient-to-br from-brand-nav via-brand-nav to-brand-nav-dark text-white py-8 sm:py-10 px-4">
+      <section className="bg-gradient-to-br from-primary via-primary to-primary-600 text-white py-8 sm:py-10 px-4">
         <Container size="md">
           <div className="text-center">
             <h1 className="text-xl sm:text-2xl font-bold mb-2">{t('contact_title')}</h1>
@@ -43,11 +43,11 @@ export default function ContactPage() {
                   <div className="w-16 h-16 bg-success-light rounded-2xl flex items-center justify-center mx-auto mb-4 animate-scale-in">
                     <CheckCircle size={32} className="text-success" />
                   </div>
-                  <h2 className="text-heading-lg font-bold text-brand-dark mb-2">{t('contact_success_title')}</h2>
+                  <h2 className="text-heading-lg font-bold text-gray-900 mb-2">{t('contact_success_title')}</h2>
                   <p className="text-body-sm text-gray-500 mb-4">{t('contact_success')}</p>
                   <button
                     onClick={() => setSubmitted(false)}
-                    className="btn-ghost text-brand-nav"
+                    className="btn-ghost text-primary"
                   >
                     {t('contact_send_another')}
                   </button>
@@ -87,33 +87,33 @@ export default function ContactPage() {
             <div className="space-y-4">
               <div className="card-hover">
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-brand-nav-50 flex items-center justify-center shrink-0">
-                    <Mail size={18} className="text-brand-nav" />
+                  <div className="w-10 h-10 rounded-xl bg-primary-50 flex items-center justify-center shrink-0">
+                    <Mail size={18} className="text-primary" />
                   </div>
                   <div>
-                    <h3 className="text-heading-sm font-semibold text-brand-dark mb-1">{t('contact_email_us')}</h3>
+                    <h3 className="text-heading-sm font-semibold text-gray-900 mb-1">{t('contact_email_us')}</h3>
                     <p className="text-body-sm text-gray-500">{t('contact_email_address')}</p>
                   </div>
                 </div>
               </div>
               <div className="card-hover">
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-card bg-brand-nav-50 flex items-center justify-center shrink-0">
-                    <Clock size={18} className="text-brand-nav" />
+                  <div className="w-10 h-10 rounded-card bg-primary-50 flex items-center justify-center shrink-0">
+                    <Clock size={18} className="text-primary" />
                   </div>
                   <div>
-                    <h3 className="text-heading-sm font-semibold text-brand-dark mb-1">{t('contact_response_time')}</h3>
+                    <h3 className="text-heading-sm font-semibold text-gray-900 mb-1">{t('contact_response_time')}</h3>
                     <p className="text-body-sm text-gray-500">{t('contact_response_value')}</p>
                   </div>
                 </div>
               </div>
               <div className="card-hover">
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-card bg-brand-nav-50 flex items-center justify-center shrink-0">
-                    <MessageSquare size={18} className="text-brand-nav" />
+                  <div className="w-10 h-10 rounded-card bg-primary-50 flex items-center justify-center shrink-0">
+                    <MessageSquare size={18} className="text-primary" />
                   </div>
                   <div>
-                    <h3 className="text-heading-sm font-semibold text-brand-dark mb-1">{t('contact_live_chat')}</h3>
+                    <h3 className="text-heading-sm font-semibold text-gray-900 mb-1">{t('contact_live_chat')}</h3>
                     <p className="text-body-sm text-gray-500">{t('contact_live_chat_desc')}</p>
                   </div>
                 </div>

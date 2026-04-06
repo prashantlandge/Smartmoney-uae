@@ -65,7 +65,7 @@ export default function Tax() {
       />
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-brand-nav via-brand-nav to-brand-nav-dark text-white">
+      <section className="bg-gradient-to-br from-primary via-primary to-primary-600 text-white">
         <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-8 sm:py-10">
           <div className="flex items-center gap-2 mb-2">
             <Scale size={20} />
@@ -78,14 +78,14 @@ export default function Tax() {
       </section>
 
       {/* Quick nav */}
-      <section className="bg-white border-b border-surface-100 sticky top-[6.25rem] z-20">
+      <section className="bg-white border-b border-gray-100 sticky top-[6.25rem] z-20">
         <div className="max-w-content-xl mx-auto px-4 sm:px-8">
           <div className="flex gap-1 overflow-x-auto py-2 scrollbar-hide">
             {TAX_SECTIONS.map((sec) => (
               <a
                 key={sec.id}
                 href={`#${sec.id}`}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-button text-xs font-medium text-gray-600 hover:text-brand-nav hover:bg-brand-nav/5 transition-colors whitespace-nowrap shrink-0"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-button text-xs font-medium text-gray-600 hover:text-primary hover:bg-primary/5 transition-colors whitespace-nowrap shrink-0"
               >
                 <sec.icon size={13} />
                 {sec.label}
@@ -96,36 +96,36 @@ export default function Tax() {
       </section>
 
       {/* Overview cards */}
-      <section className="bg-surface-50 border-b border-surface-100">
+      <section className="bg-gray-50 border-b border-gray-100">
         <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-6 sm:py-8">
-          <h2 className="text-heading-sm font-bold text-brand-dark mb-1">{t('tax_overview')}</h2>
+          <h2 className="text-heading-sm font-bold text-gray-900 mb-1">{t('tax_overview')}</h2>
           <p className="text-body-sm text-gray-500 mb-5">{t('tax_overview_desc')}</p>
 
           <div className="grid sm:grid-cols-3 gap-3">
-            <div className="bg-white rounded-card border border-surface-200 p-4">
+            <div className="bg-white rounded-card border border-gray-200 p-4">
               <div className="flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 rounded-lg bg-brand-nav-50 flex items-center justify-center">
-                  <CheckCircle size={16} className="text-brand-nav" />
+                <div className="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center">
+                  <CheckCircle size={16} className="text-primary" />
                 </div>
-                <h3 className="text-sm font-bold text-brand-dark">{t('tax_no_income')}</h3>
+                <h3 className="text-sm font-bold text-gray-900">{t('tax_no_income')}</h3>
               </div>
               <p className="text-label text-gray-500">{t('tax_no_income_desc')}</p>
             </div>
-            <div className="bg-white rounded-card border border-surface-200 p-4">
+            <div className="bg-white rounded-card border border-gray-200 p-4">
               <div className="flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 rounded-lg bg-brand-nav/5 flex items-center justify-center">
-                  <Receipt size={16} className="text-brand-nav" />
+                <div className="w-8 h-8 rounded-lg bg-primary/5 flex items-center justify-center">
+                  <Receipt size={16} className="text-primary" />
                 </div>
-                <h3 className="text-sm font-bold text-brand-dark">{t('tax_vat')}</h3>
+                <h3 className="text-sm font-bold text-gray-900">{t('tax_vat')}</h3>
               </div>
               <p className="text-label text-gray-500">{t('tax_vat_desc')}</p>
             </div>
-            <div className="bg-white rounded-card border border-surface-200 p-4">
+            <div className="bg-white rounded-card border border-gray-200 p-4">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-8 h-8 rounded-lg bg-warning-light flex items-center justify-center">
                   <Briefcase size={16} className="text-warning" />
                 </div>
-                <h3 className="text-sm font-bold text-brand-dark">{t('tax_corporate')}</h3>
+                <h3 className="text-sm font-bold text-gray-900">{t('tax_corporate')}</h3>
               </div>
               <p className="text-label text-gray-500">{t('tax_corporate_desc')}</p>
             </div>
@@ -149,20 +149,20 @@ export default function Tax() {
 
         {/* Tax Guides */}
         <div id="guides" className="scroll-mt-32 space-y-4">
-          <h2 className="text-heading-sm font-bold text-brand-dark flex items-center gap-2">
-            <Scale size={18} className="text-brand-nav" />
+          <h2 className="text-heading-sm font-bold text-gray-900 flex items-center gap-2">
+            <Scale size={18} className="text-primary" />
             {t('tax_guides')}
           </h2>
 
           {TAX_GUIDES.map((guide) => (
-            <div key={guide.title} className="bg-white rounded-card border border-surface-200 overflow-hidden">
+            <div key={guide.title} className="bg-white rounded-card border border-gray-200 overflow-hidden">
               <div className="p-5">
-                <h3 className="text-sm font-bold text-brand-dark mb-1">{guide.title}</h3>
+                <h3 className="text-sm font-bold text-gray-900 mb-1">{guide.title}</h3>
                 <p className="text-body-sm text-gray-500 mb-3">{guide.desc}</p>
                 <ul className="space-y-1.5">
                   {guide.points.map((point, i) => (
                     <li key={i} className="flex items-start gap-2 text-xs text-gray-600">
-                      <CheckCircle size={13} className="text-brand-nav shrink-0 mt-0.5" />
+                      <CheckCircle size={13} className="text-primary shrink-0 mt-0.5" />
                       {point}
                     </li>
                   ))}
@@ -184,14 +184,14 @@ export default function Tax() {
       </div>
 
       {/* CTA */}
-      <section className="bg-brand-nav">
+      <section className="bg-primary">
         <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-5">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
             <div>
               <h3 className="text-sm font-bold text-white">{t('tax_cta_title')}</h3>
               <p className="text-label text-white/60">{t('tax_cta_desc')}</p>
             </div>
-            <Link href="/" className="flex items-center gap-1.5 px-4 py-2 bg-brand-nav text-white text-sm font-semibold rounded-button hover:bg-brand-nav-600 transition-colors">
+            <Link href="/" className="flex items-center gap-1.5 px-4 py-2 bg-primary text-white text-sm font-semibold rounded-button hover:bg-primary-600 transition-colors">
               {t('tax_cta_button')} <ArrowRight size={14} />
             </Link>
           </div>

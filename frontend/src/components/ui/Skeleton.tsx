@@ -33,7 +33,7 @@ export default function Skeleton({
 
 export function SkeletonCard() {
   return (
-    <div className="bg-white rounded-card border border-surface-200 p-4 sm:p-5 space-y-3">
+    <div className="bg-white rounded-card border border-gray-200 p-4 sm:p-5 space-y-3">
       <div className="flex items-center gap-3">
         <Skeleton width={48} height={48} rounded="lg" />
         <div className="flex-1 space-y-2">

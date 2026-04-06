@@ -37,7 +37,7 @@ export default function Calculators() {
       />
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-brand-nav via-brand-nav to-brand-nav-dark text-white">
+      <section className="bg-gradient-to-br from-primary via-primary to-primary-600 text-white">
         <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-8 sm:py-10">
           <div className="flex items-center gap-2 mb-2">
             <Calculator size={20} />
@@ -50,14 +50,14 @@ export default function Calculators() {
       </section>
 
       {/* Quick nav */}
-      <section className="bg-white border-b border-surface-100 sticky top-[6.25rem] z-20">
+      <section className="bg-white border-b border-gray-100 sticky top-[6.25rem] z-20">
         <div className="max-w-content-xl mx-auto px-4 sm:px-8">
           <div className="flex gap-1 overflow-x-auto py-2 scrollbar-hide">
             {CALCULATOR_SECTIONS.map((sec) => (
               <a
                 key={sec.id}
                 href={`#${sec.id}`}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-button text-xs font-medium text-gray-600 hover:text-brand-nav hover:bg-brand-nav/5 transition-colors whitespace-nowrap shrink-0"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-button text-xs font-medium text-gray-600 hover:text-primary hover:bg-primary/5 transition-colors whitespace-nowrap shrink-0"
               >
                 <sec.icon size={13} />
                 {sec.label}
@@ -68,22 +68,22 @@ export default function Calculators() {
       </section>
 
       {/* Calculator grid — RupeeLens style */}
-      <section className="bg-surface-50 border-b border-surface-100">
+      <section className="bg-gray-50 border-b border-gray-100">
         <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-6 sm:py-8">
-          <h2 className="text-heading-sm font-bold text-brand-dark mb-1">{t('calc_all')}</h2>
+          <h2 className="text-heading-sm font-bold text-gray-900 mb-1">{t('calc_all')}</h2>
           <p className="text-body-sm text-gray-500 mb-5">{t('calc_all_desc')}</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
             {CALCULATOR_SECTIONS.map((sec) => (
               <a
                 key={sec.id}
                 href={`#${sec.id}`}
-                className="flex items-start gap-3 p-3.5 bg-white rounded-card border border-surface-200 hover:border-brand-nav/30 hover:shadow-card transition-all group"
+                className="flex items-start gap-3 p-3.5 bg-white rounded-card border border-gray-200 hover:border-primary/30 hover:shadow-card transition-all group"
               >
-                <div className="w-10 h-10 rounded-lg bg-brand-nav/5 flex items-center justify-center shrink-0 group-hover:bg-brand-nav/10 transition-colors">
-                  <sec.icon size={18} className="text-brand-nav" />
+                <div className="w-10 h-10 rounded-lg bg-primary/5 flex items-center justify-center shrink-0 group-hover:bg-primary/10 transition-colors">
+                  <sec.icon size={18} className="text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-brand-dark group-hover:text-brand-nav transition-colors">{sec.label}</p>
+                  <p className="text-sm font-semibold text-gray-900 group-hover:text-primary transition-colors">{sec.label}</p>
                   <p className="text-label text-gray-400">{sec.desc}</p>
                 </div>
               </a>
@@ -129,14 +129,14 @@ export default function Calculators() {
       </div>
 
       {/* CTA */}
-      <section className="bg-brand-nav">
+      <section className="bg-primary">
         <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-5">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
             <div>
               <h3 className="text-sm font-bold text-white">{t('calc_cta_title')}</h3>
               <p className="text-label text-white/60">{t('calc_cta_desc')}</p>
             </div>
-            <Link href="/recommend" className="flex items-center gap-1.5 px-4 py-2 bg-brand-nav text-white text-sm font-semibold rounded-button hover:bg-brand-nav-600 transition-colors">
+            <Link href="/recommend" className="flex items-center gap-1.5 px-4 py-2 bg-primary text-white text-sm font-semibold rounded-button hover:bg-primary-600 transition-colors">
               {t('nav_smart_compare')} <ArrowRight size={14} />
             </Link>
           </div>

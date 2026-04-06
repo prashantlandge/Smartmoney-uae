@@ -61,14 +61,14 @@ export default function EligibilityChecker({ onResults }: Props) {
   };
 
   return (
-    <div className="bg-white rounded-card border border-surface-200 overflow-hidden">
+    <div className="bg-white rounded-card border border-gray-200 overflow-hidden">
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full px-5 py-3 flex items-center justify-between hover:bg-surface-50 transition-colors"
+        className="w-full px-5 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors"
       >
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-brand-nav-50 flex items-center justify-center">
-            <Shield size={16} className="text-brand-nav" />
+          <div className="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center">
+            <Shield size={16} className="text-primary" />
           </div>
           <div className="text-start">
             <h3 className="text-sm font-bold text-gray-900">Eligibility Checker</h3>
@@ -77,7 +77,7 @@ export default function EligibilityChecker({ onResults }: Props) {
         </div>
         <div className="flex items-center gap-2">
           {checked && (
-            <span className="text-xs font-semibold text-brand-nav bg-brand-nav-50 px-2 py-1 rounded-badge">
+            <span className="text-xs font-semibold text-primary bg-primary-50 px-2 py-1 rounded-badge">
               {summary.eligible}/{summary.total} eligible
             </span>
           )}
@@ -86,7 +86,7 @@ export default function EligibilityChecker({ onResults }: Props) {
       </button>
 
       {expanded && (
-        <div className="px-5 pb-5 border-t border-surface-100 pt-4 animate-fade-in">
+        <div className="px-5 pb-5 border-t border-gray-100 pt-4 animate-fade-in">
           <div className="grid sm:grid-cols-3 gap-3 mb-4">
             {/* Salary */}
             <div>

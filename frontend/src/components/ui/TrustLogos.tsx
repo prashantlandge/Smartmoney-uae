@@ -17,12 +17,12 @@ const PROVIDERS = [
 export default function TrustLogos() {
   const { t } = useTranslation('common');
   return (
-    <div className="border-b border-surface-200 py-3">
-      <div className="max-w-content-xl mx-auto px-4 sm:px-6">
-        <p className="text-center text-[10px] sm:text-label text-gray-400 uppercase tracking-wider font-semibold mb-2.5">
+    <div className="bg-white border-b border-gray-100 py-4">
+      <div className="max-w-content-xl mx-auto px-4 md:px-6 lg:px-8">
+        <p className="text-center text-xs text-gray-400 uppercase tracking-wider font-semibold mb-3">
           {t('trust_logos_title')}
         </p>
-        <div className="grid grid-cols-5 sm:grid-cols-10 gap-x-3 sm:gap-x-5 gap-y-2">
+        <div className="grid grid-cols-5 sm:grid-cols-10 gap-x-4 sm:gap-x-6 gap-y-2">
           {PROVIDERS.map((p) => (
             <div key={p.name} className="flex items-center justify-center grayscale hover:grayscale-0 opacity-50 hover:opacity-100 transition-all" title={p.name}>
               <Image
@@ -30,7 +30,7 @@ export default function TrustLogos() {
                 alt={p.name}
                 width={72}
                 height={28}
-                className="h-4 sm:h-6 w-auto max-w-[48px] sm:max-w-[72px] object-contain"
+                className="h-5 sm:h-7 w-auto max-w-[48px] sm:max-w-[72px] object-contain"
               />
             </div>
           ))}

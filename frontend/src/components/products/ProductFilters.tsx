@@ -54,7 +54,7 @@ export default function ProductFilters({ products, filters, onChange }: Props) {
               type="checkbox"
               checked={filters.islamicOnly}
               onChange={(e) => onChange({ ...filters, islamicOnly: e.target.checked })}
-              className="w-4 h-4 rounded border-gray-300 text-brand-nav focus:ring-brand-nav"
+              className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
             />
             <span className="text-sm text-gray-700 group-hover:text-gray-900 transition-colors">
               {t('islamic_compliant')} only
@@ -79,7 +79,7 @@ export default function ProductFilters({ products, filters, onChange }: Props) {
                     type="checkbox"
                     checked={filters.providers.includes(name)}
                     onChange={() => toggleProvider(name)}
-                    className="w-4 h-4 rounded border-gray-300 text-brand-nav focus:ring-brand-nav"
+                    className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
                   />
                   <span className="text-sm text-gray-700 group-hover:text-gray-900 transition-colors flex-1 truncate">
                     {name}
@@ -96,7 +96,7 @@ export default function ProductFilters({ products, filters, onChange }: Props) {
       {activeCount > 0 && (
         <button
           onClick={clearAll}
-          className="text-xs text-brand-nav hover:text-brand-nav-700 font-medium transition-colors"
+          className="text-xs text-primary hover:text-primary-700 font-medium transition-colors"
         >
           Clear all filters
         </button>
@@ -110,13 +110,13 @@ export default function ProductFilters({ products, filters, onChange }: Props) {
       <div className="lg:hidden mb-4">
         <button
           onClick={() => setShowMobile(!showMobile)}
-          className="flex items-center gap-2 px-4 py-2.5 border border-surface-200 rounded-button text-sm font-medium text-gray-700 hover:bg-surface-50 transition-colors w-full justify-between"
+          className="flex items-center gap-2 px-4 py-2.5 border border-gray-200 rounded-button text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors w-full justify-between"
         >
           <div className="flex items-center gap-2">
             <SlidersHorizontal size={16} />
             Filters & Sort
             {activeCount > 0 && (
-              <span className="w-5 h-5 rounded-full bg-brand-nav text-white text-caption flex items-center justify-center">
+              <span className="w-5 h-5 rounded-full bg-primary text-white text-caption flex items-center justify-center">
                 {activeCount}
               </span>
             )}
@@ -124,7 +124,7 @@ export default function ProductFilters({ products, filters, onChange }: Props) {
           {showMobile ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
         </button>
         {showMobile && (
-          <div className="mt-2 p-4 bg-white rounded-card border border-surface-200 shadow-card animate-fade-in">
+          <div className="mt-2 p-4 bg-white rounded-card border border-gray-200 shadow-card animate-fade-in">
             {filterContent}
           </div>
         )}
@@ -132,14 +132,14 @@ export default function ProductFilters({ products, filters, onChange }: Props) {
 
       {/* Desktop sidebar */}
       <div className="hidden lg:block">
-        <div className="sticky top-24 bg-white rounded-card border border-surface-200 shadow-card p-5">
+        <div className="sticky top-24 bg-white rounded-card border border-gray-200 shadow-card p-5">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
               <SlidersHorizontal size={16} />
               Filters
             </h3>
             {activeCount > 0 && (
-              <span className="text-caption text-brand-nav font-medium">
+              <span className="text-caption text-primary font-medium">
                 {activeCount} active
               </span>
             )}

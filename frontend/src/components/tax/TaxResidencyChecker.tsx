@@ -37,8 +37,8 @@ export default function TaxResidencyChecker() {
   const result = getResult();
 
   return (
-    <div className="bg-white rounded-card border border-surface-200 overflow-hidden">
-      <div className="px-5 py-3 bg-gradient-to-r from-brand-nav to-brand-nav-dark flex items-center gap-2 text-white">
+    <div className="bg-white rounded-card border border-gray-200 overflow-hidden">
+      <div className="px-5 py-3 bg-gradient-to-r from-primary to-primary-600 flex items-center gap-2 text-white">
         <FileText size={16} />
         <h3 className="text-sm font-bold">UAE Tax Residency Checker</h3>
       </div>
@@ -50,7 +50,7 @@ export default function TaxResidencyChecker() {
 
         <div className="space-y-3 mb-5">
           {QUESTIONS.map((q) => (
-            <div key={q.id} className="border border-surface-200 rounded-lg p-3">
+            <div key={q.id} className="border border-gray-200 rounded-lg p-3">
               <p className="text-sm text-gray-700 font-medium mb-2">{q.text}</p>
               {q.help && (
                 <p className="text-label text-gray-400 mb-2 flex items-start gap-1">
@@ -63,8 +63,8 @@ export default function TaxResidencyChecker() {
                   onClick={() => handleAnswer(q.id, true)}
                   className={`flex items-center gap-1.5 px-4 py-1.5 rounded-button text-xs font-medium border transition-colors ${
                     answers[q.id] === true
-                      ? 'border-brand-nav bg-brand-nav-50 text-brand-nav'
-                      : 'border-surface-200 text-gray-500 hover:border-brand-nav/30'
+                      ? 'border-primary bg-primary-50 text-primary'
+                      : 'border-gray-200 text-gray-500 hover:border-primary/30'
                   }`}
                 >
                   <Check size={12} /> Yes
@@ -74,7 +74,7 @@ export default function TaxResidencyChecker() {
                   className={`flex items-center gap-1.5 px-4 py-1.5 rounded-button text-xs font-medium border transition-colors ${
                     answers[q.id] === false
                       ? 'border-error bg-error-light text-error'
-                      : 'border-surface-200 text-gray-500 hover:border-error/30'
+                      : 'border-gray-200 text-gray-500 hover:border-error/30'
                   }`}
                 >
                   <X size={12} /> No
@@ -87,13 +87,13 @@ export default function TaxResidencyChecker() {
         {allAnswered && (
           <div className={`rounded-xl p-4 border animate-fade-in ${
             result === 'likely_resident'
-              ? 'bg-brand-nav-50 border-brand-nav-100'
+              ? 'bg-primary-50 border-primary-100'
               : result === 'possible_resident'
               ? 'bg-warning-light border-yellow-200'
-              : 'bg-surface-50 border-surface-200'
+              : 'bg-gray-50 border-gray-200'
           }`}>
             <h4 className={`text-sm font-bold mb-1 ${
-              result === 'likely_resident' ? 'text-brand-nav' :
+              result === 'likely_resident' ? 'text-primary' :
               result === 'possible_resident' ? 'text-warning-dark' : 'text-gray-700'
             }`}>
               {result === 'likely_resident' && '✓ Likely a UAE Tax Resident'}

@@ -22,8 +22,8 @@ export default function EmiCalculator() {
   const fmt = (n: number) => `AED ${n.toLocaleString('en-AE', { maximumFractionDigits: 0 })}`;
 
   return (
-    <div className="bg-white rounded-card border border-surface-200 overflow-hidden">
-      <div className="px-5 py-3 bg-gradient-to-r from-brand-nav to-brand-nav-dark flex items-center gap-2 text-white">
+    <div className="bg-white rounded-card border border-gray-200 overflow-hidden">
+      <div className="px-5 py-3 bg-gradient-to-r from-primary to-primary-600 flex items-center gap-2 text-white">
         <Calculator size={16} />
         <h3 className="text-sm font-bold">EMI Calculator</h3>
       </div>
@@ -38,7 +38,7 @@ export default function EmiCalculator() {
             </label>
             <input type="range" min={10000} max={2000000} step={5000} value={loanAmount}
               onChange={(e) => setLoanAmount(Number(e.target.value))}
-              className="w-full accent-brand-nav" />
+              className="w-full accent-primary" />
             <div className="flex justify-between text-caption text-gray-400">
               <span>AED 10K</span><span>AED 2M</span>
             </div>
@@ -51,7 +51,7 @@ export default function EmiCalculator() {
             </label>
             <input type="range" min={6} max={60} step={6} value={tenure}
               onChange={(e) => setTenure(Number(e.target.value))}
-              className="w-full accent-brand-nav" />
+              className="w-full accent-primary" />
             <div className="flex justify-between text-caption text-gray-400">
               <span>6 mo</span><span>60 mo</span>
             </div>
@@ -64,7 +64,7 @@ export default function EmiCalculator() {
             </label>
             <input type="range" min={3} max={20} step={0.25} value={rate}
               onChange={(e) => setRate(Number(e.target.value))}
-              className="w-full accent-brand-nav" />
+              className="w-full accent-primary" />
             <div className="flex justify-between text-caption text-gray-400">
               <span>3%</span><span>20%</span>
             </div>
@@ -73,17 +73,17 @@ export default function EmiCalculator() {
 
         {/* Results */}
         <div className="space-y-3">
-          <div className="bg-brand-nav/5 rounded-xl p-4 text-center border border-brand-nav/10">
-            <p className="text-xs text-brand-nav font-medium mb-1">Monthly EMI</p>
-            <p className="text-display-lg font-bold text-brand-nav">{fmt(result.emi)}</p>
+          <div className="bg-primary/5 rounded-xl p-4 text-center border border-primary/10">
+            <p className="text-xs text-primary font-medium mb-1">Monthly EMI</p>
+            <p className="text-display-lg font-bold text-primary">{fmt(result.emi)}</p>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <div className="bg-surface-50 rounded-xl p-3 text-center">
+            <div className="bg-gray-50 rounded-xl p-3 text-center">
               <Wallet size={14} className="mx-auto text-gray-400 mb-1" />
               <p className="text-caption text-gray-500">Total Payment</p>
               <p className="text-sm font-bold text-gray-900">{fmt(result.totalPayment)}</p>
             </div>
-            <div className="bg-surface-50 rounded-xl p-3 text-center">
+            <div className="bg-gray-50 rounded-xl p-3 text-center">
               <TrendingDown size={14} className="mx-auto text-gray-400 mb-1" />
               <p className="text-caption text-gray-500">Total Interest</p>
               <p className="text-sm font-bold text-amber-600">{fmt(result.totalInterest)}</p>

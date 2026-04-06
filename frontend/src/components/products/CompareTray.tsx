@@ -14,7 +14,7 @@ export default function CompareTray() {
 
   return (
     <>
-      <div className="fixed bottom-0 inset-x-0 z-40 bg-white border-t border-surface-200 shadow-elevated animate-fade-in-up">
+      <div className="fixed bottom-0 inset-x-0 z-40 bg-white border-t border-gray-200 shadow-elevated animate-fade-in-up">
         <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-3 flex items-center gap-4">
           {/* Selected items */}
           <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -25,7 +25,7 @@ export default function CompareTray() {
               {items.map((product) => (
                 <div
                   key={product.id}
-                  className="flex items-center gap-2 bg-surface-50 rounded-button px-3 py-1.5 border border-surface-200 shrink-0"
+                  className="flex items-center gap-2 bg-gray-50 rounded-button px-3 py-1.5 border border-gray-200 shrink-0"
                 >
                   <ProviderLogo name={product.provider_name} logoUrl={product.provider_logo} size={24} />
                   <span className="text-xs font-medium text-gray-700 max-w-[120px] truncate">
@@ -47,7 +47,7 @@ export default function CompareTray() {
           <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={clear}
-              className="text-xs text-gray-500 hover:text-gray-700 px-3 py-2 rounded-button hover:bg-surface-100 transition-colors"
+              className="text-xs text-gray-500 hover:text-gray-700 px-3 py-2 rounded-button hover:bg-gray-100 transition-colors"
             >
               Clear
             </button>

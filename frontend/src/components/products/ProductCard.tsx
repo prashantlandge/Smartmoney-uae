@@ -66,7 +66,7 @@ export default function ProductCard({ product, featureLabels = {} }: Props) {
   const bestFor = product.features.best_for;
 
   return (
-    <div className="bg-white rounded-card border border-surface-200 shadow-sm hover:shadow-card-hover transition-all duration-150 overflow-hidden">
+    <div className="bg-white rounded-card border border-gray-200 shadow-sm hover:shadow-card-hover transition-all duration-150 overflow-hidden">
       <div className="p-4 sm:p-5">
         {/* Row 1: Logo + Name + Badge + CTA */}
         <div className="flex items-center gap-3 sm:gap-4">
@@ -77,7 +77,7 @@ export default function ProductCard({ product, featureLabels = {} }: Props) {
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between gap-2">
               <div className="min-w-0">
-                <h3 className="font-semibold text-brand-dark text-base leading-tight truncate">
+                <h3 className="font-semibold text-gray-900 text-base leading-tight truncate">
                   {product.product_name}
                 </h3>
                 <p className="text-body-sm text-gray-500 mt-0.5">{product.provider_name}</p>
@@ -106,7 +106,7 @@ export default function ProductCard({ product, featureLabels = {} }: Props) {
               )}
               {bestFor && typeof bestFor === 'string' && (
                 <span className="text-label text-gray-500">
-                  Best for <span className="font-semibold text-brand-dark">{bestFor}</span>
+                  Best for <span className="font-semibold text-gray-900">{bestFor}</span>
                 </span>
               )}
             </div>
@@ -115,17 +115,17 @@ export default function ProductCard({ product, featureLabels = {} }: Props) {
 
         {/* Row 2: Key features as compact grid */}
         {topFeatures.length > 0 && (
-          <div className="mt-4 pt-3 border-t border-surface-100">
+          <div className="mt-4 pt-3 border-t border-gray-100">
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-x-4 gap-y-2">
               {topFeatures.map(([key, value]) => (
                 <div key={key}>
                   <div className="text-label text-gray-400 uppercase tracking-wider">
                     {featureLabels[key] || key.replace(/_/g, ' ')}
                   </div>
-                  <div className="text-sm font-semibold text-brand-dark mt-0.5">
+                  <div className="text-sm font-semibold text-gray-900 mt-0.5">
                     {typeof value === 'boolean' ? (
                       value ? (
-                        <Check size={15} className="text-brand-nav" />
+                        <Check size={15} className="text-primary" />
                       ) : (
                         <X size={15} className="text-gray-300" />
                       )
@@ -151,16 +151,16 @@ export default function ProductCard({ product, featureLabels = {} }: Props) {
             </button>
 
             {expanded && (
-              <div className="mt-3 pt-3 border-t border-surface-100 animate-fade-in">
+              <div className="mt-3 pt-3 border-t border-gray-100 animate-fade-in">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5">
                   {extraFeatures.map(([key, value]) => (
-                    <div key={key} className="flex items-center justify-between py-1.5 border-b border-surface-100 last:border-b-0">
+                    <div key={key} className="flex items-center justify-between py-1.5 border-b border-gray-100 last:border-b-0">
                       <span className="text-sm text-gray-500">
                         {featureLabels[key] || key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
                       </span>
-                      <span className="text-sm font-semibold text-brand-dark">
+                      <span className="text-sm font-semibold text-gray-900">
                         {typeof value === 'boolean' ? (
-                          value ? <span className="text-brand-nav">Yes</span> : <span className="text-gray-400">No</span>
+                          value ? <span className="text-primary">Yes</span> : <span className="text-gray-400">No</span>
                         ) : String(value)}
                       </span>
                     </div>
@@ -172,7 +172,7 @@ export default function ProductCard({ product, featureLabels = {} }: Props) {
         )}
 
         {/* Row 4: Actions */}
-        <div className="mt-4 pt-3 border-t border-surface-100 flex items-center gap-2 flex-wrap">
+        <div className="mt-4 pt-3 border-t border-gray-100 flex items-center gap-2 flex-wrap">
           {/* Mobile CTA */}
           <a
             href={affiliateHref}
@@ -194,8 +194,8 @@ export default function ProductCard({ product, featureLabels = {} }: Props) {
             disabled={!isSelected && isFull}
             className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-button text-sm font-medium transition-all border ${
               isSelected
-                ? 'bg-brand-nav-50 border-brand-nav text-brand-nav-700'
-                : 'border-surface-200 text-gray-500 hover:border-brand-nav hover:text-brand-nav disabled:opacity-40'
+                ? 'bg-primary-50 border-primary text-primary-700'
+                : 'border-gray-200 text-gray-500 hover:border-primary hover:text-primary disabled:opacity-40'
             }`}
           >
             {isSelected ? <Check size={14} /> : <ArrowRightLeft size={14} />}

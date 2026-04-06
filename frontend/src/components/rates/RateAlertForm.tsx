@@ -39,7 +39,7 @@ export default function RateAlertForm({ currentRate }: Props) {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="w-full mt-3 py-2.5 px-4 bg-brand-nav-50 text-brand-nav text-sm font-medium rounded-button hover:bg-brand-nav-100 transition-colors flex items-center justify-center gap-2"
+        className="w-full mt-3 py-2.5 px-4 bg-primary-50 text-primary text-sm font-medium rounded-button hover:bg-primary-100 transition-colors flex items-center justify-center gap-2"
       >
         <Bell size={16} />
         {t('rate_alert_title')}
@@ -59,7 +59,7 @@ export default function RateAlertForm({ currentRate }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-3 p-4 bg-surface-50 rounded-card border border-surface-200">
+    <form onSubmit={handleSubmit} className="mt-3 p-4 bg-gray-50 rounded-card border border-gray-200">
       <h4 className="text-sm font-semibold text-gray-700 mb-1">{t('rate_alert_title')}</h4>
       <p className="text-xs text-gray-500 mb-3">{t('rate_alert_desc')}</p>
 
@@ -92,7 +92,7 @@ export default function RateAlertForm({ currentRate }: Props) {
         <button
           type="button"
           onClick={() => setIsOpen(false)}
-          className="flex-1 py-2 text-xs text-gray-500 hover:text-gray-700 rounded-button hover:bg-surface-100 transition-colors"
+          className="flex-1 py-2 text-xs text-gray-500 hover:text-gray-700 rounded-button hover:bg-gray-100 transition-colors"
         >
           Cancel
         </button>

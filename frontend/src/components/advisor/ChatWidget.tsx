@@ -29,7 +29,7 @@ export default function ChatWidget() {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 end-6 z-50 w-14 h-14 bg-brand-nav text-white rounded-full shadow-lg flex items-center justify-center hover:bg-brand-nav/90 transition-all hover:scale-105"
+        className="fixed bottom-6 end-6 z-50 w-14 h-14 bg-primary text-white rounded-full shadow-lg flex items-center justify-center hover:bg-primary/90 transition-all hover:scale-105"
         aria-label="Open chat"
       >
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -42,7 +42,7 @@ export default function ChatWidget() {
   return (
     <div className="fixed bottom-6 end-6 z-50 w-80 sm:w-96 bg-white rounded-xl shadow-2xl border border-gray-200 flex flex-col" style={{ maxHeight: '70vh' }}>
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 bg-brand-nav text-white rounded-t-xl">
+      <div className="flex items-center justify-between px-4 py-3 bg-primary text-white rounded-t-xl">
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 bg-green-400 rounded-full" />
           <span className="text-sm font-semibold">{t('chat_title')}</span>
@@ -81,7 +81,7 @@ export default function ChatWidget() {
             <div
               className={`max-w-[85%] px-3 py-2 rounded-lg text-sm ${
                 msg.role === 'user'
-                  ? 'bg-brand-nav text-white rounded-se-none'
+                  ? 'bg-primary text-white rounded-se-none'
                   : 'bg-gray-100 text-gray-800 rounded-ss-none'
               }`}
             >
@@ -109,7 +109,7 @@ export default function ChatWidget() {
               <button
                 key={i}
                 onClick={() => handleSuggestion(s)}
-                className="block w-full text-start px-2 py-1.5 text-xs bg-brand-nav/5 rounded-lg hover:bg-brand-nav/10 text-brand-nav transition-colors"
+                className="block w-full text-start px-2 py-1.5 text-xs bg-primary/5 rounded-lg hover:bg-primary/10 text-primary transition-colors"
               >
                 {s}
               </button>
@@ -129,13 +129,13 @@ export default function ChatWidget() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             placeholder={t('chat_placeholder')}
-            className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-nav focus:border-transparent outline-none"
+            className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
             disabled={loading}
           />
           <button
             onClick={handleSend}
             disabled={loading || !input.trim()}
-            className="px-3 py-2 bg-brand-nav text-white rounded-lg text-sm disabled:opacity-50 hover:bg-brand-nav/90 transition-colors"
+            className="px-3 py-2 bg-primary text-white rounded-lg text-sm disabled:opacity-50 hover:bg-primary/90 transition-colors"
           >
             <svg className="w-4 h-4 rtl:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />

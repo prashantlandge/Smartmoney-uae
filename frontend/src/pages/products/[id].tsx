@@ -41,11 +41,11 @@ const CATEGORY_ROUTES: Record<string, string> = {
 };
 
 const CATEGORY_GRADIENTS: Record<string, string> = {
-  credit_card: 'from-brand-nav via-brand-nav to-brand-nav-dark',
-  personal_loan: 'from-brand-nav via-brand-nav to-brand-nav-dark',
-  islamic_finance: 'from-brand-nav via-brand-nav to-brand-nav-dark',
-  car_insurance: 'from-brand-nav via-brand-nav to-brand-nav-dark',
-  health_insurance: 'from-brand-nav via-brand-nav to-brand-nav-dark',
+  credit_card: 'from-primary via-primary to-primary-600',
+  personal_loan: 'from-primary via-primary to-primary-600',
+  islamic_finance: 'from-primary via-primary to-primary-600',
+  car_insurance: 'from-primary via-primary to-primary-600',
+  health_insurance: 'from-primary via-primary to-primary-600',
 };
 
 type FeatureValue = string | number | boolean | Record<string, unknown> | unknown[];
@@ -71,10 +71,10 @@ function Section({ icon: Icon, iconColor, title, children }: {
   children: ReactNode;
 }) {
   return (
-    <div className="bg-white rounded-card border border-surface-200">
-      <div className="px-4 sm:px-5 py-3 border-b border-surface-100">
-        <h2 className="text-body-sm font-bold text-brand-dark flex items-center gap-2">
-          <div className="w-7 h-7 rounded-button bg-surface-50 flex items-center justify-center shrink-0">
+    <div className="bg-white rounded-card border border-gray-200">
+      <div className="px-4 sm:px-5 py-3 border-b border-gray-100">
+        <h2 className="text-body-sm font-bold text-gray-900 flex items-center gap-2">
+          <div className="w-7 h-7 rounded-button bg-gray-50 flex items-center justify-center shrink-0">
             <Icon size={15} className={iconColor} />
           </div>
           {title}
@@ -88,9 +88,9 @@ function Section({ icon: Icon, iconColor, title, children }: {
 function Row({ label, value }: { label: string; value: FeatureValue | undefined }) {
   if (value === undefined) return null;
   return (
-    <div className="flex items-start justify-between py-2.5 border-b border-surface-100 last:border-b-0">
+    <div className="flex items-start justify-between py-2.5 border-b border-gray-100 last:border-b-0">
       <span className="text-body-sm text-gray-500">{label}</span>
-      <span className="text-body-sm font-bold text-brand-dark text-right max-w-[55%]">{formatValue(value)}</span>
+      <span className="text-body-sm font-bold text-gray-900 text-right max-w-[55%]">{formatValue(value)}</span>
     </div>
   );
 }
@@ -120,11 +120,11 @@ function MiniTable({ data, label }: { data: Record<string, unknown>; label?: str
   return (
     <div className="mt-3">
       {label && <p className="text-label font-bold text-gray-500 uppercase tracking-wider mb-2">{label}</p>}
-      <div className="bg-surface-50 rounded-button overflow-hidden border border-surface-100">
+      <div className="bg-gray-50 rounded-button overflow-hidden border border-gray-100">
         {entries.map(([key, val]) => (
-          <div key={key} className="flex items-center justify-between px-3 py-2 border-b border-surface-100 last:border-b-0">
+          <div key={key} className="flex items-center justify-between px-3 py-2 border-b border-gray-100 last:border-b-0">
             <span className="text-body-sm text-gray-600">{formatLabel(key)}</span>
-            <span className="text-body-sm font-bold text-brand-dark">{String(val)}</span>
+            <span className="text-body-sm font-bold text-gray-900">{String(val)}</span>
           </div>
         ))}
       </div>
@@ -552,7 +552,7 @@ export default function ProductDetailPage() {
 
   const categoryLabel = product ? CATEGORY_LABELS[product.product_type] || product.product_type : '';
   const categoryRoute = product ? CATEGORY_ROUTES[product.product_type] || '/' : '/';
-  const heroGradient = product ? CATEGORY_GRADIENTS[product.product_type] || 'from-brand-nav to-brand-nav-dark' : '';
+  const heroGradient = product ? CATEGORY_GRADIENTS[product.product_type] || 'from-primary to-primary-600' : '';
   const features: Record<string, unknown> = product ? (product.features as Record<string, unknown>) : {};
   const highlights = product ? getHighlights(product.product_type, features) : [];
 
@@ -566,7 +566,7 @@ export default function ProductDetailPage() {
       </Head>
 
       {/* Colored hero with breadcrumb + product info */}
-      <section className={`bg-gradient-to-r ${heroGradient || 'from-brand-nav to-brand-nav-dark'} text-white`}>
+      <section className={`bg-gradient-to-r ${heroGradient || 'from-primary to-primary-600'} text-white`}>
         <div className="max-w-content-lg mx-auto px-4 sm:px-8 py-4 sm:py-5">
           <nav className="flex items-center gap-1.5 text-xs text-white/60 mb-3">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
@@ -615,12 +615,12 @@ export default function ProductDetailPage() {
       {product && (
         <>
           {/* Sticky CTA bar */}
-          <div className="bg-white border-b border-surface-200 sticky top-14 z-20">
+          <div className="bg-white border-b border-gray-200 sticky top-14 z-20">
             <div className="max-w-content-lg mx-auto px-4 sm:px-8 py-2.5 flex items-center justify-between gap-3">
               <div className="flex items-center gap-2.5 min-w-0">
                 <ProviderLogo name={product.provider_name} logoUrl={product.provider_logo} size={32} />
                 <div className="min-w-0">
-                  <p className="text-body-sm font-bold text-brand-dark truncate">{product.product_name}</p>
+                  <p className="text-body-sm font-bold text-gray-900 truncate">{product.product_name}</p>
                   <p className="text-label text-gray-500">{product.provider_name}</p>
                 </div>
               </div>
@@ -636,12 +636,12 @@ export default function ProductDetailPage() {
             </div>
           </div>
 
-          <div className="bg-surface-50 min-h-[60vh]">
+          <div className="bg-gray-50 min-h-[60vh]">
             <div className="max-w-content-lg mx-auto px-4 sm:px-8 py-6">
               <div className="space-y-4">
 
                 {/* Key highlights + badges */}
-                <div className="bg-white rounded-card border border-surface-200 p-4 sm:p-5">
+                <div className="bg-white rounded-card border border-gray-200 p-4 sm:p-5">
                   <div className="flex flex-wrap items-center gap-2 mb-3">
                     {product.is_islamic && (
                       <Badge variant="islamic">{t('islamic_compliant')}</Badge>

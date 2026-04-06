@@ -169,8 +169,8 @@ export default function TabbedShowcase() {
             onClick={() => setActiveTab(idx)}
             className={`flex items-center gap-1.5 px-3.5 py-2 rounded-button text-body-sm font-semibold whitespace-nowrap transition-all ${
               idx === activeTab
-                ? 'bg-brand-nav text-white'
-                : 'bg-surface-100 text-gray-600 hover:bg-surface-200'
+                ? 'bg-primary text-white'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
             <tb.icon size={14} />
@@ -185,7 +185,7 @@ export default function TabbedShowcase() {
           <div
             key={product.name}
             className={`bg-white rounded-card border p-4 hover:shadow-card-hover transition-all flex flex-col ${
-              idx === 0 ? 'border-brand-nav/30 ring-1 ring-brand-nav/10' : 'border-surface-200'
+              idx === 0 ? 'border-primary/30 ring-1 ring-primary/10' : 'border-gray-200'
             }`}
           >
             {/* Badge */}
@@ -199,7 +199,7 @@ export default function TabbedShowcase() {
             <div className="flex items-center gap-3 mb-3">
               <ProviderLogo name={product.provider} size={44} />
               <div className="min-w-0">
-                <h4 className="text-body-sm font-bold text-brand-dark truncate">{product.name}</h4>
+                <h4 className="text-body-sm font-bold text-gray-900 truncate">{product.name}</h4>
                 <p className="text-label text-gray-500">{product.provider}</p>
               </div>
             </div>
@@ -208,7 +208,7 @@ export default function TabbedShowcase() {
             <ul className="space-y-1.5 mb-4 flex-1">
               {product.features.map((feat) => (
                 <li key={feat} className="flex items-start gap-2 text-body-sm text-gray-600">
-                  <Check size={14} className="text-brand-nav shrink-0 mt-0.5" />
+                  <Check size={14} className="text-primary shrink-0 mt-0.5" />
                   {feat}
                 </li>
               ))}
@@ -229,7 +229,7 @@ export default function TabbedShowcase() {
       <div className="text-center mt-5">
         <Link
           href={tab.href}
-          className="inline-flex items-center gap-1.5 text-body-sm font-bold text-white bg-brand-nav hover:bg-brand-nav-hover px-5 py-2.5 rounded-button transition-colors"
+          className="inline-flex items-center gap-1.5 text-body-sm font-bold text-white bg-primary hover:bg-primary-light px-5 py-2.5 rounded-button transition-colors"
         >
           View all {tab.label.toLowerCase()} <ChevronRight size={14} />
         </Link>

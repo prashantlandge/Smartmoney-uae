@@ -83,6 +83,7 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  const [scrolled, setScrolled] = useState(false);
   const dropdownTimeout = useRef<ReturnType<typeof setTimeout>>();
 
   const [langOpen, setLangOpen] = useState(false);
@@ -98,6 +99,12 @@ export default function Header() {
     setLangOpen(false);
     router.push(router.pathname, router.asPath, { locale });
   };
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -126,51 +133,35 @@ export default function Header() {
   }, [router.asPath]);
 
   return (
-    <header className="sticky top-0 z-40">
-      {/* ── Row 1: Brand bar (white) ── */}
-      <div className="bg-white border-b border-surface-100">
-        <div className="max-w-content-xl mx-auto px-4 sm:px-6 flex items-center justify-between h-11 sm:h-12">
-          <Link href="/" className="flex items-center shrink-0">
-            <Image
-              src="/images/logo.svg"
-              alt="SmartMoney UAE"
-              width={140}
-              height={28}
-              className="h-7 sm:h-8 w-auto"
-              priority
-            />
-          </Link>
-
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            <Link href="/about" className="hidden md:block text-label text-gray-500 hover:text-brand-nav transition-colors px-2 py-1">
+    <header className={`sticky top-0 z-40 bg-white transition-shadow duration-300 ${scrolled ? 'shadow-nav' : ''}`}>
+      {/* ── Top bar ── */}
+      <div className="border-b border-gray-100 bg-gray-50/80">
+        <div className="max-w-content-xl mx-auto px-4 md:px-6 lg:px-8 flex items-center justify-between h-8">
+          <div className="flex items-center gap-4">
+            <Link href="/about" className="text-label text-gray-500 hover:text-primary transition-colors">
               {t('nav_about')}
             </Link>
-            <Link href="/contact" className="hidden md:block text-label text-gray-500 hover:text-brand-nav transition-colors px-2 py-1">
+            <Link href="/contact" className="text-label text-gray-500 hover:text-primary transition-colors">
               {t('nav_contact')}
             </Link>
-            <Link
-              href="/recommend"
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-label font-bold bg-brand-nav text-white rounded-button hover:bg-brand-nav-dark transition-colors"
-            >
-              <Sparkles size={12} />
-              {t('nav_smart_compare')}
-            </Link>
+          </div>
+          <div className="flex items-center gap-2">
             <div ref={langRef} className="relative">
               <button
                 onClick={() => setLangOpen(!langOpen)}
-                className="flex items-center gap-1.5 px-2 py-1.5 text-label font-medium text-gray-500 hover:text-brand-nav rounded hover:bg-surface-50 transition-colors"
+                className="flex items-center gap-1.5 px-2 py-1 text-label font-medium text-gray-500 hover:text-primary rounded hover:bg-gray-100 transition-colors"
               >
                 <FlagIcon code={LANGUAGES.find(l => l.code === router.locale)?.flag || 'gb'} size={14} />
                 {LANGUAGES.find(l => l.code === router.locale)?.label || 'EN'}
                 <ChevronDown size={10} className={`transition-transform ${langOpen ? 'rotate-180' : ''}`} />
               </button>
               {langOpen && (
-                <div className="absolute end-0 top-full mt-1 bg-white rounded-lg shadow-elevated border border-surface-200 overflow-hidden animate-fade-in z-50 min-w-[120px]">
+                <div className="absolute end-0 top-full mt-1 bg-white rounded-lg shadow-elevated border border-gray-200 overflow-hidden animate-fade-in z-50 min-w-[120px]">
                   {LANGUAGES.filter(l => l.code !== router.locale).map((lang) => (
                     <button
                       key={lang.code}
                       onClick={() => switchLocale(lang.code)}
-                      className="flex items-center gap-2 w-full px-3 py-2 text-body-sm text-gray-700 hover:bg-surface-50 hover:text-brand-nav transition-colors"
+                      className="flex items-center gap-2 w-full px-3 py-2 text-body-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
                     >
                       <FlagIcon code={lang.flag} size={14} />
                       {lang.label}
@@ -179,21 +170,26 @@ export default function Header() {
                 </div>
               )}
             </div>
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="lg:hidden p-1.5 text-gray-500 hover:text-brand-nav rounded hover:bg-surface-50 transition-colors"
-              aria-label="Toggle menu"
-            >
-              {mobileOpen ? <X size={22} /> : <Menu size={22} />}
-            </button>
           </div>
         </div>
       </div>
 
-      {/* ── Row 2: Category nav (blue) — RupeeLens style ── */}
-      <nav className="bg-brand-nav shadow-nav hidden lg:block">
-        <div className="max-w-content-xl mx-auto px-4 sm:px-6">
-          <div className="flex items-center justify-center h-10 gap-0.5">
+      {/* ── Main nav ── */}
+      <div className="border-b border-gray-100">
+        <div className="max-w-content-xl mx-auto px-4 md:px-6 lg:px-8 flex items-center justify-between h-14">
+          <Link href="/" className="flex items-center shrink-0">
+            <Image
+              src="/images/logo.svg"
+              alt="SmartMoney UAE"
+              width={160}
+              height={32}
+              className="h-8 w-auto"
+              priority
+            />
+          </Link>
+
+          {/* Desktop nav */}
+          <nav className="hidden lg:flex items-center gap-1 h-full">
             {NAV_ITEMS.map((item) => {
               const isActive = router.pathname === item.href || (item.href !== '/' && router.pathname.startsWith(item.href));
               const hasSub = item.sub && item.sub.length > 0;
@@ -209,10 +205,10 @@ export default function Header() {
                 >
                   <Link
                     href={item.href}
-                    className={`flex items-center gap-2 px-4 xl:px-5 h-full text-body-sm font-semibold transition-colors whitespace-nowrap ${
+                    className={`flex items-center gap-1.5 px-3 xl:px-4 h-full text-sm font-medium transition-colors whitespace-nowrap ${
                       isActive
-                        ? 'text-white bg-white/15'
-                        : 'text-white/80 hover:text-white hover:bg-white/10'
+                        ? 'text-primary border-b-2 border-primary'
+                        : 'text-gray-700 hover:text-primary hover:bg-primary/5'
                     }`}
                   >
                     <Icon size={16} strokeWidth={2} />
@@ -220,36 +216,34 @@ export default function Header() {
                     {hasSub && <ChevronDown size={11} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />}
                   </Link>
 
-                  {/* ── RupeeLens-style dropdown ── */}
+                  {/* Dropdown */}
                   {hasSub && isOpen && (
                     <div
-                      className="absolute top-full left-0 pt-0.5 z-50"
+                      className="absolute top-full left-0 pt-1 z-50"
                       onMouseEnter={() => handleMouseEnter(item.key)}
                       onMouseLeave={handleMouseLeave}
                     >
-                      <div className="bg-white rounded-lg shadow-elevated border border-surface-200 overflow-hidden animate-fade-in w-72">
-                        {/* Header */}
+                      <div className="bg-white rounded-card shadow-elevated border border-gray-100 overflow-hidden animate-fade-in w-72">
                         <Link
                           href={item.href}
-                          className="flex items-center justify-between px-4 py-2.5 bg-surface-50 border-b border-surface-100 text-body-sm font-bold text-brand-nav hover:text-brand-nav-dark transition-colors"
+                          className="flex items-center justify-between px-4 py-2.5 bg-gray-50 border-b border-gray-100 text-body-sm font-bold text-primary hover:text-primary-600 transition-colors"
                         >
                           {t('view_all')} {t(item.key)}
                           <ArrowRight size={13} />
                         </Link>
 
-                        {/* Sub items */}
                         <div className="py-1">
                           {item.sub!.map((sub) => (
                             <Link
                               key={sub.label}
                               href={sub.href}
-                              className="flex items-center gap-3 px-4 py-2.5 hover:bg-surface-50 transition-colors group"
+                              className="flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 transition-colors group"
                             >
-                              <div className="w-8 h-8 rounded-md bg-brand-nav/5 flex items-center justify-center shrink-0 group-hover:bg-brand-nav/10 transition-colors">
-                                <sub.icon size={14} className="text-brand-nav" />
+                              <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/15 transition-colors">
+                                <sub.icon size={14} className="text-primary" />
                               </div>
                               <div className="min-w-0">
-                                <p className="text-body-sm font-medium text-gray-800 group-hover:text-brand-nav transition-colors">{sub.label}</p>
+                                <p className="text-body-sm font-medium text-gray-800 group-hover:text-primary transition-colors">{sub.label}</p>
                                 <p className="text-label text-gray-400 leading-snug">{sub.desc}</p>
                               </div>
                             </Link>
@@ -261,17 +255,34 @@ export default function Header() {
                 </div>
               );
             })}
+          </nav>
+
+          <div className="flex items-center gap-2">
+            <Link
+              href="/recommend"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-xs font-semibold bg-accent text-white rounded-button hover:bg-accent-600 transition-colors"
+            >
+              <Sparkles size={12} />
+              {t('nav_smart_compare')}
+            </Link>
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="lg:hidden p-1.5 text-gray-500 hover:text-primary rounded hover:bg-gray-50 transition-colors"
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
           </div>
         </div>
-      </nav>
+      </div>
 
       {/* ── Mobile Nav ── */}
       {mobileOpen && (
-        <div className="lg:hidden bg-white border-b border-surface-200 shadow-card animate-fade-in max-h-[80vh] overflow-y-auto">
+        <div className="lg:hidden bg-white border-b border-gray-200 shadow-card animate-fade-in max-h-[80vh] overflow-y-auto">
           <Link
             href="/recommend"
             onClick={() => setMobileOpen(false)}
-            className="flex items-center gap-2 mx-3 mt-3 mb-1 px-3 py-2.5 rounded-button text-body-sm font-bold bg-brand-nav text-white"
+            className="flex items-center gap-2 mx-3 mt-3 mb-1 px-3 py-2.5 rounded-button text-body-sm font-bold bg-accent text-white"
           >
             <Sparkles size={14} />
             Smart Compare
@@ -291,10 +302,10 @@ export default function Header() {
                       href={item.href}
                       onClick={() => setMobileOpen(false)}
                       className={`flex-1 flex items-center gap-2.5 px-3 py-2.5 text-body-sm font-medium transition-colors ${
-                        isActive ? 'text-brand-nav bg-brand-nav/5' : 'text-gray-700 hover:bg-surface-50'
+                        isActive ? 'text-primary bg-primary/5' : 'text-gray-700 hover:bg-gray-50'
                       }`}
                     >
-                      <Icon size={16} className={isActive ? 'text-brand-nav' : 'text-gray-400'} />
+                      <Icon size={16} className={isActive ? 'text-primary' : 'text-gray-400'} />
                       {t(item.key)}
                     </Link>
                     {hasSub && (
@@ -308,13 +319,13 @@ export default function Header() {
                   </div>
 
                   {hasSub && isExpanded && (
-                    <div className="ml-5 mb-1 border-l-2 border-brand-nav/10 pl-3 animate-fade-in">
+                    <div className="ml-5 mb-1 border-l-2 border-primary/10 pl-3 animate-fade-in">
                       {item.sub!.map((sub) => (
                         <Link
                           key={sub.label}
                           href={sub.href}
                           onClick={() => setMobileOpen(false)}
-                          className="flex items-center gap-2.5 px-2 py-2 rounded text-body-sm text-gray-500 hover:text-brand-nav hover:bg-surface-50 transition-colors"
+                          className="flex items-center gap-2.5 px-2 py-2 rounded text-body-sm text-gray-500 hover:text-primary hover:bg-gray-50 transition-colors"
                         >
                           <sub.icon size={13} className="text-gray-400 shrink-0" />
                           {sub.label}
@@ -327,9 +338,9 @@ export default function Header() {
             })}
           </div>
 
-          <div className="border-t border-surface-100 px-3 py-2 flex gap-4">
-            <Link href="/about" onClick={() => setMobileOpen(false)} className="text-label text-gray-500 hover:text-brand-nav">{t('nav_about')}</Link>
-            <Link href="/contact" onClick={() => setMobileOpen(false)} className="text-label text-gray-500 hover:text-brand-nav">{t('nav_contact')}</Link>
+          <div className="border-t border-gray-100 px-3 py-2 flex gap-4">
+            <Link href="/about" onClick={() => setMobileOpen(false)} className="text-label text-gray-500 hover:text-primary">{t('nav_about')}</Link>
+            <Link href="/contact" onClick={() => setMobileOpen(false)} className="text-label text-gray-500 hover:text-primary">{t('nav_contact')}</Link>
           </div>
         </div>
       )}

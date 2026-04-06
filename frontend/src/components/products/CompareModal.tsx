@@ -112,7 +112,7 @@ export default function CompareModal({ onClose }: Props) {
     if (value === undefined || value === null) return <span className="text-gray-300">—</span>;
     if (typeof value === 'boolean') {
       return value ? (
-        <Check size={16} className="text-brand-nav mx-auto" />
+        <Check size={16} className="text-primary mx-auto" />
       ) : (
         <X size={16} className="text-gray-300 mx-auto" />
       );
@@ -126,16 +126,16 @@ export default function CompareModal({ onClose }: Props) {
 
       <div className="relative bg-white rounded-2xl shadow-elevated w-full max-w-5xl max-h-[88vh] overflow-hidden animate-scale-in">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-surface-200">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <div>
             <h2 className="text-heading-md font-bold text-gray-900">Compare Products</h2>
             <p className="text-xs text-gray-400 mt-0.5">
-              <Trophy size={11} className="inline text-brand-nav" /> highlights the better value in each row
+              <Trophy size={11} className="inline text-primary" /> highlights the better value in each row
             </p>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-100 transition-colors text-gray-500"
+            className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors text-gray-500"
           >
             <X size={18} />
           </button>
@@ -145,8 +145,8 @@ export default function CompareModal({ onClose }: Props) {
         <div className="overflow-auto max-h-[calc(88vh-140px)]">
           <table className="w-full border-collapse">
             <thead className="sticky top-0 bg-white z-10">
-              <tr className="border-b border-surface-200">
-                <th className="text-start ps-6 py-5 w-44 text-xs font-semibold text-brand-nav uppercase tracking-wider">
+              <tr className="border-b border-gray-200">
+                <th className="text-start ps-6 py-5 w-44 text-xs font-semibold text-primary uppercase tracking-wider">
                   Feature
                 </th>
                 {items.map((product) => (
@@ -176,7 +176,7 @@ export default function CompareModal({ onClose }: Props) {
                 const bestIdx = findBestIndex(values, key);
 
                 return (
-                  <tr key={key} className={`border-b border-surface-100 ${idx % 2 !== 0 ? 'bg-surface-50/50' : ''}`}>
+                  <tr key={key} className={`border-b border-gray-100 ${idx % 2 !== 0 ? 'bg-gray-50/50' : ''}`}>
                     <td className="ps-6 py-3.5 text-sm font-medium text-gray-600">
                       {formatFeatureLabel(key)}
                     </td>
@@ -193,7 +193,7 @@ export default function CompareModal({ onClose }: Props) {
                           }`}
                         >
                           {isBest ? (
-                            <span className="inline-flex items-center justify-center gap-1.5 font-bold text-brand-nav">
+                            <span className="inline-flex items-center justify-center gap-1.5 font-bold text-primary">
                               <Trophy size={13} className="shrink-0" />
                               {formatted}
                             </span>
@@ -209,7 +209,7 @@ export default function CompareModal({ onClose }: Props) {
 
               {/* Description row */}
               {items.some((p) => p.description) && (
-                <tr className="border-b border-surface-100">
+                <tr className="border-b border-gray-100">
                   <td className="ps-6 py-3.5 text-sm font-medium text-gray-600">Description</td>
                   {items.map((product) => (
                     <td key={product.id} className="px-4 py-3.5 text-xs text-gray-500 text-center leading-relaxed">
@@ -223,7 +223,7 @@ export default function CompareModal({ onClose }: Props) {
         </div>
 
         {/* Footer with CTAs */}
-        <div className="border-t border-surface-200 px-6 py-4 bg-white">
+        <div className="border-t border-gray-200 px-6 py-4 bg-white">
           <div className="flex justify-center gap-4">
             {items.map((product) => {
               let href = product.affiliate_link || '#';

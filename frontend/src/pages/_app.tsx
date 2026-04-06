@@ -20,7 +20,7 @@ class ErrorBoundary extends React.Component<
     if (this.state.hasError) {
       return (
         <div className="p-8 text-center font-sans">
-          <h1 className="text-display-lg font-bold text-brand-dark mb-4">Something went wrong</h1>
+          <h1 className="text-display-lg font-bold text-gray-900 mb-4">Something went wrong</h1>
           <p className="text-body-sm text-gray-500 mb-4">{this.state.error}</p>
           <button
             onClick={() => { this.setState({ hasError: false, error: '' }); window.location.reload(); }}

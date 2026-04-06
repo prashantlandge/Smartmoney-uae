@@ -34,7 +34,7 @@ export default function CategoryIllustration({
   if (!src && IconComponent) {
     return (
       <div className={`inline-flex items-center justify-center ${className}`}>
-        <IconComponent size={size * 0.6} className="text-brand-nav" />
+        <IconComponent size={size * 0.6} className="text-primary" />
       </div>
     );
   }

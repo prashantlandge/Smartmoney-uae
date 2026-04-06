@@ -14,7 +14,7 @@ export default function TermsPage() {
         <title>Terms of Service — SmartMoney UAE</title>
       </Head>
 
-      <section className="bg-gradient-to-br from-brand-nav via-brand-nav to-brand-nav-dark text-white py-8 sm:py-10 px-4">
+      <section className="bg-gradient-to-br from-primary via-primary to-primary-600 text-white py-8 sm:py-10 px-4">
         <Container size="md">
           <div className="text-center">
             <h1 className="text-xl sm:text-2xl font-bold mb-2">Terms of Service</h1>
@@ -27,7 +27,7 @@ export default function TermsPage() {
         <Container size="md">
           {/* Acceptance of Terms */}
           <div className="mb-10">
-            <h2 className="text-heading-lg font-bold text-brand-dark mb-4">1. Acceptance of Terms</h2>
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-4">1. Acceptance of Terms</h2>
             <p className="text-body-lg text-gray-600 leading-relaxed">
               By accessing or using the SmartMoney UAE website (smartmoney.ae), you agree to be bound by these
               Terms of Service. If you do not agree to all of these terms, you must not use our website or services.
@@ -37,7 +37,7 @@ export default function TermsPage() {
 
           {/* Description of Service */}
           <div className="mb-10">
-            <h2 className="text-heading-lg font-bold text-brand-dark mb-4">2. Description of Service</h2>
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-4">2. Description of Service</h2>
             <p className="text-body-lg text-gray-600 leading-relaxed mb-4">
               SmartMoney UAE is a financial product comparison platform. We help users in the UAE compare
               credit cards, personal loans, Islamic finance products, car insurance, health insurance, and
@@ -53,7 +53,7 @@ export default function TermsPage() {
 
           {/* Affiliate Disclosure */}
           <div className="mb-10">
-            <h2 className="text-heading-lg font-bold text-brand-dark mb-4">3. Affiliate Disclosure</h2>
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-4">3. Affiliate Disclosure</h2>
             <p className="text-body-lg text-gray-600 leading-relaxed mb-4">
               SmartMoney UAE earns revenue through affiliate partnerships with banks and financial institutions.
               When you click through to a provider&apos;s website and apply for a product, we may receive a
@@ -68,7 +68,7 @@ export default function TermsPage() {
 
           {/* Disclaimer */}
           <div className="mb-10">
-            <h2 className="text-heading-lg font-bold text-brand-dark mb-4">4. Disclaimer</h2>
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-4">4. Disclaimer</h2>
             <p className="text-body-lg text-gray-600 leading-relaxed mb-4">
               All interest rates, fees, rewards, and product details displayed on SmartMoney UAE are indicative
               and may change without notice. While we make every effort to keep information up to date, we
@@ -82,7 +82,7 @@ export default function TermsPage() {
 
           {/* Limitation of Liability */}
           <div className="mb-10">
-            <h2 className="text-heading-lg font-bold text-brand-dark mb-4">5. Limitation of Liability</h2>
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-4">5. Limitation of Liability</h2>
             <p className="text-body-lg text-gray-600 leading-relaxed mb-4">
               To the fullest extent permitted by applicable law, SmartMoney UAE and its owners, employees,
               and affiliates shall not be liable for any direct, indirect, incidental, consequential, or
@@ -103,7 +103,7 @@ export default function TermsPage() {
 
           {/* Intellectual Property */}
           <div className="mb-10">
-            <h2 className="text-heading-lg font-bold text-brand-dark mb-4">6. Intellectual Property</h2>
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-4">6. Intellectual Property</h2>
             <p className="text-body-lg text-gray-600 leading-relaxed mb-4">
               All content on this website, including but not limited to text, graphics, logos, icons, images,
               data compilations, software, and design, is the property of SmartMoney UAE or its content
@@ -118,7 +118,7 @@ export default function TermsPage() {
 
           {/* User Conduct */}
           <div className="mb-10">
-            <h2 className="text-heading-lg font-bold text-brand-dark mb-4">7. User Conduct</h2>
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-4">7. User Conduct</h2>
             <p className="text-body-lg text-gray-600 leading-relaxed mb-4">
               When using SmartMoney UAE, you agree not to:
             </p>
@@ -134,7 +134,7 @@ export default function TermsPage() {
 
           {/* Modifications to Terms */}
           <div className="mb-10">
-            <h2 className="text-heading-lg font-bold text-brand-dark mb-4">8. Modifications to Terms</h2>
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-4">8. Modifications to Terms</h2>
             <p className="text-body-lg text-gray-600 leading-relaxed">
               SmartMoney UAE reserves the right to update or modify these Terms of Service at any time without
               prior notice. Changes will be effective immediately upon posting to this page. The &ldquo;Last
@@ -146,7 +146,7 @@ export default function TermsPage() {
 
           {/* Governing Law */}
           <div className="mb-10">
-            <h2 className="text-heading-lg font-bold text-brand-dark mb-4">9. Governing Law</h2>
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-4">9. Governing Law</h2>
             <p className="text-body-lg text-gray-600 leading-relaxed">
               These Terms of Service shall be governed by and construed in accordance with the laws of the
               United Arab Emirates. Any disputes arising from or relating to these terms or your use of the
@@ -156,10 +156,10 @@ export default function TermsPage() {
 
           {/* Contact */}
           <div className="mb-10">
-            <h2 className="text-heading-lg font-bold text-brand-dark mb-4">10. Contact</h2>
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-4">10. Contact</h2>
             <p className="text-body-lg text-gray-600 leading-relaxed">
               If you have any questions about these Terms of Service, please contact us at{' '}
-              <a href="mailto:hello@smartmoney.ae" className="text-brand-nav hover:underline">
+              <a href="mailto:hello@smartmoney.ae" className="text-primary hover:underline">
                 hello@smartmoney.ae
               </a>.
             </p>

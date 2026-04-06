@@ -70,7 +70,7 @@ export default function AdminPage() {
       </Head>
 
       {/* Minimal nav */}
-      <nav className="bg-brand-nav text-white py-4 px-4">
+      <nav className="bg-primary text-white py-4 px-4">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link href="/" className="text-white/70 hover:text-white transition-colors">
@@ -107,22 +107,22 @@ export default function AdminPage() {
             {/* Stat cards */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
               <StatCard
-                icon={<Package size={22} className="text-brand-nav" />}
+                icon={<Package size={22} className="text-primary" />}
                 label="Total Products"
                 value={totalProducts}
               />
               <StatCard
-                icon={<MousePointerClick size={22} className="text-brand-nav" />}
+                icon={<MousePointerClick size={22} className="text-primary" />}
                 label="Total Clicks"
                 value={stats.clicks.total}
               />
               <StatCard
-                icon={<CalendarClock size={22} className="text-brand-nav" />}
+                icon={<CalendarClock size={22} className="text-primary" />}
                 label="Today's Clicks"
                 value={stats.clicks.today}
               />
               <StatCard
-                icon={<Users size={22} className="text-brand-nav" />}
+                icon={<Users size={22} className="text-primary" />}
                 label="Total Sessions"
                 value={stats.total_sessions}
               />
@@ -130,7 +130,7 @@ export default function AdminPage() {
 
             {/* Last Scrape status */}
             <div className="card mb-8">
-              <h2 className="text-lg font-bold text-brand-dark mb-4 flex items-center gap-2">
+              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <BarChart3 size={20} />
                 Last Scrape Run
               </h2>
@@ -138,7 +138,7 @@ export default function AdminPage() {
                 <div className="grid sm:grid-cols-3 gap-4">
                   <div>
                     <p className="text-sm text-gray-500 mb-1">Completed At</p>
-                    <p className="font-semibold text-brand-dark">
+                    <p className="font-semibold text-gray-900">
                       {formatDate(stats.last_scrape.completed_at)}
                     </p>
                   </div>
@@ -175,7 +175,7 @@ export default function AdminPage() {
             <div className="grid lg:grid-cols-2 gap-8 mb-8">
               {/* Top Clicked Products */}
               <div className="card">
-                <h2 className="text-lg font-bold text-brand-dark mb-4">
+                <h2 className="text-lg font-bold text-gray-900 mb-4">
                   Top Clicked Products
                 </h2>
                 {stats.top_products.length > 0 ? (
@@ -193,9 +193,9 @@ export default function AdminPage() {
                         {stats.top_products.map((p, i) => (
                           <tr key={i} className="border-b border-gray-50">
                             <td className="py-2 text-gray-400">{i + 1}</td>
-                            <td className="py-2 font-medium text-brand-dark">{p.name}</td>
+                            <td className="py-2 font-medium text-gray-900">{p.name}</td>
                             <td className="py-2">
-                              <span className="inline-block px-2 py-0.5 bg-brand-nav-50 text-brand-nav text-xs rounded-full">
+                              <span className="inline-block px-2 py-0.5 bg-primary-50 text-primary text-xs rounded-full">
                                 {p.category}
                               </span>
                             </td>
@@ -212,7 +212,7 @@ export default function AdminPage() {
 
               {/* Products by Category */}
               <div className="card">
-                <h2 className="text-lg font-bold text-brand-dark mb-4">
+                <h2 className="text-lg font-bold text-gray-900 mb-4">
                   Products by Category
                 </h2>
                 {stats.products.length > 0 ? (
@@ -222,14 +222,14 @@ export default function AdminPage() {
                       return (
                         <div key={p.category}>
                           <div className="flex justify-between text-sm mb-1">
-                            <span className="font-medium text-brand-dark capitalize">
+                            <span className="font-medium text-gray-900 capitalize">
                               {p.category}
                             </span>
                             <span className="text-gray-500">{p.count}</span>
                           </div>
                           <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                             <div
-                              className="h-full bg-brand-nav rounded-full transition-all"
+                              className="h-full bg-primary rounded-full transition-all"
                               style={{ width: `${pct}%` }}
                             />
                           </div>
@@ -246,7 +246,7 @@ export default function AdminPage() {
             {/* Daily clicks */}
             {stats.daily_clicks.length > 0 && (
               <div className="card">
-                <h2 className="text-lg font-bold text-brand-dark mb-4">
+                <h2 className="text-lg font-bold text-gray-900 mb-4">
                   Daily Clicks (Last 7 Days)
                 </h2>
                 <div className="overflow-x-auto">
@@ -260,7 +260,7 @@ export default function AdminPage() {
                     <tbody>
                       {stats.daily_clicks.map((d) => (
                         <tr key={d.date} className="border-b border-gray-50">
-                          <td className="py-2 text-brand-dark">{d.date}</td>
+                          <td className="py-2 text-gray-900">{d.date}</td>
                           <td className="py-2 text-right font-semibold">{d.clicks}</td>
                         </tr>
                       ))}
@@ -287,10 +287,10 @@ function StatCard({
 }) {
   return (
     <div className="card-hover text-center">
-      <div className="w-12 h-12 rounded-2xl bg-brand-nav-50 flex items-center justify-center mx-auto mb-3">
+      <div className="w-12 h-12 rounded-2xl bg-primary-50 flex items-center justify-center mx-auto mb-3">
         {icon}
       </div>
-      <div className="text-2xl font-bold text-brand-nav mb-0.5">
+      <div className="text-2xl font-bold text-primary mb-0.5">
         {value.toLocaleString()}
       </div>
       <div className="text-sm text-gray-500">{label}</div>

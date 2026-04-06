@@ -82,7 +82,7 @@ export default function RemittanceCalculator() {
                 <FlagIcon code={receiveCurrency} size={18} />
                 <span className="text-sm font-medium text-gray-500">{receiveCurrency}</span>
               </div>
-              <div className="input-field ps-20 bg-surface-50 flex items-center text-gray-700">
+              <div className="input-field ps-20 bg-gray-50 flex items-center text-gray-700">
                 {loading ? (
                   <span className="text-gray-400">{t('loading')}</span>
                 ) : bestProvider ? (
@@ -132,7 +132,7 @@ export default function RemittanceCalculator() {
       {data && data.providers.length > 0 && (
         <div className="card overflow-hidden p-0">
           {/* Mid-market reference */}
-          <div className="px-4 py-2.5 border-b border-gray-100 bg-surface-50">
+          <div className="px-4 py-2.5 border-b border-gray-100 bg-gray-50">
             <MidMarketTooltip rate={data.mid_market_rate} />
           </div>
 
@@ -169,7 +169,7 @@ export default function RemittanceCalculator() {
           </div>
 
           {/* Last updated */}
-          <div className="px-4 py-2 border-t border-gray-100 bg-surface-50 text-xs text-gray-400 text-end">
+          <div className="px-4 py-2 border-t border-gray-100 bg-gray-50 text-xs text-gray-400 text-end">
             {t('last_updated')}: {new Date(data.last_updated).toLocaleTimeString()}
           </div>
         </div>

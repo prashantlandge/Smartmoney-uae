@@ -15,7 +15,7 @@ export default function PrivacyPage() {
         <title>Privacy Policy — SmartMoney UAE</title>
       </Head>
 
-      <section className="bg-gradient-to-br from-brand-nav via-brand-nav to-brand-nav-dark text-white py-8 sm:py-10 px-4">
+      <section className="bg-gradient-to-br from-primary via-primary to-primary-600 text-white py-8 sm:py-10 px-4">
         <Container size="md">
           <div className="text-center">
             <h1 className="text-xl sm:text-2xl font-bold mb-2">Privacy Policy</h1>
@@ -28,7 +28,7 @@ export default function PrivacyPage() {
         <Container size="md">
           {/* Introduction */}
           <div className="mb-10">
-            <h2 className="text-heading-lg font-bold text-brand-dark mb-4">Introduction</h2>
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-4">Introduction</h2>
             <p className="text-body-lg text-gray-600 leading-relaxed mb-3">
               SmartMoney UAE (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) operates the website smartmoney.ae. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website. By using our services, you agree to the collection and use of information in accordance with this policy.
             </p>
@@ -39,7 +39,7 @@ export default function PrivacyPage() {
 
           {/* Data Collection */}
           <div className="mb-10">
-            <h2 className="text-heading-lg font-bold text-brand-dark mb-4">Data We Collect</h2>
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-4">Data We Collect</h2>
             <p className="text-body-lg text-gray-600 leading-relaxed mb-3">
               We may collect the following types of information when you use our website:
             </p>
@@ -57,7 +57,7 @@ export default function PrivacyPage() {
 
           {/* How Data Is Used */}
           <div className="mb-10">
-            <h2 className="text-heading-lg font-bold text-brand-dark mb-4">How We Use Your Data</h2>
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-4">How We Use Your Data</h2>
             <p className="text-body-lg text-gray-600 leading-relaxed mb-3">
               The information we collect is used for the following purposes:
             </p>
@@ -72,13 +72,13 @@ export default function PrivacyPage() {
 
           {/* Third-Party Services */}
           <div className="mb-10">
-            <h2 className="text-heading-lg font-bold text-brand-dark mb-4">Third-Party Services</h2>
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-4">Third-Party Services</h2>
             <p className="text-body-lg text-gray-600 leading-relaxed mb-3">
               We use the following third-party services that may collect data about your visit:
             </p>
             <ul className="list-disc list-inside space-y-2 text-body-lg text-gray-600 mb-3">
-              <li><strong>Google Analytics:</strong> We use Google Analytics to collect anonymised usage statistics. Google Analytics uses cookies to track visitor interactions. Data may be processed on servers outside the UAE. For more information, see <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-brand-nav hover:underline">Google&apos;s Privacy Policy</a>.</li>
-              <li><strong>Google AdSense:</strong> We use Google AdSense to display advertisements. AdSense may use cookies and web beacons to serve ads based on your prior visits to our website or other websites. You can opt out of personalised advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="text-brand-nav hover:underline">Google Ads Settings</a>.</li>
+              <li><strong>Google Analytics:</strong> We use Google Analytics to collect anonymised usage statistics. Google Analytics uses cookies to track visitor interactions. Data may be processed on servers outside the UAE. For more information, see <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Google&apos;s Privacy Policy</a>.</li>
+              <li><strong>Google AdSense:</strong> We use Google AdSense to display advertisements. AdSense may use cookies and web beacons to serve ads based on your prior visits to our website or other websites. You can opt out of personalised advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Google Ads Settings</a>.</li>
               <li><strong>Affiliate networks:</strong> When you click on a product link, you may be redirected through affiliate network tracking systems. These networks may set their own cookies to attribute referrals. Each provider and affiliate network has its own privacy policy.</li>
             </ul>
             <p className="text-body-lg text-gray-600 leading-relaxed">
@@ -88,7 +88,7 @@ export default function PrivacyPage() {
 
           {/* Cookies Policy */}
           <div className="mb-10">
-            <h2 className="text-heading-lg font-bold text-brand-dark mb-4">Cookies Policy</h2>
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-4">Cookies Policy</h2>
             <p className="text-body-lg text-gray-600 leading-relaxed mb-3">
               Cookies are small text files placed on your device when you visit our website. We use the following types of cookies:
             </p>
@@ -105,7 +105,7 @@ export default function PrivacyPage() {
 
           {/* Data Retention */}
           <div className="mb-10">
-            <h2 className="text-heading-lg font-bold text-brand-dark mb-4">Data Retention</h2>
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-4">Data Retention</h2>
             <p className="text-body-lg text-gray-600 leading-relaxed">
               We retain analytics and usage data for a maximum of 26 months, after which it is automatically deleted or anonymised. Session data expires when you close your browser or after a period of inactivity. Affiliate tracking data is retained only for as long as necessary to process commissions and resolve disputes, typically no longer than 12 months.
             </p>
@@ -113,7 +113,7 @@ export default function PrivacyPage() {
 
           {/* User Rights */}
           <div className="mb-10">
-            <h2 className="text-heading-lg font-bold text-brand-dark mb-4">Your Rights</h2>
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-4">Your Rights</h2>
             <p className="text-body-lg text-gray-600 leading-relaxed mb-3">
               Under the UAE Federal Decree-Law No. 45 of 2021 on the Protection of Personal Data, you have the following rights:
             </p>
@@ -133,7 +133,7 @@ export default function PrivacyPage() {
 
           {/* Data Security */}
           <div className="mb-10">
-            <h2 className="text-heading-lg font-bold text-brand-dark mb-4">Data Security</h2>
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-4">Data Security</h2>
             <p className="text-body-lg text-gray-600 leading-relaxed">
               We implement reasonable technical and organisational measures to protect the data we collect against unauthorised access, alteration, disclosure, or destruction. Our website is served over HTTPS to encrypt data in transit. However, no method of electronic transmission or storage is completely secure, and we cannot guarantee absolute security.
             </p>
@@ -141,7 +141,7 @@ export default function PrivacyPage() {
 
           {/* Children's Privacy */}
           <div className="mb-10">
-            <h2 className="text-heading-lg font-bold text-brand-dark mb-4">Children&apos;s Privacy</h2>
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-4">Children&apos;s Privacy</h2>
             <p className="text-body-lg text-gray-600 leading-relaxed">
               Our website is not intended for individuals under the age of 18. We do not knowingly collect personal data from children. If you believe that a child has provided us with personal data, please contact us and we will take steps to delete such information.
             </p>
@@ -149,7 +149,7 @@ export default function PrivacyPage() {
 
           {/* Changes to This Policy */}
           <div className="mb-10">
-            <h2 className="text-heading-lg font-bold text-brand-dark mb-4">Changes to This Policy</h2>
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-4">Changes to This Policy</h2>
             <p className="text-body-lg text-gray-600 leading-relaxed">
               We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated &quot;Last updated&quot; date. We encourage you to review this page periodically to stay informed about how we protect your information.
             </p>
@@ -157,14 +157,14 @@ export default function PrivacyPage() {
 
           {/* Contact */}
           <div className="mb-10">
-            <h2 className="text-heading-lg font-bold text-brand-dark mb-4">Contact Us</h2>
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-4">Contact Us</h2>
             <p className="text-body-lg text-gray-600 leading-relaxed mb-3">
               If you have any questions about this Privacy Policy or wish to exercise your data protection rights, please contact us at:
             </p>
-            <div className="bg-surface-50 rounded-card p-5">
+            <div className="bg-gray-50 rounded-card p-5">
               <p className="text-body-lg text-gray-600 mb-1"><strong>SmartMoney UAE</strong></p>
               <p className="text-body-lg text-gray-600">
-                Email: <a href="mailto:hello@smartmoney.ae" className="text-brand-nav hover:underline">hello@smartmoney.ae</a>
+                Email: <a href="mailto:hello@smartmoney.ae" className="text-primary hover:underline">hello@smartmoney.ae</a>
               </p>
             </div>
           </div>
