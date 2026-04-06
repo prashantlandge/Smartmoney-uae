@@ -226,6 +226,10 @@ class ADIBScraper(BankScraper):
                 title = title_el.get_text(strip=True)
                 if not title or len(title) < 5:
                     continue
+                # Skip non-product content (FAQ, chat, branch locators)
+                skip_words = ["visit", "branch", "chat", "faq", "question", "assistant", "contact", "call"]
+                if any(sw in title.lower() for sw in skip_words):
+                    continue
 
                 desc = card.find("p").get_text(strip=True)[:500] if card.find("p") else ""
 

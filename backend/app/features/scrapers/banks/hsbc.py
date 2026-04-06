@@ -214,6 +214,10 @@ class StandardCharteredScraper(BankScraper):
                 title = title_el.get_text(strip=True)
                 if not title or len(title) < 5:
                     continue
+                # Skip informational pages that aren't actual card products
+                skip_words = ["service", "basics", "reminder", "tips", "bureau", "manage", "faq", "question"]
+                if any(sw in title.lower() for sw in skip_words):
+                    continue
 
                 desc = card.find("p").get_text(strip=True)[:500] if card.find("p") else ""
 
