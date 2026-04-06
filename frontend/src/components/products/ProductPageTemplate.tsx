@@ -9,6 +9,7 @@ import { useProducts } from '@/hooks/useProducts';
 import CategoryIllustration from '@/components/ui/CategoryIllustration';
 import { SkeletonCard } from '@/components/ui/Skeleton';
 import EmptyState from '@/components/ui/EmptyState';
+import AdSlot from '@/components/ui/AdSlot';
 import { CompareProvider } from '@/context/CompareContext';
 import CompareTray from '@/components/products/CompareTray';
 import { Package, Search, SlidersHorizontal, ChevronRight, X } from 'lucide-react';
@@ -281,6 +282,11 @@ export default function ProductPageTemplate({
             )}
           </div>
         </section>
+
+        {/* Ad slot after product list */}
+        <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-4">
+          <AdSlot slot="PRODUCT_LIST_AD_UNIT_ID" format="horizontal" />
+        </div>
 
         {calculatorSlot && (
           <section className="bg-white border-t border-surface-200">

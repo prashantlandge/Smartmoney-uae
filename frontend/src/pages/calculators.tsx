@@ -4,6 +4,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { GetStaticProps } from 'next';
 import Layout from '@/components/layout/Layout';
+import AdSlot from '@/components/ui/AdSlot';
 import EmiCalculator from '@/components/calculators/EmiCalculator';
 import CashbackCalculator from '@/components/calculators/CashbackCalculator';
 import InsuranceEstimator from '@/components/calculators/InsuranceEstimator';
@@ -102,6 +103,11 @@ export default function Calculators() {
 
         <div id="savings" className="scroll-mt-32">
           <SavingsCalculator />
+        </div>
+
+        {/* Ad slot between calculator sections */}
+        <div className="py-2">
+          <AdSlot slot="CALC_MID_AD_UNIT_ID" format="horizontal" />
         </div>
 
         <div id="fuel" className="scroll-mt-32">

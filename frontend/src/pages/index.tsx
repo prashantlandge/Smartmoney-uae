@@ -7,6 +7,7 @@ import Layout from '@/components/layout/Layout';
 import HeroSearch from '@/components/search/HeroSearch';
 import RemittanceCalculator from '@/components/remittance/RemittanceCalculator';
 import TrustLogos from '@/components/ui/TrustLogos';
+import AdSlot from '@/components/ui/AdSlot';
 import {
   ArrowLeftRight, CreditCard, Wallet, Shield, Calculator,
   ChevronRight, Sparkles, Search, BarChart3, PiggyBank,
@@ -117,6 +118,11 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ===== AD SLOT ===== */}
+      <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-4">
+        <AdSlot slot="HOME_TOP_AD_UNIT_ID" format="horizontal" />
+      </div>
+
       {/* ===== HOW IT WORKS + STATS ===== */}
       <section className="bg-white border-b border-surface-100">
         <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-8 sm:py-10">
@@ -182,6 +188,10 @@ export default function Home() {
           </div>
         </div>
       </section>
+      {/* ===== AD SLOT ===== */}
+      <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-4">
+        <AdSlot slot="HOME_BOTTOM_AD_UNIT_ID" format="horizontal" />
+      </div>
     </Layout>
   );
 }
