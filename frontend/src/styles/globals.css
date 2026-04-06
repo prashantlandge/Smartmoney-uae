@@ -29,8 +29,8 @@
 @layer components {
   /* ===== BUTTONS ===== */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-8 py-2.5 rounded-button
-           bg-brand-primary text-white font-medium text-base
+    @apply inline-flex items-center justify-center gap-1.5 px-5 py-2 rounded-button
+           bg-brand-primary text-white font-medium text-sm
            hover:bg-brand-primary-600
            active:scale-[0.98] transition-all duration-150;
   }
@@ -100,7 +100,7 @@
 
   /* ===== LAYOUT ===== */
   .container-content {
-    @apply max-w-content-xl mx-auto px-4 sm:px-8;
+    @apply max-w-content-xl mx-auto px-4 sm:px-6;
   }
 
   /* ===== SHIMMER SKELETON ===== */

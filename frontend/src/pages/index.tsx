@@ -48,29 +48,29 @@ export default function Home() {
 
       {/* ===== HERO ===== */}
       <section className="bg-gradient-to-br from-brand-nav via-brand-nav to-brand-nav-dark text-white">
-        <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-10 sm:py-14 text-center">
-          <div className="inline-flex items-center gap-1.5 bg-white/15 text-white text-label font-semibold px-3 py-1.5 rounded-pill mb-4">
-            <Sparkles size={12} />
+        <div className="max-w-content-xl mx-auto px-4 sm:px-6 py-6 sm:py-8 text-center">
+          <div className="inline-flex items-center gap-1.5 bg-white/15 text-white text-label font-semibold px-2.5 py-1 rounded-pill mb-2.5">
+            <Sparkles size={11} />
             {t('hero_badge')}
           </div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 leading-tight max-w-3xl mx-auto">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 leading-tight max-w-2xl mx-auto">
             {t('hero_title')}
           </h1>
-          <p className="text-sm sm:text-base text-white/70 max-w-2xl mx-auto mb-6">
+          <p className="text-sm text-white/70 max-w-xl mx-auto mb-4">
             {t('hero_subtitle')}
           </p>
-          <div className="max-w-xl mx-auto mb-6">
+          <div className="max-w-lg mx-auto mb-4">
             <HeroSearch />
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8">
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
             {TRUST_STATS.map((s) => (
-              <div key={s.label} className="flex items-center gap-2 text-white/80">
-                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
-                  <s.icon size={14} className="text-white" />
+              <div key={s.label} className="flex items-center gap-1.5 text-white/80">
+                <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center">
+                  <s.icon size={13} className="text-white" />
                 </div>
                 <div className="text-start">
-                  <p className="text-sm font-bold leading-tight">{s.value}</p>
-                  <p className="text-label text-white/50">{s.label}</p>
+                  <p className="text-xs sm:text-sm font-bold leading-tight">{s.value}</p>
+                  <p className="text-[10px] sm:text-label text-white/50">{s.label}</p>
                 </div>
               </div>
             ))}
@@ -79,9 +79,9 @@ export default function Home() {
       </section>
 
       {/* ===== REMITTANCE CALCULATOR ===== */}
-      <section className="px-4 sm:px-8 -mt-5 relative z-10 mb-4">
+      <section className="px-4 sm:px-6 -mt-4 relative z-10 mb-2">
         <div className="max-w-3xl mx-auto">
-          <div className="bg-white rounded-card border border-surface-200 shadow-elevated p-4 sm:p-5">
+          <div className="bg-white rounded-card border border-surface-200 shadow-elevated p-3 sm:p-4">
             <RemittanceCalculator />
           </div>
         </div>
@@ -92,22 +92,22 @@ export default function Home() {
 
       {/* ===== CATEGORIES ===== */}
       <section className="bg-surface-50 border-b border-surface-100">
-        <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-8 sm:py-10">
-          <div className="text-center mb-6">
-            <h2 className="text-heading-lg font-bold text-brand-dark mb-1">{t('explore_title')}</h2>
+        <div className="max-w-content-xl mx-auto px-4 sm:px-6 py-5 sm:py-6">
+          <div className="text-center mb-4">
+            <h2 className="text-heading-md font-bold text-brand-dark mb-0.5">{t('explore_title')}</h2>
             <p className="text-body-sm text-gray-500">{t('explore_subtitle')}</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
             {CATEGORIES.map((cat) => {
               const Icon = cat.icon;
               return (
-                <Link key={cat.label} href={cat.href} className={`group flex items-center gap-3 p-4 rounded-card border transition-all ${cat.color}`}>
-                  <div className="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center shrink-0 group-hover:shadow-card transition-shadow">
-                    <Icon size={20} className="text-brand-nav" />
+                <Link key={cat.label} href={cat.href} className={`group flex items-center gap-2.5 p-3 rounded-card border transition-all ${cat.color}`}>
+                  <div className="w-9 h-9 rounded-lg bg-white shadow-sm flex items-center justify-center shrink-0 group-hover:shadow-card transition-shadow">
+                    <Icon size={18} className="text-brand-nav" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-body-sm font-semibold text-brand-dark">{cat.label}</p>
-                    <p className="text-label text-gray-400">{cat.desc}</p>
+                    <p className="text-body-sm font-semibold text-brand-dark leading-tight">{cat.label}</p>
+                    <p className="text-label text-gray-400 hidden sm:block">{cat.desc}</p>
                   </div>
                 </Link>
               );
@@ -117,48 +117,44 @@ export default function Home() {
       </section>
 
       {/* ===== AD SLOT ===== */}
-      <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-4">
-        <AdSlot slot="HOME_TOP_AD_UNIT_ID" format="horizontal" />
-      </div>
+      <AdSlot slot="HOME_TOP_AD_UNIT_ID" format="horizontal" className="max-w-content-xl mx-auto px-4 sm:px-6" />
 
       {/* ===== HOW IT WORKS + STATS ===== */}
       <section className="bg-white border-b border-surface-100">
-        <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-8 sm:py-10">
-          <div className="text-center mb-6">
-            <h2 className="text-heading-lg font-bold text-brand-dark mb-1">{t('how_title')}</h2>
+        <div className="max-w-content-xl mx-auto px-4 sm:px-6 py-5 sm:py-6">
+          <div className="text-center mb-4">
+            <h2 className="text-heading-md font-bold text-brand-dark mb-0.5">{t('how_title')}</h2>
             <p className="text-body-sm text-gray-500">{t('how_subtitle')}</p>
           </div>
-          <div className="grid sm:grid-cols-3 gap-4 mb-8">
+          <div className="grid sm:grid-cols-3 gap-3 mb-5">
             {HOW_STEPS.map((step) => (
-              <div key={step.title} className="text-center p-5 rounded-card bg-surface-50 border border-surface-100">
-                <div className="w-12 h-12 rounded-full bg-brand-nav mx-auto mb-3 flex items-center justify-center">
-                  <step.icon size={20} className="text-white" />
+              <div key={step.title} className="text-center p-4 rounded-card bg-surface-50 border border-surface-100">
+                <div className="w-10 h-10 rounded-full bg-brand-nav mx-auto mb-2 flex items-center justify-center">
+                  <step.icon size={18} className="text-white" />
                 </div>
-                <div className="flex items-center justify-center gap-1.5 mb-1">
-                  <span className="text-label font-bold text-brand-nav">{t('step')} {step.num}</span>
-                </div>
-                <h3 className="text-heading-sm font-bold text-brand-dark mb-1">{step.title}</h3>
-                <p className="text-body-sm text-gray-500">{step.desc}</p>
+                <span className="text-label font-bold text-brand-nav">{t('step')} {step.num}</span>
+                <h3 className="text-body-sm font-bold text-brand-dark mt-0.5 mb-0.5">{step.title}</h3>
+                <p className="text-label text-gray-500 leading-relaxed">{step.desc}</p>
               </div>
             ))}
           </div>
-          <div className="bg-brand-nav/5 rounded-card border border-brand-nav/10 p-5 sm:p-6">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+          <div className="bg-brand-nav/5 rounded-card border border-brand-nav/10 p-4">
+            <div className="grid grid-cols-4 gap-3 text-center">
               <div>
-                <p className="text-display-lg font-bold text-brand-nav">20+</p>
-                <p className="text-body-sm text-gray-500">{t('stats_providers')}</p>
+                <p className="text-heading-lg font-bold text-brand-nav">20+</p>
+                <p className="text-label text-gray-500">{t('stats_providers')}</p>
               </div>
               <div>
-                <p className="text-display-lg font-bold text-brand-nav">50+</p>
-                <p className="text-body-sm text-gray-500">{t('stats_products')}</p>
+                <p className="text-heading-lg font-bold text-brand-nav">50+</p>
+                <p className="text-label text-gray-500">{t('stats_products')}</p>
               </div>
               <div>
-                <p className="text-display-lg font-bold text-brand-nav">8</p>
-                <p className="text-body-sm text-gray-500">{t('stats_categories')}</p>
+                <p className="text-heading-lg font-bold text-brand-nav">8</p>
+                <p className="text-label text-gray-500">{t('stats_categories')}</p>
               </div>
               <div>
-                <p className="text-display-lg font-bold text-brand-nav">15 min</p>
-                <p className="text-body-sm text-gray-500">{t('stats_refresh')}</p>
+                <p className="text-heading-lg font-bold text-brand-nav">15 min</p>
+                <p className="text-label text-gray-500">{t('stats_refresh')}</p>
               </div>
             </div>
           </div>
@@ -167,8 +163,8 @@ export default function Home() {
 
       {/* ===== NEWSLETTER ===== */}
       <section className="bg-brand-nav">
-        <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-5">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="max-w-content-xl mx-auto px-4 sm:px-6 py-3.5">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2.5">
             <div className="text-center sm:text-start">
               <h3 className="text-sm font-bold text-white">{t('newsletter_title')}</h3>
               <p className="text-label text-white/60">{t('newsletter_subtitle')}</p>
@@ -177,9 +173,9 @@ export default function Home() {
               <input
                 type="email"
                 placeholder={t('newsletter_placeholder')}
-                className="flex-1 sm:w-56 px-3 py-2 bg-white/10 border border-white/20 rounded-button text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-white/30"
+                className="flex-1 sm:w-48 px-3 py-1.5 bg-white/10 border border-white/20 rounded-button text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-white/30"
               />
-              <button type="submit" className="px-4 py-2 bg-white text-brand-nav text-sm font-semibold rounded-button hover:bg-white/90 transition-colors">
+              <button type="submit" className="px-3 py-1.5 bg-white text-brand-nav text-sm font-semibold rounded-button hover:bg-white/90 transition-colors">
                 {t('newsletter_button')}
               </button>
             </form>
@@ -187,9 +183,7 @@ export default function Home() {
         </div>
       </section>
       {/* ===== AD SLOT ===== */}
-      <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-4">
-        <AdSlot slot="HOME_BOTTOM_AD_UNIT_ID" format="horizontal" />
-      </div>
+      <AdSlot slot="HOME_BOTTOM_AD_UNIT_ID" format="horizontal" className="max-w-content-xl mx-auto px-4 sm:px-6" />
     </Layout>
   );
 }

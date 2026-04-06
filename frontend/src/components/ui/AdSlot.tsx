@@ -44,7 +44,7 @@ export default function AdSlot({ slot, format = 'auto', className = '' }: AdSlot
   const style = FORMAT_STYLES[format];
 
   return (
-    <div className={`ad-slot text-center ${className}`}>
+    <div className={`ad-slot text-center empty:hidden ${className}`}>
       <ins
         ref={adRef}
         className="adsbygoogle"

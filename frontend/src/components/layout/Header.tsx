@@ -129,7 +129,7 @@ export default function Header() {
     <header className="sticky top-0 z-40">
       {/* ── Row 1: Brand bar (white) ── */}
       <div className="bg-white border-b border-surface-100">
-        <div className="max-w-content-xl mx-auto px-4 sm:px-8 flex items-center justify-between h-12 sm:h-14">
+        <div className="max-w-content-xl mx-auto px-4 sm:px-6 flex items-center justify-between h-11 sm:h-12">
           <Link href="/" className="flex items-center shrink-0">
             <Image
               src="/images/logo.svg"
@@ -192,8 +192,8 @@ export default function Header() {
 
       {/* ── Row 2: Category nav (blue) — RupeeLens style ── */}
       <nav className="bg-brand-nav shadow-nav hidden lg:block">
-        <div className="max-w-content-xl mx-auto px-4 sm:px-8">
-          <div className="flex items-center justify-center h-11 gap-1">
+        <div className="max-w-content-xl mx-auto px-4 sm:px-6">
+          <div className="flex items-center justify-center h-10 gap-0.5">
             {NAV_ITEMS.map((item) => {
               const isActive = router.pathname === item.href || (item.href !== '/' && router.pathname.startsWith(item.href));
               const hasSub = item.sub && item.sub.length > 0;

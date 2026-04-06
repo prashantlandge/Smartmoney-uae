@@ -99,7 +99,7 @@ export default function HeroSearch({ compact = false }: HeroSearchProps) {
           className={`w-full bg-white/90 backdrop-blur-sm text-gray-900 border-0 shadow-elevated focus:ring-2 focus:ring-brand-primary/40 outline-none transition-all ${
             compact
               ? 'rounded-button pl-10 pr-4 py-2.5 text-sm'
-              : 'rounded-2xl pl-12 pr-6 py-4 text-base sm:text-lg'
+              : 'rounded-xl pl-11 pr-5 py-3 text-sm sm:text-base'
           }`}
         />
         {loading && (
@@ -156,12 +156,12 @@ export default function HeroSearch({ compact = false }: HeroSearchProps) {
 
       {/* Category Quick Links */}
       {!compact && (
-        <div className="flex flex-wrap justify-center gap-2 mt-4">
+        <div className="flex flex-wrap justify-center gap-1.5 mt-3">
           {QUICK_CATEGORIES.map((cat) => (
             <Link
               key={cat.key}
               href={cat.href}
-              className="px-3 py-1.5 text-xs font-medium text-white/80 bg-white/15 rounded-pill hover:bg-white/25 transition-colors backdrop-blur-sm"
+              className="px-2.5 py-1 text-[11px] font-medium text-white/80 bg-white/15 rounded-pill hover:bg-white/25 transition-colors backdrop-blur-sm"
             >
               {t(`categories.${cat.key}`)}
             </Link>

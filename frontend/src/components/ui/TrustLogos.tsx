@@ -17,20 +17,20 @@ const PROVIDERS = [
 export default function TrustLogos() {
   const { t } = useTranslation('common');
   return (
-    <div className="bg-white border-y border-surface-100 py-5">
-      <div className="max-w-content-xl mx-auto px-4 sm:px-8">
-        <p className="text-center text-label text-gray-400 uppercase tracking-wider font-semibold mb-4">
+    <div className="bg-surface-50 border-y border-surface-100 py-3">
+      <div className="max-w-content-xl mx-auto px-4 sm:px-6">
+        <p className="text-center text-[10px] sm:text-label text-gray-400 uppercase tracking-wider font-semibold mb-2.5">
           {t('trust_logos_title')}
         </p>
-        <div className="grid grid-cols-5 sm:flex sm:items-center sm:justify-center sm:flex-wrap gap-x-4 sm:gap-x-8 gap-y-3 sm:gap-y-3">
+        <div className="grid grid-cols-5 sm:grid-cols-10 gap-x-3 sm:gap-x-5 gap-y-2">
           {PROVIDERS.map((p) => (
-            <div key={p.name} className="flex items-center justify-center grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all" title={p.name}>
+            <div key={p.name} className="flex items-center justify-center grayscale hover:grayscale-0 opacity-50 hover:opacity-100 transition-all" title={p.name}>
               <Image
                 src={p.logo}
                 alt={p.name}
-                width={80}
-                height={32}
-                className="h-5 sm:h-8 w-auto max-w-[56px] sm:max-w-[80px] object-contain"
+                width={72}
+                height={28}
+                className="h-4 sm:h-6 w-auto max-w-[48px] sm:max-w-[72px] object-contain"
               />
             </div>
           ))}

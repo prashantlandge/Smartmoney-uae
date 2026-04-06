@@ -36,12 +36,12 @@ export default function RemittanceCalculator() {
   return (
     <div className="w-full max-w-3xl mx-auto">
       {/* Currency Selector */}
-      <div className="flex justify-center mb-3">
+      <div className="flex justify-center mb-2">
         <CurrencySelector value={receiveCurrency} onChange={handleCurrencyChange} />
       </div>
 
       {/* Input Section */}
-      <div className="card-elevated mb-4">
+      <div className="card-elevated mb-3">
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-end">
           {/* Send Amount */}
           <div className="flex-1">
@@ -100,7 +100,7 @@ export default function RemittanceCalculator() {
 
       {/* Savings Banner */}
       {savingsInr > 0 && bestProvider && worstProvider && (
-        <div className="bg-success-light border border-emerald-200 rounded-card p-3 mb-4 text-center">
+        <div className="bg-success-light border border-emerald-200 rounded-card p-2.5 mb-3 text-center">
           <p className="text-sm text-success-dark font-medium">
             {t('savings_message', {
               amount: savingsInr.toLocaleString('en-IN', { maximumFractionDigits: 2 }),
