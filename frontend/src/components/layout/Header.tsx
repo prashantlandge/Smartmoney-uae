@@ -219,7 +219,7 @@ export default function Header() {
                   {/* Dropdown */}
                   {hasSub && isOpen && (
                     <div
-                      className="absolute top-full left-0 pt-1 z-50"
+                      className="absolute top-full left-0 pt-2 z-50"
                       onMouseEnter={() => handleMouseEnter(item.key)}
                       onMouseLeave={handleMouseLeave}
                     >
