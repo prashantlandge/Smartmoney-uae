@@ -18,7 +18,7 @@
   }
 
   ::selection {
-    @apply bg-brand-primary-100 text-brand-primary-900;
+    @apply bg-blue-100 text-blue-900;
   }
 
   :focus-visible {
@@ -30,8 +30,8 @@
   /* ===== BUTTONS ===== */
   .btn-primary {
     @apply inline-flex items-center justify-center gap-1.5 px-5 py-2 rounded-button
-           bg-brand-primary text-white font-medium text-sm
-           hover:bg-brand-primary-600
+           bg-brand-nav text-white font-medium text-sm
+           hover:bg-brand-nav-dark
            active:scale-[0.98] transition-all duration-150;
   }
 
@@ -92,7 +92,7 @@
   .badge-error { @apply badge bg-red-100 text-red-800; }
   .badge-info { @apply badge bg-blue-100 text-blue-800; }
   .badge-islamic { @apply badge bg-emerald-100 text-emerald-800; }
-  .badge-ai { @apply badge bg-brand-primary-50 text-brand-primary-800; }
+  .badge-ai { @apply badge bg-blue-50 text-blue-800; }
   .badge-new { @apply badge bg-yellow-300 text-yellow-900; }
   .badge-best {
     @apply badge bg-yellow-300 text-yellow-900 relative;

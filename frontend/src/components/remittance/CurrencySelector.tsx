@@ -24,7 +24,7 @@ export default function CurrencySelector({ value, onChange }: Props) {
           onClick={() => onChange(c.code)}
           className={`flex items-center gap-1.5 px-3 py-2 rounded-button text-xs font-medium transition-all ${
             value === c.code
-              ? 'bg-brand-primary text-white shadow-sm'
+              ? 'bg-brand-nav text-white shadow-sm'
               : 'bg-surface-100 text-gray-600 hover:bg-surface-200'
           }`}
         >

@@ -25,11 +25,11 @@ export default function Home() {
   ];
 
   const CATEGORIES = [
-    { label: t('categories.remittance'), href: '/', icon: ArrowLeftRight, desc: t('cat_remittance_desc'), color: 'bg-blue-50 hover:bg-blue-100 border-blue-100' },
-    { label: t('categories.credit_cards'), href: '/credit-cards', icon: CreditCard, desc: t('cat_cards_desc'), color: 'bg-purple-50 hover:bg-purple-100 border-purple-100' },
-    { label: t('nav_loans'), href: '/personal-loans', icon: Wallet, desc: t('cat_loans_desc'), color: 'bg-teal-50 hover:bg-teal-100 border-teal-100' },
-    { label: t('nav_insurance'), href: '/car-insurance', icon: Shield, desc: t('cat_insurance_desc'), color: 'bg-amber-50 hover:bg-amber-100 border-amber-100' },
-    { label: t('nav_tools'), href: '/calculators', icon: Calculator, desc: t('cat_tools_desc'), color: 'bg-indigo-50 hover:bg-indigo-100 border-indigo-100' },
+    { label: t('categories.remittance'), href: '/', icon: ArrowLeftRight, desc: t('cat_remittance_desc'), color: 'bg-blue-50/80 hover:bg-blue-100/80 border-blue-100' },
+    { label: t('categories.credit_cards'), href: '/credit-cards', icon: CreditCard, desc: t('cat_cards_desc'), color: 'bg-indigo-50/80 hover:bg-indigo-100/80 border-indigo-100' },
+    { label: t('nav_loans'), href: '/personal-loans', icon: Wallet, desc: t('cat_loans_desc'), color: 'bg-blue-50/80 hover:bg-blue-100/80 border-blue-100' },
+    { label: t('nav_insurance'), href: '/car-insurance', icon: Shield, desc: t('cat_insurance_desc'), color: 'bg-indigo-50/80 hover:bg-indigo-100/80 border-indigo-100' },
+    { label: t('nav_tools'), href: '/calculators', icon: Calculator, desc: t('cat_tools_desc'), color: 'bg-blue-50/80 hover:bg-blue-100/80 border-blue-100' },
   ];
 
   const HOW_STEPS = [
@@ -120,7 +120,7 @@ export default function Home() {
       <AdSlot slot="HOME_TOP_AD_UNIT_ID" format="horizontal" className="max-w-content-xl mx-auto px-4 sm:px-6" />
 
       {/* ===== HOW IT WORKS + STATS ===== */}
-      <section className="bg-white border-b border-surface-100">
+      <section className="bg-brand-nav/[0.03] border-b border-brand-nav/10">
         <div className="max-w-content-xl mx-auto px-4 sm:px-6 py-5 sm:py-6">
           <div className="text-center mb-4">
             <h2 className="text-heading-md font-bold text-brand-dark mb-0.5">{t('how_title')}</h2>
@@ -128,7 +128,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-4">
             {HOW_STEPS.map((step) => (
-              <div key={step.title} className="text-center p-2.5 sm:p-4 rounded-card bg-surface-50 border border-surface-100">
+              <div key={step.title} className="text-center p-2.5 sm:p-4 rounded-card bg-white border border-brand-nav/10">
                 <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-brand-nav mx-auto mb-1.5 flex items-center justify-center">
                   <step.icon size={16} className="text-white" />
                 </div>

@@ -7,7 +7,7 @@ export default function Footer() {
   const { t } = useTranslation('common');
 
   return (
-    <footer className="bg-gray-800 text-white">
+    <footer className="bg-[#1e2a4a] text-white">
       <div className="max-w-content-xl mx-auto px-4 sm:px-6 py-6">
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 sm:gap-5">
           {/* Brand */}
