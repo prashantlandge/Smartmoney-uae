@@ -117,7 +117,20 @@ class HSBCScraper(BankScraper):
                 min_salary_aed=15000,
                 representative_rate=3.49,
                 rate_type="variable",
-                key_features={"cashback_rate": "up to 3%", "annual_fee": "AED 0 first year", "lounge_access": False},
+                key_features={
+                    "annual_fee": "AED 0 first year, AED 399 after",
+                    "min_salary": "AED 15,000",
+                    "cashback_rate": "up to 3%",
+                    "card_tier": "Platinum",
+                    "best_for": "Unlimited cashback on all purchases",
+                    "contactless": True,
+                    "apple_pay": True,
+                    "supplementary_cards": "Free",
+                    "lounge_access": False,
+                    "travel_insurance": False,
+                    "concierge": False,
+                    "interest_free_days": "56 days",
+                },
                 affiliate_deep_link_en="https://hsbc.ae/credit-cards?utm_source=smartmoney",
                 commission_amount_aed=300,
                 data_source="scrape",
@@ -127,11 +140,25 @@ class HSBCScraper(BankScraper):
                 category="credit_card",
                 name_en="HSBC Black Credit Card",
                 name_ar="بطاقة إتش إس بي سي بلاك",
-                description_en="Premium HSBC card with unlimited lounge access and travel benefits.",
+                description_en="Premium HSBC card with unlimited lounge access, travel insurance and concierge services.",
                 min_salary_aed=30000,
                 representative_rate=3.49,
                 rate_type="variable",
-                key_features={"annual_fee": "AED 900", "lounge_access": True, "travel_insurance": True, "concierge": True},
+                key_features={
+                    "annual_fee": "AED 900",
+                    "min_salary": "AED 30,000",
+                    "rewards_rate": "up to 6x rewards points",
+                    "card_tier": "Black / World Elite",
+                    "best_for": "Premium travel and lifestyle perks",
+                    "lounge_access": True,
+                    "travel_insurance": True,
+                    "concierge": True,
+                    "contactless": True,
+                    "apple_pay": True,
+                    "valet_parking": True,
+                    "golf": True,
+                    "supplementary_cards": "Free",
+                },
                 affiliate_deep_link_en="https://hsbc.ae/credit-cards/black?utm_source=smartmoney",
                 commission_amount_aed=500,
                 data_source="scrape",
@@ -190,6 +217,20 @@ class StandardCharteredScraper(BankScraper):
 
                 desc = card.find("p").get_text(strip=True)[:500] if card.find("p") else ""
 
+                text = card.get_text(" ", strip=True).lower()
+                features = {"contactless": True, "apple_pay": True}
+
+                cb = re.search(r"(\d+(?:\.\d+)?)\s*%\s*cash\s*back", text)
+                if cb:
+                    features["cashback_rate"] = f"up to {cb.group(1)}%"
+
+                fee_m = re.search(r"(?:fee)\s*(?:aed\s*)?([\d,]+)", text)
+                if fee_m:
+                    features["annual_fee"] = f"AED {fee_m.group(1)}"
+
+                features["lounge_access"] = "lounge" in text
+                features["travel_insurance"] = "travel" in text
+
                 products.append(ScrapedProduct(
                     provider_id=self.PROVIDER_ID,
                     category="credit_card",
@@ -198,7 +239,7 @@ class StandardCharteredScraper(BankScraper):
                     min_salary_aed=15000,
                     representative_rate=3.49,
                     rate_type="variable",
-                    key_features={},
+                    key_features=features,
                     affiliate_deep_link_en=f"{self.BASE_URL}/credit-cards?utm_source=smartmoney",
                     data_source="scrape",
                 ))
@@ -219,14 +260,55 @@ class StandardCharteredScraper(BankScraper):
             ScrapedProduct(
                 provider_id=self.PROVIDER_ID,
                 category="credit_card",
+                name_en="Standard Chartered Cashback Credit Card",
+                name_ar="بطاقة ستاندرد تشارترد كاش باك",
+                description_en="Earn up to 5% cashback on international spends and 1% on local purchases.",
+                min_salary_aed=15000,
+                representative_rate=3.49,
+                rate_type="variable",
+                key_features={
+                    "annual_fee": "AED 0 first year, AED 499 after",
+                    "min_salary": "AED 15,000",
+                    "cashback_rate": "up to 5%",
+                    "card_tier": "Platinum",
+                    "best_for": "International spend cashback",
+                    "contactless": True,
+                    "apple_pay": True,
+                    "supplementary_cards": "Free",
+                    "lounge_access": False,
+                    "travel_insurance": False,
+                    "concierge": False,
+                    "interest_free_days": "55 days",
+                },
+                affiliate_deep_link_en="https://sc.com/ae/credit-cards/cashback?utm_source=smartmoney",
+                commission_amount_aed=300,
+                data_source="scrape",
+            ),
+            ScrapedProduct(
+                provider_id=self.PROVIDER_ID,
+                category="credit_card",
                 name_en="Standard Chartered Infinite Credit Card",
                 name_ar="بطاقة ستاندرد تشارترد إنفينيت",
-                description_en="Premium credit card with unlimited lounge access and lifestyle rewards.",
+                description_en="Premium credit card with unlimited lounge access, concierge and lifestyle rewards.",
                 min_salary_aed=25000,
                 representative_rate=3.49,
                 rate_type="variable",
-                key_features={"annual_fee": "AED 800", "lounge_access": True, "travel_insurance": True},
-                affiliate_deep_link_en="https://sc.com/ae/credit-cards?utm_source=smartmoney",
+                key_features={
+                    "annual_fee": "AED 800",
+                    "min_salary": "AED 25,000",
+                    "rewards_rate": "up to 5x rewards points",
+                    "card_tier": "Infinite",
+                    "best_for": "Premium travel and lifestyle rewards",
+                    "lounge_access": True,
+                    "travel_insurance": True,
+                    "concierge": True,
+                    "contactless": True,
+                    "apple_pay": True,
+                    "valet_parking": True,
+                    "golf": True,
+                    "supplementary_cards": "Free",
+                },
+                affiliate_deep_link_en="https://sc.com/ae/credit-cards/infinite?utm_source=smartmoney",
                 commission_amount_aed=400,
                 data_source="scrape",
             ),

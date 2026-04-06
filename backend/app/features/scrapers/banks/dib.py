@@ -122,7 +122,21 @@ class DIBScraper(BankScraper):
                 min_salary_aed=8000,
                 representative_rate=0,
                 rate_type="fixed",
-                key_features={"cashback_rate": "up to 5%", "annual_fee": "AED 0 first year", "sharia_compliant": True, "profit_rate": "2.99%"},
+                key_features={
+                    "annual_fee": "AED 0 first year, AED 399 after",
+                    "min_salary": "AED 8,000",
+                    "cashback_rate": "up to 5%",
+                    "card_tier": "Platinum",
+                    "best_for": "Islamic cashback with no interest charges",
+                    "sharia_compliant": True,
+                    "profit_rate": "2.99% p.a.",
+                    "contactless": True,
+                    "apple_pay": True,
+                    "supplementary_cards": "Free",
+                    "lounge_access": False,
+                    "concierge": False,
+                    "interest_free_days": "55 days",
+                },
                 affiliate_deep_link_en="https://dib.ae/cards/al-islami?utm_source=smartmoney",
                 commission_amount_aed=300,
                 islamic_compliant=True,
@@ -133,11 +147,26 @@ class DIBScraper(BankScraper):
                 category="credit_card",
                 name_en="DIB Prime Infinite Credit Card",
                 name_ar="بطاقة دبي الإسلامي برايم إنفينيت",
-                description_en="Premium Sharia-compliant card with unlimited lounge access and concierge.",
+                description_en="Premium Sharia-compliant card with unlimited lounge access and concierge services.",
                 min_salary_aed=30000,
                 representative_rate=0,
                 rate_type="fixed",
-                key_features={"annual_fee": "AED 1500", "lounge_access": True, "concierge": True, "sharia_compliant": True},
+                key_features={
+                    "annual_fee": "AED 1,500",
+                    "min_salary": "AED 30,000",
+                    "rewards_rate": "up to 5x Skywards Miles",
+                    "card_tier": "Infinite",
+                    "best_for": "Premium Islamic card with travel perks",
+                    "sharia_compliant": True,
+                    "lounge_access": True,
+                    "concierge": True,
+                    "travel_insurance": True,
+                    "valet_parking": True,
+                    "contactless": True,
+                    "apple_pay": True,
+                    "golf": True,
+                    "supplementary_cards": "Free",
+                },
                 affiliate_deep_link_en="https://dib.ae/cards/prime?utm_source=smartmoney",
                 commission_amount_aed=500,
                 islamic_compliant=True,
@@ -200,6 +229,20 @@ class ADIBScraper(BankScraper):
 
                 desc = card.find("p").get_text(strip=True)[:500] if card.find("p") else ""
 
+                text = card.get_text(" ", strip=True).lower()
+                features = {"sharia_compliant": True, "contactless": True, "apple_pay": True}
+
+                cb = re.search(r"(\d+(?:\.\d+)?)\s*%\s*cash\s*back", text)
+                if cb:
+                    features["cashback_rate"] = f"up to {cb.group(1)}%"
+
+                fee_m = re.search(r"(?:fee)\s*(?:aed\s*)?([\d,]+)", text)
+                if fee_m:
+                    features["annual_fee"] = f"AED {fee_m.group(1)}"
+
+                features["lounge_access"] = "lounge" in text
+                features["concierge"] = "concierge" in text
+
                 products.append(ScrapedProduct(
                     provider_id=self.PROVIDER_ID,
                     category="credit_card",
@@ -208,7 +251,7 @@ class ADIBScraper(BankScraper):
                     min_salary_aed=8000,
                     representative_rate=0,
                     rate_type="fixed",
-                    key_features={"sharia_compliant": True},
+                    key_features=features,
                     affiliate_deep_link_en=f"{self.BASE_URL}/cards?utm_source=smartmoney",
                     islamic_compliant=True,
                     data_source="scrape",
@@ -271,9 +314,51 @@ class ADIBScraper(BankScraper):
                 min_salary_aed=8000,
                 representative_rate=0,
                 rate_type="fixed",
-                key_features={"cashback_rate": "up to 5%", "annual_fee": "AED 300", "sharia_compliant": True},
-                affiliate_deep_link_en="https://adib.ae/cards?utm_source=smartmoney",
+                key_features={
+                    "annual_fee": "AED 300",
+                    "min_salary": "AED 8,000",
+                    "cashback_rate": "up to 5%",
+                    "card_tier": "Platinum",
+                    "best_for": "Islamic cashback with no interest charges",
+                    "sharia_compliant": True,
+                    "contactless": True,
+                    "apple_pay": True,
+                    "supplementary_cards": "Free",
+                    "lounge_access": False,
+                    "concierge": False,
+                    "interest_free_days": "55 days",
+                },
+                affiliate_deep_link_en="https://adib.ae/cards/cashback?utm_source=smartmoney",
                 commission_amount_aed=250,
+                islamic_compliant=True,
+                data_source="scrape",
+            ),
+            ScrapedProduct(
+                provider_id=self.PROVIDER_ID,
+                category="credit_card",
+                name_en="ADIB Covered Card Visa Signature",
+                name_ar="بطاقة أبوظبي الإسلامي كفرد فيزا سيغنتشر",
+                description_en="Islamic cashback card with no interest charges. Up to 10% cashback on partner merchants.",
+                min_salary_aed=15000,
+                representative_rate=0,
+                rate_type="fixed",
+                key_features={
+                    "annual_fee": "AED 0",
+                    "min_salary": "AED 15,000",
+                    "cashback_rate": "up to 10%",
+                    "card_tier": "Signature",
+                    "best_for": "Islamic cashback with no interest charges",
+                    "sharia_compliant": True,
+                    "contactless": True,
+                    "apple_pay": True,
+                    "lounge_access": True,
+                    "travel_insurance": True,
+                    "concierge": False,
+                    "supplementary_cards": "Free",
+                    "interest_free_days": "55 days",
+                },
+                affiliate_deep_link_en="https://adib.ae/cards/covered-card?utm_source=smartmoney",
+                commission_amount_aed=350,
                 islamic_compliant=True,
                 data_source="scrape",
             ),
