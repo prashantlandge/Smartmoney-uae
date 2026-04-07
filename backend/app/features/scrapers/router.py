@@ -123,8 +123,26 @@ async def acknowledge_alert(alert_id: str):
     return {"status": "acknowledged", "id": alert_id}
 
 
+@router.post("/validate", dependencies=[Depends(verify_admin)])
+async def validate_scrapers():
+    """Run proactive validation of all scraper URLs, selectors, and data quality.
+
+    Detects broken URLs, page redesigns, and data anomalies before they cause
+    scraping failures.
+    """
+    from app.features.scrapers.validator import ScraperValidator
+
+    logger.info("Manual scraper validation triggered via API")
+    try:
+        validator = ScraperValidator()
+        report = await validator.validate_all()
+        return report
+    except Exception as e:
+        logger.error(f"Scraper validation failed: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @router.get("/status")
-async def scraper_status():
     """Get current scraper status (public, no auth needed)."""
     pool = await get_pool()
     try:

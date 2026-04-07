@@ -1,8 +1,9 @@
 import json
+from typing import List, Optional
 from fastapi import APIRouter, HTTPException, Query
-from typing import List
 from app.db.connection import get_pool
 from app.features.products.schemas import ProductResponse
+from app.features.products.insights import generate_insight
 
 
 def _parse_features(raw) -> dict:
@@ -22,8 +23,15 @@ router = APIRouter()
 
 
 @router.get("/list/{category}", response_model=List[ProductResponse])
-async def list_products(category: str):
-    """List products by category."""
+async def list_products(
+    category: str,
+    salary: Optional[float] = Query(None, description="User monthly salary in AED"),
+    nationality: str = Query("IN", description="User nationality ISO code"),
+    residency: str = Query("resident", description="resident or non_resident"),
+    employer: Optional[str] = Query(None, description="Employer category"),
+    transfer_frequency: Optional[str] = Query(None, description="Transfer frequency"),
+):
+    """List products by category with optional personalized insights."""
     pool = await get_pool()
 
     # Map URL slugs to DB category values
@@ -57,21 +65,44 @@ async def list_products(category: str):
         db_category,
     )
 
-    return [
-        ProductResponse(
-            id=str(row["id"]),
-            provider_name=row["provider_name"],
-            provider_logo=row["provider_logo"] or "",
-            product_name=row["product_name"],
-            product_type=row["product_type"],
-            description=row["description"] or "",
-            features=_parse_features(row["features"]),
-            affiliate_link=row["affiliate_link"] or "#",
-            is_islamic=row["is_islamic"],
-            is_active=row["is_active"],
+    results = []
+    for row in rows:
+        parsed_features = _parse_features(row["features"])
+        product_dict = {
+            "product_name": row["product_name"],
+            "provider_name": row["provider_name"],
+        }
+
+        # Generate personalized insight if user profile provided
+        insight = None
+        if salary is not None:
+            insight = generate_insight(
+                product=product_dict,
+                features=parsed_features,
+                category=db_category,
+                salary=salary,
+                nationality=nationality,
+                residency_status=residency,
+                employer_category=employer,
+                transfer_frequency=transfer_frequency,
+            )
+
+        results.append(
+            ProductResponse(
+                id=str(row["id"]),
+                provider_name=row["provider_name"],
+                provider_logo=row["provider_logo"] or "",
+                product_name=row["product_name"],
+                product_type=row["product_type"],
+                description=row["description"] or "",
+                features=parsed_features,
+                affiliate_link=row["affiliate_link"] or "#",
+                is_islamic=row["is_islamic"],
+                is_active=row["is_active"],
+                personalized_insight=insight,
+            )
         )
-        for row in rows
-    ]
+    return results
 
 
 @router.get("/search", response_model=List[ProductResponse])

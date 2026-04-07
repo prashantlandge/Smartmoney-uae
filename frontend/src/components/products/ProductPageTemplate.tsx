@@ -7,6 +7,7 @@ import Layout from '@/components/layout/Layout';
 import SEOHead from '@/components/ui/SEOHead';
 import ProductCard from '@/components/products/ProductCard';
 import { useProducts } from '@/hooks/useProducts';
+import { useUserProfile } from '@/hooks/useUserProfile';
 import CategoryIllustration from '@/components/ui/CategoryIllustration';
 import { SkeletonCard } from '@/components/ui/Skeleton';
 import EmptyState from '@/components/ui/EmptyState';
@@ -71,7 +72,15 @@ export default function ProductPageTemplate({
   seoPath,
 }: Props) {
   const { t } = useTranslation('common');
-  const { products, loading, error } = useProducts(category);
+  const { profile } = useUserProfile();
+  const profileParams = useMemo(() => ({
+    salary: profile.monthly_salary_aed,
+    nationality: profile.nationality,
+    residency: profile.residency_status,
+    employer: profile.employer_category,
+    transfer_frequency: profile.transfer_frequency,
+  }), [profile.monthly_salary_aed, profile.nationality, profile.residency_status, profile.employer_category, profile.transfer_frequency]);
+  const { products, loading, error } = useProducts(category, profileParams);
   const [islamicOnly, setIslamicOnly] = useState(false);
   const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<SortBy>('relevance');

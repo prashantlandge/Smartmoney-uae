@@ -387,3 +387,14 @@ CREATE TABLE scraper_alerts (
 CREATE INDEX idx_alerts_severity ON scraper_alerts(severity, acknowledged);
 CREATE INDEX idx_alerts_created ON scraper_alerts(created_at DESC);
 CREATE INDEX idx_alerts_provider ON scraper_alerts(provider_name);
+
+-- ============================================================
+-- SCRAPER FINGERPRINTS TABLE (page structure change detection)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS scraper_fingerprints (
+    provider_name VARCHAR(100) NOT NULL,
+    url TEXT NOT NULL,
+    fingerprint VARCHAR(64) NOT NULL,
+    checked_at TIMESTAMP DEFAULT NOW(),
+    PRIMARY KEY (provider_name, url)
+);

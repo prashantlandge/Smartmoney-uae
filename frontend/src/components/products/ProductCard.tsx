@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import Link from 'next/link';
-import { Check, X, ExternalLink, ArrowRightLeft, ChevronDown, ChevronUp, Star } from 'lucide-react';
+import { Check, X, ExternalLink, ArrowRightLeft, ChevronDown, ChevronUp, Star, Lightbulb } from 'lucide-react';
 import ProviderLogo from '@/components/ui/ProviderLogo';
 import Badge from '@/components/ui/Badge';
 import { trackEvent } from '@/lib/tracker';
@@ -23,6 +23,7 @@ export interface Product {
   affiliate_link: string;
   is_islamic: boolean;
   badge?: ProductBadge;
+  personalized_insight?: string | null;
 }
 
 interface Props {
@@ -135,6 +136,19 @@ export default function ProductCard({ product, featureLabels = {} }: Props) {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* Personalized Insight */}
+        {product.personalized_insight && (
+          <div className="mt-4 p-3 bg-sky-50 border border-sky-200 rounded-lg">
+            <div className="flex items-start gap-2">
+              <Lightbulb size={16} className="text-sky-600 mt-0.5 shrink-0" />
+              <div>
+                <p className="text-xs font-semibold text-sky-700 mb-0.5">What this means for you</p>
+                <p className="text-sm text-sky-900 leading-relaxed">{product.personalized_insight}</p>
+              </div>
             </div>
           </div>
         )}

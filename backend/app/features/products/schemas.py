@@ -14,6 +14,7 @@ class ProductResponse(BaseModel):
     affiliate_link: str
     is_islamic: bool
     is_active: bool
+    personalized_insight: Optional[str] = None
 
 
 class ProductListRequest(BaseModel):
