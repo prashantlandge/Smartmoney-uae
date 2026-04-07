@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
+  <defs>
+    <linearGradient id="car1" x1="10" y1="30" x2="70" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+    <linearGradient id="shield1" x1="48" y1="8" x2="72" y2="38" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="glass1" x1="20" y1="30" x2="50" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#BAE6FD"/>
+      <stop offset="100%" stop-color="#7DD3FC"/>
+    </linearGradient>
+  </defs>
+  <!-- Background glow -->
+  <circle cx="40" cy="44" r="34" fill="#F59E0B" opacity="0.08"/>
+  <!-- Road -->
+  <rect x="0" y="60" width="80" height="12" rx="2" fill="#1F2937" opacity="0.1"/>
+  <line x1="10" y1="66" x2="25" y2="66" stroke="#9CA3AF" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+  <line x1="35" y1="66" x2="50" y2="66" stroke="#9CA3AF" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+  <line x1="60" y1="66" x2="75" y2="66" stroke="#9CA3AF" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+  <!-- Car body -->
+  <path d="M14 54H62C64 54 65 52 65 50V46C65 44 64 43 62 43H55L49 32C48 30 46 29 44 29H28C26 29 24 30 23 32L17 43H14C12 43 10 44 10 46V50C10 52 12 54 14 54Z" fill="url(#car1)"/>
+  <!-- Windshield -->
+  <path d="M24 32L19 43H38V30H28C26.5 30 25 30.8 24 32Z" fill="url(#glass1)"/>
+  <!-- Rear window -->
+  <path d="M48 32L53 43H40V30H44C45.5 30 47 30.8 48 32Z" fill="url(#glass1)" opacity="0.8"/>
+  <!-- Car highlight -->
+  <path d="M14 44H62C63 44 64 44.5 64 45V46H11V45C11 44.5 12 44 14 44Z" fill="#ffffff" opacity="0.2"/>
+  <!-- Headlights -->
+  <rect x="62" y="45" width="4" height="4" rx="1" fill="#FEF3C7"/>
+  <rect x="9" y="45" width="4" height="4" rx="1" fill="#FEF3C7"/>
+  <!-- Wheels -->
+  <circle cx="24" cy="56" r="7" fill="#374151"/>
+  <circle cx="24" cy="56" r="4" fill="#6B7280"/>
+  <circle cx="24" cy="56" r="1.5" fill="#374151"/>
+  <circle cx="52" cy="56" r="7" fill="#374151"/>
+  <circle cx="52" cy="56" r="4" fill="#6B7280"/>
+  <circle cx="52" cy="56" r="1.5" fill="#374151"/>
+  <!-- Shield badge -->
+  <path d="M60 8C60 8 52 12 52 20C52 28 60 34 60 34C60 34 68 28 68 20C68 12 60 8 60 8Z" fill="url(#shield1)"/>
+  <path d="M56 19L59 22L65 16" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

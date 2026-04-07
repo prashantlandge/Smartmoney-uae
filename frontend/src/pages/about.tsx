@@ -1,64 +1,95 @@
-import Head from 'next/head';
+import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { GetStaticProps } from 'next';
 import Layout from '@/components/layout/Layout';
+import SEOHead from '@/components/ui/SEOHead';
+import Container from '@/components/ui/Container';
+import SectionHeading from '@/components/ui/SectionHeading';
+import CountUp from '@/components/ui/CountUp';
+import { Check, Users, Package, LayoutGrid, ChevronRight } from 'lucide-react';
 
 export default function AboutPage() {
   const { t } = useTranslation('common');
 
+  const stats = [
+    { icon: Users, value: 20, suffix: '+', label: t('about_providers') },
+    { icon: Package, value: 50, suffix: '+', label: t('about_products') },
+    { icon: LayoutGrid, value: 6, suffix: '', label: t('about_categories') },
+  ];
+
   return (
     <Layout>
-      <Head>
-        <title>{t('about_title')} — SmartMoney UAE</title>
-      </Head>
+      <SEOHead
+        title="About SmartMoney UAE"
+        description="UAE's trusted financial comparison platform for expats and residents."
+        path="/about"
+      />
 
-      <section className="bg-gradient-to-br from-brand-dark to-brand-primary text-white py-12 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-2xl sm:text-3xl font-bold mb-3">{t('about_title')}</h1>
-          <p className="text-white/80">{t('about_hero')}</p>
-        </div>
+      <section className="bg-gradient-to-br from-primary via-primary to-primary-600 text-white py-8 sm:py-10 px-4">
+        <Container size="md">
+          <div className="text-center">
+            <h1 className="text-xl sm:text-2xl font-bold mb-2">{t('about_title')}</h1>
+            <p className="text-body-sm text-white/70">{t('about_hero')}</p>
+          </div>
+        </Container>
       </section>
 
-      <section className="py-12 px-4">
-        <div className="max-w-3xl mx-auto space-y-8">
-          <div>
-            <h2 className="text-xl font-bold text-brand-dark mb-3">{t('about_mission_title')}</h2>
-            <p className="text-gray-600 leading-relaxed">{t('about_mission')}</p>
-          </div>
-
-          <div className="grid sm:grid-cols-3 gap-4">
-            <div className="card text-center">
-              <div className="text-3xl font-bold text-brand-primary mb-1">20+</div>
-              <div className="text-sm text-gray-500">{t('about_providers')}</div>
-            </div>
-            <div className="card text-center">
-              <div className="text-3xl font-bold text-brand-primary mb-1">50+</div>
-              <div className="text-sm text-gray-500">{t('about_products')}</div>
-            </div>
-            <div className="card text-center">
-              <div className="text-3xl font-bold text-brand-primary mb-1">6</div>
-              <div className="text-sm text-gray-500">{t('about_categories')}</div>
+      <section className="section-padding">
+        <Container size="md">
+          {/* Mission */}
+          <div className="mb-12">
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-4">{t('about_mission_title')}</h2>
+            <div className="border-s-4 border-primary ps-5">
+              <p className="text-body-lg text-gray-600 leading-relaxed">{t('about_mission')}</p>
             </div>
           </div>
 
-          <div>
-            <h2 className="text-xl font-bold text-brand-dark mb-3">{t('about_why_title')}</h2>
-            <ul className="space-y-3">
+          {/* Stats */}
+          <div className="grid sm:grid-cols-3 gap-5 mb-12">
+            {stats.map((stat) => (
+              <div key={stat.label} className="card-hover text-center">
+                <div className="w-12 h-12 rounded-2xl bg-primary-50 flex items-center justify-center mx-auto mb-3">
+                  <stat.icon size={22} className="text-primary" />
+                </div>
+                <div className="text-display-lg font-bold text-primary mb-0.5">
+                  <CountUp end={stat.value} suffix={stat.suffix} />
+                </div>
+                <div className="text-body-sm text-gray-500">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Why Us */}
+          <div className="mb-12">
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-5">{t('about_why_title')}</h2>
+            <ul className="space-y-4">
               {['about_why_1', 'about_why_2', 'about_why_3', 'about_why_4'].map((key) => (
                 <li key={key} className="flex items-start gap-3">
-                  <span className="w-6 h-6 bg-brand-primary/10 rounded-full flex items-center justify-center text-brand-primary text-sm shrink-0 mt-0.5">✓</span>
-                  <span className="text-gray-600">{t(key)}</span>
+                  <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                    <Check size={14} className="text-white" />
+                  </div>
+                  <span className="text-body-lg text-gray-600">{t(key)}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div>
-            <h2 className="text-xl font-bold text-brand-dark mb-3">{t('about_team_title')}</h2>
-            <p className="text-gray-600 leading-relaxed">{t('about_team')}</p>
+          {/* Team */}
+          <div className="mb-12">
+            <h2 className="text-heading-lg font-bold text-gray-900 mb-4">{t('about_team_title')}</h2>
+            <p className="text-body-lg text-gray-600 leading-relaxed">{t('about_team')}</p>
           </div>
-        </div>
+
+          {/* CTA */}
+          <div className="text-center py-8 bg-gray-50 rounded-card">
+            <h3 className="text-heading-md font-bold text-gray-900 mb-3">{t('about_cta')}</h3>
+            <Link href="/" className="btn-primary inline-flex">
+              {t('about_cta_button')}
+              <ChevronRight size={16} />
+            </Link>
+          </div>
+        </Container>
       </section>
     </Layout>
   );

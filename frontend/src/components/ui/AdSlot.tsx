@@ -1,0 +1,69 @@
+import { useEffect, useRef, useState } from 'react';
+
+declare global {
+  interface Window {
+    adsbygoogle: Record<string, unknown>[];
+  }
+}
+
+type AdFormat = 'auto' | 'rectangle' | 'horizontal' | 'vertical';
+
+interface AdSlotProps {
+  slot: string;
+  format?: AdFormat;
+  className?: string;
+}
+
+const AD_CLIENT = process.env.NEXT_PUBLIC_ADSENSE_CLIENT || '';
+
+const FORMAT_STYLES: Record<AdFormat, React.CSSProperties> = {
+  auto: { display: 'block' },
+  rectangle: { display: 'inline-block', width: 336, height: 280 },
+  horizontal: { display: 'block', height: 90 },
+  vertical: { display: 'inline-block', width: 160, height: 600 },
+};
+
+export default function AdSlot({ slot, format = 'auto', className = '' }: AdSlotProps) {
+  const adRef = useRef<HTMLModElement>(null);
+  const pushed = useRef(false);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (pushed.current) return;
+    if (!AD_CLIENT || AD_CLIENT.includes('XXXXXXXXXX')) return;
+
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+      pushed.current = true;
+      setLoaded(true);
+    } catch (e) {
+      console.error('AdSense push error:', e);
+    }
+  }, []);
+
+  // Don't render anything if no valid ad client is configured
+  if (!AD_CLIENT || AD_CLIENT.includes('XXXXXXXXXX')) {
+    return null;
+  }
+
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  const style = FORMAT_STYLES[format];
+
+  return (
+    <div className={`ad-slot text-center ${className}`} style={loaded ? undefined : { display: 'none' }}>
+      <ins
+        ref={adRef}
+        className="adsbygoogle"
+        style={style}
+        data-ad-client={AD_CLIENT}
+        data-ad-slot={slot}
+        data-ad-format={format === 'auto' ? 'auto' : undefined}
+        data-full-width-responsive={format === 'auto' || format === 'horizontal' ? 'true' : undefined}
+      />
+    </div>
+  );
+}

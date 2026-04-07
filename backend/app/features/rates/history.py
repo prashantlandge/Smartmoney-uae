@@ -1,6 +1,6 @@
 """Query rate history for charts and trend analysis."""
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from app.db.connection import get_pool
 from app.features.rates.schemas import RateHistoryPoint, RateHistoryResponse
 
@@ -12,7 +12,7 @@ async def get_rate_history(
     receive_currency: str = "INR",
 ) -> RateHistoryResponse:
     pool = await get_pool()
-    since = datetime.now(timezone.utc) - timedelta(days=days)
+    since = datetime.utcnow() - timedelta(days=days)
 
     if provider_id:
         rows = await pool.fetch(

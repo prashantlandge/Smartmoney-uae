@@ -102,7 +102,7 @@ export default function QuickProfileWidget({ profile, onUpdate }: Props) {
                   onClick={() => onUpdate({ residency_status: status })}
                   className={`flex-1 px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                     profile.residency_status === status
-                      ? 'bg-white text-brand-dark'
+                      ? 'bg-white text-gray-900'
                       : 'bg-white/20 text-white hover:bg-white/30'
                   }`}
                 >
@@ -111,7 +111,7 @@ export default function QuickProfileWidget({ profile, onUpdate }: Props) {
               ))}
             </div>
           </div>
-          <button onClick={() => setStep(1)} className="w-full py-2 bg-white text-brand-dark rounded-lg text-sm font-semibold hover:bg-white/90 transition-colors">
+          <button onClick={() => setStep(1)} className="w-full py-2 bg-white text-gray-900 rounded-lg text-sm font-semibold hover:bg-white/90 transition-colors">
             {t('profile_next')}
           </button>
         </div>
@@ -129,7 +129,7 @@ export default function QuickProfileWidget({ profile, onUpdate }: Props) {
                   onClick={() => onUpdate({ monthly_salary_aed: band.value })}
                   className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                     profile.monthly_salary_aed === band.value
-                      ? 'bg-white text-brand-dark'
+                      ? 'bg-white text-gray-900'
                       : 'bg-white/20 text-white hover:bg-white/30'
                   }`}
                 >
@@ -155,7 +155,7 @@ export default function QuickProfileWidget({ profile, onUpdate }: Props) {
             <button onClick={() => setStep(0)} className="flex-1 py-2 bg-white/20 text-white rounded-lg text-sm hover:bg-white/30 transition-colors">
               {t('profile_back')}
             </button>
-            <button onClick={() => setStep(2)} className="flex-1 py-2 bg-white text-brand-dark rounded-lg text-sm font-semibold hover:bg-white/90 transition-colors">
+            <button onClick={() => setStep(2)} className="flex-1 py-2 bg-white text-gray-900 rounded-lg text-sm font-semibold hover:bg-white/90 transition-colors">
               {t('profile_next')}
             </button>
           </div>
@@ -174,7 +174,7 @@ export default function QuickProfileWidget({ profile, onUpdate }: Props) {
                   onClick={() => onUpdate({ transfer_frequency: freq })}
                   className={`flex-1 px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                     profile.transfer_frequency === freq
-                      ? 'bg-white text-brand-dark'
+                      ? 'bg-white text-gray-900'
                       : 'bg-white/20 text-white hover:bg-white/30'
                   }`}
                 >
@@ -192,7 +192,7 @@ export default function QuickProfileWidget({ profile, onUpdate }: Props) {
                   onClick={() => onUpdate({ preferred_speed: speed })}
                   className={`flex-1 px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                     profile.preferred_speed === speed
-                      ? 'bg-white text-brand-dark'
+                      ? 'bg-white text-gray-900'
                       : 'bg-white/20 text-white hover:bg-white/30'
                   }`}
                 >
@@ -205,7 +205,7 @@ export default function QuickProfileWidget({ profile, onUpdate }: Props) {
             <button onClick={() => setStep(1)} className="flex-1 py-2 bg-white/20 text-white rounded-lg text-sm hover:bg-white/30 transition-colors">
               {t('profile_back')}
             </button>
-            <button onClick={handleFinish} className="flex-1 py-2 bg-white text-brand-dark rounded-lg text-sm font-semibold hover:bg-white/90 transition-colors">
+            <button onClick={handleFinish} className="flex-1 py-2 bg-white text-gray-900 rounded-lg text-sm font-semibold hover:bg-white/90 transition-colors">
               {t('profile_done')}
             </button>
           </div>

@@ -1,6 +1,8 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { GetStaticProps } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import EmiCalculator from '@/components/calculators/EmiCalculator';
+import EligibilityChecker from '@/components/eligibility/EligibilityChecker';
 
 const FEATURE_LABELS: Record<string, string> = {
   interest_rate: 'Interest Rate',
@@ -16,8 +18,17 @@ export default function PersonalLoansPage() {
       category="personal-loans"
       titleKey="pl_title"
       subtitleKey="pl_subtitle"
-      heroIcon="🏦"
+      heroIcon="personal_loans"
       featureLabels={FEATURE_LABELS}
+      seoTitle="Best Personal Loans in UAE 2026"
+      seoDescription="Compare personal loan rates from UAE banks. Check eligibility, interest rates, and processing fees."
+      seoPath="/personal-loans"
+      calculatorSlot={
+        <>
+          <EligibilityChecker />
+          <EmiCalculator />
+        </>
+      }
     />
   );
 }

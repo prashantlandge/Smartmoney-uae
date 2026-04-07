@@ -1,12 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   i18n: {
-    locales: ['en', 'ar'],
+    locales: ['en', 'ar', 'hi'],
     defaultLocale: 'en',
     localeDetection: false,
   },
   images: {
-    domains: ['localhost'],
+    domains: ['localhost', 'images.unsplash.com', 'cdn.pixabay.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+    ],
   },
 };
 

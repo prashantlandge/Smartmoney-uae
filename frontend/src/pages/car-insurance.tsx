@@ -1,6 +1,8 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { GetStaticProps } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import InsuranceEstimator from '@/components/calculators/InsuranceEstimator';
+import EligibilityChecker from '@/components/eligibility/EligibilityChecker';
 
 const FEATURE_LABELS: Record<string, string> = {
   coverage_type: 'Coverage',
@@ -16,8 +18,14 @@ export default function CarInsurancePage() {
       category="car-insurance"
       titleKey="ci_title"
       subtitleKey="ci_subtitle"
-      heroIcon="🚗"
+      heroIcon="car_insurance"
       featureLabels={FEATURE_LABELS}
+      calculatorSlot={
+        <>
+          <EligibilityChecker />
+          <InsuranceEstimator type="car" />
+        </>
+      }
     />
   );
 }

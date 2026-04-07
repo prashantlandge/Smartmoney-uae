@@ -1,0 +1,449 @@
+"""Scraper for HSBC UAE and Standard Chartered UAE products."""
+
+import re
+import logging
+from app.features.scrapers.base import BankScraper, ScrapedProduct
+
+logger = logging.getLogger("scrapers.hsbc")
+
+
+class HSBCScraper(BankScraper):
+    PROVIDER_ID = "b0000001-0000-0000-0000-000000000009"
+    PROVIDER_NAME = "HSBC UAE"
+    BASE_URL = "https://www.hsbc.ae"
+
+    CC_URL = "https://www.hsbc.ae/credit-cards"
+    PL_URL = "https://www.hsbc.ae/personal-loans"
+
+    async def scrape_credit_cards(self) -> list[ScrapedProduct]:
+        soup = await self.fetch_page(self.CC_URL)
+        if not soup:
+            return self._fallback_credit_cards()
+
+        products = []
+        cards = soup.find_all("div", class_=re.compile(r"card|product|tile|module", re.I))
+
+        for card in cards:
+            try:
+                title_el = card.find(["h2", "h3", "h4", "h5"])
+                if not title_el:
+                    continue
+                title = title_el.get_text(strip=True)
+                if not title or len(title) < 5:
+                    continue
+                if not any(kw in title.lower() for kw in ["card", "cashback", "platinum", "black", "gold", "visa", "premier"]):
+                    continue
+
+                desc = card.find("p").get_text(strip=True)[:500] if card.find("p") else ""
+                text = card.get_text(" ", strip=True).lower()
+                features = {}
+
+                cb = re.search(r"(\d+(?:\.\d+)?)\s*%\s*cash\s*back", text)
+                if cb:
+                    features["cashback_rate"] = f"up to {cb.group(1)}%"
+
+                features["lounge_access"] = "lounge" in text
+
+                products.append(ScrapedProduct(
+                    provider_id=self.PROVIDER_ID,
+                    category="credit_card",
+                    name_en=title if "HSBC" in title else f"HSBC {title}",
+                    description_en=desc,
+                    min_salary_aed=15000,
+                    representative_rate=3.49,
+                    rate_type="variable",
+                    key_features=features,
+                    affiliate_deep_link_en=f"{self.BASE_URL}/credit-cards?utm_source=smartmoney",
+                    data_source="scrape",
+                ))
+            except Exception as e:
+                logger.warning(f"[HSBC] Error parsing card: {e}")
+
+        return products if products else self._fallback_credit_cards()
+
+    async def scrape_personal_loans(self) -> list[ScrapedProduct]:
+        soup = await self.fetch_page(self.PL_URL)
+        if not soup:
+            return self._fallback_personal_loans()
+
+        products = []
+        sections = soup.find_all("div", class_=re.compile(r"card|product|loan|tile|module", re.I))
+
+        for section in sections:
+            try:
+                title_el = section.find(["h2", "h3", "h4"])
+                if not title_el:
+                    continue
+                title = title_el.get_text(strip=True)
+                if not any(kw in title.lower() for kw in ["loan", "personal", "finance"]):
+                    continue
+
+                text = section.get_text(" ", strip=True).lower()
+                rate_match = re.search(r"(\d+(?:\.\d+)?)\s*%", text)
+
+                products.append(ScrapedProduct(
+                    provider_id=self.PROVIDER_ID,
+                    category="personal_loan",
+                    name_en=title if "HSBC" in title else f"HSBC {title}",
+                    description_en=section.find("p").get_text(strip=True)[:500] if section.find("p") else "",
+                    min_salary_aed=15000,
+                    representative_rate=float(rate_match.group(1)) if rate_match else 6.99,
+                    rate_type="fixed",
+                    min_amount_aed=20000,
+                    max_amount_aed=1500000,
+                    min_tenure_months=12,
+                    max_tenure_months=48,
+                    key_features={"salary_transfer_required": True},
+                    affiliate_deep_link_en=f"{self.BASE_URL}/personal-loans?utm_source=smartmoney",
+                    data_source="scrape",
+                ))
+            except Exception as e:
+                logger.warning(f"[HSBC] Error parsing loan: {e}")
+
+        return products if products else self._fallback_personal_loans()
+
+    async def scrape_islamic_finance(self) -> list[ScrapedProduct]:
+        return []
+
+    def _fallback_credit_cards(self) -> list[ScrapedProduct]:
+        logger.info("[HSBC] Using fallback credit card data")
+        return [
+            ScrapedProduct(
+                provider_id=self.PROVIDER_ID,
+                category="credit_card",
+                name_en="HSBC Cashback Credit Card",
+                name_ar="بطاقة إتش إس بي سي كاش باك",
+                description_en="Earn unlimited cashback on all purchases with no annual fee for the first year.",
+                min_salary_aed=15000,
+                representative_rate=3.49,
+                rate_type="variable",
+                key_features={
+                    "annual_fee": "AED 0 first year, AED 399 after",
+                    "min_salary": "AED 15,000",
+                    "cashback_rate": "up to 3%",
+                    "card_tier": "Platinum",
+                    "best_for": "Unlimited cashback on all purchases",
+                    "contactless": True,
+                    "apple_pay": True,
+                    "supplementary_cards": "Free",
+                    "lounge_access": False,
+                    "travel_insurance": False,
+                    "concierge": False,
+                    "interest_free_days": "56 days",
+                },
+                affiliate_deep_link_en="https://hsbc.ae/credit-cards?utm_source=smartmoney",
+                commission_amount_aed=300,
+                data_source="scrape",
+            ),
+            ScrapedProduct(
+                provider_id=self.PROVIDER_ID,
+                category="credit_card",
+                name_en="HSBC Black Credit Card",
+                name_ar="بطاقة إتش إس بي سي بلاك",
+                description_en="Premium HSBC card with unlimited lounge access, travel insurance and concierge services.",
+                min_salary_aed=30000,
+                representative_rate=3.49,
+                rate_type="variable",
+                key_features={
+                    "annual_fee": "AED 900",
+                    "min_salary": "AED 30,000",
+                    "rewards_rate": "up to 6x rewards points",
+                    "card_tier": "Black / World Elite",
+                    "best_for": "Premium travel and lifestyle perks",
+                    "lounge_access": True,
+                    "travel_insurance": True,
+                    "concierge": True,
+                    "contactless": True,
+                    "apple_pay": True,
+                    "valet_parking": True,
+                    "golf": True,
+                    "supplementary_cards": "Free",
+                },
+                affiliate_deep_link_en="https://hsbc.ae/credit-cards/black?utm_source=smartmoney",
+                commission_amount_aed=500,
+                data_source="scrape",
+            ),
+        ]
+
+    def _fallback_personal_loans(self) -> list[ScrapedProduct]:
+        logger.info("[HSBC] Using fallback personal loan data")
+        return [
+            ScrapedProduct(
+                provider_id=self.PROVIDER_ID,
+                category="personal_loan",
+                name_en="HSBC Personal Loan",
+                name_ar="قرض شخصي من إتش إس بي سي",
+                description_en="Premium rates starting from 6.99% with salary transfer. Up to AED 1.5 million.",
+                description_ar="أسعار مميزة تبدأ من 6.99% مع تحويل الراتب.",
+                min_salary_aed=15000,
+                representative_rate=6.99,
+                rate_type="fixed",
+                min_amount_aed=20000,
+                max_amount_aed=1500000,
+                min_tenure_months=12,
+                max_tenure_months=48,
+                key_features={
+                    "flat_rate": "6.99% p.a. (salary transfer)",
+                    "reducing_rate": "12.75% p.a.",
+                    "processing_fee": "1.1% of loan amount",
+                    "min_salary": "AED 15,000",
+                    "max_loan_amount": "AED 1,500,000",
+                    "max_tenure": "48 months",
+                    "salary_transfer_required": True,
+                    "insurance_included": True,
+                    "early_settlement_fee": "1% of outstanding balance",
+                    "dbr": "50%",
+                    "disbursement_time": "48 hours",
+                    "top_up": True,
+                    "balance_transfer": True,
+                    "nationality": "All nationalities",
+                    "best_for": "High-income professionals",
+                },
+                affiliate_deep_link_en="https://hsbc.ae/loans/personal?utm_source=smartmoney",
+                commission_percentage=1.0,
+                commission_type="percentage",
+                data_source="scrape",
+            ),
+            ScrapedProduct(
+                provider_id=self.PROVIDER_ID,
+                category="personal_loan",
+                name_en="HSBC Instant Loan (Existing Customers)",
+                name_ar="قرض فوري من إتش إس بي سي (العملاء الحاليين)",
+                description_en="Instant personal loan for existing HSBC customers with zero processing fee.",
+                description_ar="قرض فوري للعملاء الحاليين بدون رسوم معالجة.",
+                min_salary_aed=15000,
+                representative_rate=7.99,
+                rate_type="fixed",
+                min_amount_aed=20000,
+                max_amount_aed=500000,
+                min_tenure_months=12,
+                max_tenure_months=36,
+                key_features={
+                    "flat_rate": "7.99% p.a. (non-salary transfer)",
+                    "reducing_rate": "14.50% p.a.",
+                    "processing_fee": "0% of loan amount",
+                    "min_salary": "AED 15,000",
+                    "max_loan_amount": "AED 500,000",
+                    "max_tenure": "36 months",
+                    "salary_transfer_required": False,
+                    "insurance_included": True,
+                    "early_settlement_fee": "1% of outstanding balance",
+                    "dbr": "50%",
+                    "disbursement_time": "Instant (existing customers)",
+                    "top_up": False,
+                    "balance_transfer": False,
+                    "nationality": "All nationalities",
+                    "best_for": "Existing HSBC customers",
+                },
+                affiliate_deep_link_en="https://hsbc.ae/loans/instant?utm_source=smartmoney",
+                commission_percentage=0.8,
+                commission_type="percentage",
+                data_source="scrape",
+            ),
+        ]
+
+
+class StandardCharteredScraper(BankScraper):
+    PROVIDER_ID = "b0000001-0000-0000-0000-000000000010"
+    PROVIDER_NAME = "Standard Chartered UAE"
+    BASE_URL = "https://www.sc.com/ae"
+
+    CC_URL = "https://www.sc.com/ae/credit-cards/"
+    PL_URL = "https://www.sc.com/ae/personal-loans/"
+
+    async def scrape_credit_cards(self) -> list[ScrapedProduct]:
+        soup = await self.fetch_page(self.CC_URL)
+        if not soup:
+            return self._fallback_credit_cards()
+
+        products = []
+        cards = soup.find_all("div", class_=re.compile(r"card|product|tile", re.I))
+
+        for card in cards:
+            try:
+                title_el = card.find(["h2", "h3", "h4", "h5"])
+                if not title_el:
+                    continue
+                title = title_el.get_text(strip=True)
+                if not title or len(title) < 5:
+                    continue
+                # Skip informational pages that aren't actual card products
+                skip_words = ["service", "basics", "reminder", "tips", "bureau", "manage", "faq", "question"]
+                if any(sw in title.lower() for sw in skip_words):
+                    continue
+
+                desc = card.find("p").get_text(strip=True)[:500] if card.find("p") else ""
+
+                text = card.get_text(" ", strip=True).lower()
+                features = {"contactless": True, "apple_pay": True}
+
+                cb = re.search(r"(\d+(?:\.\d+)?)\s*%\s*cash\s*back", text)
+                if cb:
+                    features["cashback_rate"] = f"up to {cb.group(1)}%"
+
+                fee_m = re.search(r"(?:fee)\s*(?:aed\s*)?([\d,]+)", text)
+                if fee_m:
+                    features["annual_fee"] = f"AED {fee_m.group(1)}"
+
+                features["lounge_access"] = "lounge" in text
+                features["travel_insurance"] = "travel" in text
+
+                products.append(ScrapedProduct(
+                    provider_id=self.PROVIDER_ID,
+                    category="credit_card",
+                    name_en=title if "Standard Chartered" in title else f"Standard Chartered {title}",
+                    description_en=desc,
+                    min_salary_aed=15000,
+                    representative_rate=3.49,
+                    rate_type="variable",
+                    key_features=features,
+                    affiliate_deep_link_en=f"{self.BASE_URL}/credit-cards?utm_source=smartmoney",
+                    data_source="scrape",
+                ))
+            except Exception:
+                continue
+
+        return products if products else self._fallback_credit_cards()
+
+    async def scrape_personal_loans(self) -> list[ScrapedProduct]:
+        return self._fallback_personal_loans()
+
+    async def scrape_islamic_finance(self) -> list[ScrapedProduct]:
+        return []
+
+    def _fallback_credit_cards(self) -> list[ScrapedProduct]:
+        logger.info("[SC] Using fallback credit card data")
+        return [
+            ScrapedProduct(
+                provider_id=self.PROVIDER_ID,
+                category="credit_card",
+                name_en="Standard Chartered Cashback Credit Card",
+                name_ar="بطاقة ستاندرد تشارترد كاش باك",
+                description_en="Earn up to 5% cashback on international spends and 1% on local purchases.",
+                min_salary_aed=15000,
+                representative_rate=3.49,
+                rate_type="variable",
+                key_features={
+                    "annual_fee": "AED 0 first year, AED 499 after",
+                    "min_salary": "AED 15,000",
+                    "cashback_rate": "up to 5%",
+                    "card_tier": "Platinum",
+                    "best_for": "International spend cashback",
+                    "contactless": True,
+                    "apple_pay": True,
+                    "supplementary_cards": "Free",
+                    "lounge_access": False,
+                    "travel_insurance": False,
+                    "concierge": False,
+                    "interest_free_days": "55 days",
+                },
+                affiliate_deep_link_en="https://sc.com/ae/credit-cards/cashback?utm_source=smartmoney",
+                commission_amount_aed=300,
+                data_source="scrape",
+            ),
+            ScrapedProduct(
+                provider_id=self.PROVIDER_ID,
+                category="credit_card",
+                name_en="Standard Chartered Infinite Credit Card",
+                name_ar="بطاقة ستاندرد تشارترد إنفينيت",
+                description_en="Premium credit card with unlimited lounge access, concierge and lifestyle rewards.",
+                min_salary_aed=25000,
+                representative_rate=3.49,
+                rate_type="variable",
+                key_features={
+                    "annual_fee": "AED 800",
+                    "min_salary": "AED 25,000",
+                    "rewards_rate": "up to 5x rewards points",
+                    "card_tier": "Infinite",
+                    "best_for": "Premium travel and lifestyle rewards",
+                    "lounge_access": True,
+                    "travel_insurance": True,
+                    "concierge": True,
+                    "contactless": True,
+                    "apple_pay": True,
+                    "valet_parking": True,
+                    "golf": True,
+                    "supplementary_cards": "Free",
+                },
+                affiliate_deep_link_en="https://sc.com/ae/credit-cards/infinite?utm_source=smartmoney",
+                commission_amount_aed=400,
+                data_source="scrape",
+            ),
+        ]
+
+    def _fallback_personal_loans(self) -> list[ScrapedProduct]:
+        logger.info("[SC] Using fallback personal loan data")
+        return [
+            ScrapedProduct(
+                provider_id=self.PROVIDER_ID,
+                category="personal_loan",
+                name_en="Standard Chartered Personal Loan",
+                name_ar="قرض شخصي من ستاندرد تشارترد",
+                description_en="Competitive rates starting from 6.49% with salary transfer. Same day disbursement.",
+                description_ar="أسعار تنافسية تبدأ من 6.49% مع تحويل الراتب.",
+                min_salary_aed=10000,
+                representative_rate=6.49,
+                rate_type="fixed",
+                min_amount_aed=15000,
+                max_amount_aed=1000000,
+                min_tenure_months=12,
+                max_tenure_months=48,
+                key_features={
+                    "flat_rate": "6.49% p.a. (salary transfer)",
+                    "reducing_rate": "11.99% p.a.",
+                    "processing_fee": "1% of loan amount",
+                    "min_salary": "AED 10,000",
+                    "max_loan_amount": "AED 1,000,000",
+                    "max_tenure": "48 months",
+                    "salary_transfer_required": True,
+                    "insurance_included": True,
+                    "early_settlement_fee": "1% of outstanding balance",
+                    "dbr": "50%",
+                    "disbursement_time": "Same day",
+                    "top_up": True,
+                    "balance_transfer": True,
+                    "nationality": "All nationalities",
+                    "best_for": "International bank customers",
+                },
+                affiliate_deep_link_en="https://sc.com/ae/personal-loans?utm_source=smartmoney",
+                commission_percentage=1.0,
+                commission_type="percentage",
+                data_source="scrape",
+            ),
+            ScrapedProduct(
+                provider_id=self.PROVIDER_ID,
+                category="personal_loan",
+                name_en="Standard Chartered Quick Cash",
+                name_ar="كويك كاش من ستاندرد تشارترد",
+                description_en="Instant access to funds for existing customers. Rates from 8.25%.",
+                description_ar="وصول فوري للأموال للعملاء الحاليين بأسعار تبدأ من 8.25%.",
+                min_salary_aed=15000,
+                representative_rate=8.25,
+                rate_type="fixed",
+                min_amount_aed=15000,
+                max_amount_aed=300000,
+                min_tenure_months=12,
+                max_tenure_months=36,
+                key_features={
+                    "flat_rate": "8.25% p.a. (non-salary transfer)",
+                    "reducing_rate": "15.00% p.a.",
+                    "processing_fee": "1.5% of loan amount",
+                    "min_salary": "AED 15,000",
+                    "max_loan_amount": "AED 300,000",
+                    "max_tenure": "36 months",
+                    "salary_transfer_required": False,
+                    "insurance_included": True,
+                    "early_settlement_fee": "1.5% of outstanding balance",
+                    "dbr": "50%",
+                    "disbursement_time": "Instant",
+                    "top_up": False,
+                    "balance_transfer": False,
+                    "nationality": "All nationalities",
+                    "best_for": "Quick access to funds",
+                },
+                affiliate_deep_link_en="https://sc.com/ae/personal-loans/quick-cash?utm_source=smartmoney",
+                commission_percentage=0.8,
+                commission_type="percentage",
+                data_source="scrape",
+            ),
+        ]

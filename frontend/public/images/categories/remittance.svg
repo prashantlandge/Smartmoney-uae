@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
+  <defs>
+    <linearGradient id="bg1" x1="0" y1="0" x2="80" y2="80" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="coin1" x1="20" y1="20" x2="40" y2="50" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FCD34D"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+    <linearGradient id="arrow1" x1="30" y1="25" x2="60" y2="55" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#D1FAE5"/>
+    </linearGradient>
+  </defs>
+  <!-- Background circle -->
+  <circle cx="40" cy="40" r="38" fill="url(#bg1)" opacity="0.12"/>
+  <!-- Globe/Earth outline -->
+  <circle cx="40" cy="40" r="22" stroke="url(#bg1)" stroke-width="2.5" fill="none"/>
+  <ellipse cx="40" cy="40" rx="10" ry="22" stroke="url(#bg1)" stroke-width="1.5" fill="none"/>
+  <line x1="18" y1="40" x2="62" y2="40" stroke="url(#bg1)" stroke-width="1.5"/>
+  <line x1="40" y1="18" x2="40" y2="62" stroke="url(#bg1)" stroke-width="1.5"/>
+  <!-- Arrow swoosh -->
+  <path d="M22 30C28 20 52 18 58 28" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <path d="M54 22L58 28L52 30" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M58 50C52 60 28 62 22 52" stroke="#059669" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <path d="M26 58L22 52L28 50" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Coin stack -->
+  <ellipse cx="60" cy="58" rx="10" ry="4" fill="url(#coin1)" opacity="0.9"/>
+  <rect x="50" y="54" width="20" height="4" fill="url(#coin1)" opacity="0.8"/>
+  <ellipse cx="60" cy="54" rx="10" ry="4" fill="url(#coin1)"/>
+  <text x="60" y="57" text-anchor="middle" fill="#92400E" font-size="8" font-weight="bold">AED</text>
+</svg>

@@ -217,3 +217,184 @@ CREATE TABLE user_events (
 
 CREATE INDEX idx_user_events_session ON user_events(session_id, created_at DESC);
 CREATE INDEX idx_user_events_type ON user_events(event_type, created_at DESC);
+
+-- ============================================================
+-- SCRAPE RUNS TABLE (Audit trail for daily scrapers)
+-- ============================================================
+CREATE TABLE scrape_runs (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    completed_at TIMESTAMPTZ,
+    duration_seconds DECIMAL(10, 2),
+    total_scraped INTEGER DEFAULT 0,
+    total_upserted INTEGER DEFAULT 0,
+    total_errors INTEGER DEFAULT 0,
+    details JSONB DEFAULT '[]'::jsonb,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_scrape_runs_started ON scrape_runs(started_at DESC);
+
+-- ============================================================
+-- RECOMMENDATION FEEDBACK TABLE (Phase 1: Feedback Loop)
+-- ============================================================
+CREATE TABLE recommendation_feedback (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    session_id VARCHAR(255) NOT NULL,
+    recommendation_id VARCHAR(255),
+    recommendation_type VARCHAR(20),
+    feedback VARCHAR(10) NOT NULL CHECK (feedback IN ('up', 'down')),
+    context JSONB DEFAULT '{}',
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_feedback_session ON recommendation_feedback(session_id);
+CREATE INDEX idx_feedback_rec ON recommendation_feedback(recommendation_id);
+
+-- ============================================================
+-- USER SEGMENTS TABLE (Phase 2: Behavioral Intelligence)
+-- ============================================================
+CREATE TABLE user_segments (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    session_id VARCHAR(255) NOT NULL UNIQUE,
+    segment VARCHAR(50) NOT NULL,
+    confidence DECIMAL(5,2) DEFAULT 0,
+    features JSONB DEFAULT '{}',
+    computed_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_segments_session ON user_segments(session_id);
+CREATE INDEX idx_segments_segment ON user_segments(segment);
+
+-- ============================================================
+-- SOCIAL PROOF STATS TABLE (Phase 2: Behavioral Intelligence)
+-- ============================================================
+CREATE TABLE social_proof_stats (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    segment VARCHAR(50) NOT NULL,
+    product_id UUID REFERENCES products(id),
+    click_count INTEGER DEFAULT 0,
+    conversion_count INTEGER DEFAULT 0,
+    computed_at TIMESTAMP DEFAULT NOW(),
+    UNIQUE(segment, product_id)
+);
+
+CREATE INDEX idx_social_proof_segment ON social_proof_stats(segment);
+
+-- ============================================================
+-- RATE FORECASTS TABLE (Phase 3: Predictive Models)
+-- ============================================================
+CREATE TABLE rate_forecasts (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    send_currency VARCHAR(10) DEFAULT 'AED',
+    receive_currency VARCHAR(10) DEFAULT 'INR',
+    forecast_date DATE NOT NULL,
+    predicted_rate DECIMAL(12,6) NOT NULL,
+    confidence_lower DECIMAL(12,6),
+    confidence_upper DECIMAL(12,6),
+    model_type VARCHAR(20) DEFAULT 'sma',
+    computed_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_forecasts_corridor ON rate_forecasts(send_currency, receive_currency, forecast_date);
+
+-- ============================================================
+-- PRODUCT AFFINITY SCORES TABLE (Phase 3: Predictive Models)
+-- ============================================================
+CREATE TABLE product_affinity_scores (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    session_id VARCHAR(255) NOT NULL,
+    product_id UUID NOT NULL REFERENCES products(id),
+    affinity_score DECIMAL(5,2) NOT NULL,
+    signals JSONB DEFAULT '{}',
+    computed_at TIMESTAMP DEFAULT NOW(),
+    UNIQUE(session_id, product_id)
+);
+
+CREATE INDEX idx_affinity_session ON product_affinity_scores(session_id);
+CREATE INDEX idx_affinity_product ON product_affinity_scores(product_id);
+
+-- ============================================================
+-- MODEL RUNS TABLE (Phase 3: Audit Trail)
+-- ============================================================
+CREATE TABLE model_runs (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    model_name VARCHAR(100) NOT NULL,
+    started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    completed_at TIMESTAMPTZ,
+    duration_seconds DECIMAL(10,2),
+    records_processed INTEGER DEFAULT 0,
+    metrics JSONB DEFAULT '{}',
+    status VARCHAR(20) DEFAULT 'running' CHECK (status IN ('running', 'success', 'error')),
+    error_message TEXT
+);
+
+CREATE INDEX idx_model_runs_name ON model_runs(model_name, started_at DESC);
+
+-- ============================================================
+-- A/B EXPERIMENTS TABLES (Phase 4: Full Adaptive Platform)
+-- ============================================================
+CREATE TABLE ab_experiments (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(100) NOT NULL UNIQUE,
+    variants JSONB NOT NULL DEFAULT '["control", "treatment"]',
+    traffic_split JSONB NOT NULL DEFAULT '{"control": 50, "treatment": 50}',
+    status VARCHAR(20) DEFAULT 'draft' CHECK (status IN ('draft', 'running', 'paused', 'completed')),
+    start_date TIMESTAMP,
+    end_date TIMESTAMP,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE ab_assignments (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    experiment_id UUID NOT NULL REFERENCES ab_experiments(id),
+    session_id VARCHAR(255) NOT NULL,
+    variant VARCHAR(50) NOT NULL,
+    assigned_at TIMESTAMP DEFAULT NOW(),
+    UNIQUE(experiment_id, session_id)
+);
+
+CREATE INDEX idx_ab_assignments_session ON ab_assignments(session_id);
+CREATE INDEX idx_ab_assignments_experiment ON ab_assignments(experiment_id, variant);
+
+CREATE TABLE ab_conversions (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    experiment_id UUID NOT NULL REFERENCES ab_experiments(id),
+    session_id VARCHAR(255) NOT NULL,
+    variant VARCHAR(50) NOT NULL,
+    metric_name VARCHAR(100) NOT NULL,
+    metric_value DECIMAL(10,2) DEFAULT 1,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_ab_conversions_experiment ON ab_conversions(experiment_id, variant, metric_name);
+
+-- ============================================================
+-- SCRAPER ALERTS TABLE (PDF Scraper Monitoring)
+-- ============================================================
+CREATE TABLE scraper_alerts (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    alert_type VARCHAR(50) NOT NULL,
+    severity VARCHAR(20) NOT NULL CHECK (severity IN ('low', 'medium', 'high', 'critical')),
+    provider_name VARCHAR(100),
+    message TEXT NOT NULL,
+    details JSONB DEFAULT '{}',
+    acknowledged BOOLEAN DEFAULT false,
+    acknowledged_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_alerts_severity ON scraper_alerts(severity, acknowledged);
+CREATE INDEX idx_alerts_created ON scraper_alerts(created_at DESC);
+CREATE INDEX idx_alerts_provider ON scraper_alerts(provider_name);
+
+-- ============================================================
+-- SCRAPER FINGERPRINTS TABLE (page structure change detection)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS scraper_fingerprints (
+    provider_name VARCHAR(100) NOT NULL,
+    url TEXT NOT NULL,
+    fingerprint VARCHAR(64) NOT NULL,
+    checked_at TIMESTAMP DEFAULT NOW(),
+    PRIMARY KEY (provider_name, url)
+);

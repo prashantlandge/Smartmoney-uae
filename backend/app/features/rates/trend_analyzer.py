@@ -1,6 +1,6 @@
 """Analyze rate trends from historical data."""
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from app.db.connection import get_pool
 from app.features.rates.schemas import RateTrendResponse, BestTimeResponse
 
@@ -10,7 +10,7 @@ async def get_rate_trend(
     receive_currency: str = "INR",
 ) -> RateTrendResponse:
     pool = await get_pool()
-    now = datetime.now(timezone.utc)
+    now = datetime.utcnow()
     week_ago = now - timedelta(days=7)
 
     # Current average rate (last 24 hours)
@@ -69,6 +69,21 @@ async def get_best_time_to_send(
     send_currency: str = "AED",
     receive_currency: str = "INR",
 ) -> BestTimeResponse:
+    # Try predictive forecast first
+    try:
+        from app.features.forecasting.rate_forecast import get_best_time_prediction
+        prediction = await get_best_time_prediction(send_currency, receive_currency)
+        if prediction.get("has_forecast"):
+            return BestTimeResponse(
+                recommendation=prediction["recommendation"],
+                best_day=prediction.get("best_date"),
+                avg_rate_at_best_time=prediction.get("predicted_rate"),
+                data_points_analyzed=0,
+            )
+    except Exception:
+        pass
+
+    # Fall back to historical day-of-week analysis
     pool = await get_pool()
 
     # Analyze by day of week over last 30 days

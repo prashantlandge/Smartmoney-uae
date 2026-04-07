@@ -1,6 +1,8 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import type { GetStaticProps } from 'next';
 import ProductPageTemplate from '@/components/products/ProductPageTemplate';
+import InsuranceEstimator from '@/components/calculators/InsuranceEstimator';
+import EligibilityChecker from '@/components/eligibility/EligibilityChecker';
 
 const FEATURE_LABELS: Record<string, string> = {
   coverage_type: 'Coverage',
@@ -16,8 +18,14 @@ export default function HealthInsurancePage() {
       category="health-insurance"
       titleKey="hi_title"
       subtitleKey="hi_subtitle"
-      heroIcon="🏥"
+      heroIcon="health_insurance"
       featureLabels={FEATURE_LABELS}
+      calculatorSlot={
+        <>
+          <EligibilityChecker />
+          <InsuranceEstimator type="health" />
+        </>
+      }
     />
   );
 }

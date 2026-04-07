@@ -1,0 +1,92 @@
+import { useTranslation } from 'next-i18next';
+import { Clock, ArrowRight, TrendingUp, Shield, Wallet, PiggyBank } from 'lucide-react';
+import Link from 'next/link';
+
+interface Article {
+  title: string;
+  excerpt: string;
+  icon: typeof TrendingUp;
+  iconColor: string;
+  readTime: string;
+  category: string;
+  href: string;
+}
+
+const ARTICLES: Article[] = [
+  {
+    title: 'Best Ways to Send Money from UAE to India in 2026',
+    excerpt: 'Compare exchange rates, fees, and transfer speeds across Wise, Al Ansari Exchange, and more to find the cheapest option.',
+    icon: TrendingUp,
+    iconColor: 'from-primary to-primary-600',
+    readTime: '5 min read',
+    category: 'Remittance',
+    href: '/',
+  },
+  {
+    title: 'UAE Credit Card Rewards: Maximize Your Cashback',
+    excerpt: 'Learn how to stack credit card rewards in the UAE — from grocery cashback to airline miles — and which cards offer the best returns.',
+    icon: Wallet,
+    iconColor: 'from-primary to-primary-600',
+    readTime: '4 min read',
+    category: 'Credit Cards',
+    href: '/credit-cards',
+  },
+  {
+    title: 'Islamic Finance vs Conventional: What UAE Expats Should Know',
+    excerpt: 'A practical guide to understanding Shariah-compliant banking products, profit rates vs interest, and how to choose the right option.',
+    icon: Shield,
+    iconColor: 'from-primary to-primary-600',
+    readTime: '6 min read',
+    category: 'Islamic Finance',
+    href: '/islamic-finance',
+  },
+  {
+    title: 'How to Get the Cheapest Car Insurance in Dubai',
+    excerpt: 'Compare comprehensive vs third-party cover, understand no-claims discounts, and use our tips to save up to 30% on your premium.',
+    icon: PiggyBank,
+    iconColor: 'from-primary to-primary-600',
+    readTime: '4 min read',
+    category: 'Car Insurance',
+    href: '/car-insurance',
+  },
+];
+
+export default function FinancialTips() {
+  const { t } = useTranslation('common');
+
+  return (
+    <div className="grid sm:grid-cols-2 gap-5 sm:gap-6">
+      {ARTICLES.map((article) => (
+        <Link
+          key={article.title}
+          href={article.href}
+          className="group flex gap-5 p-5 sm:p-6 bg-white rounded-2xl border border-gray-200 hover:shadow-card-hover hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-200"
+        >
+          {/* Icon */}
+          <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${article.iconColor} flex items-center justify-center shrink-0`}>
+            <article.icon size={28} className="text-white" />
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2.5 mb-2">
+              <span className="text-xs font-bold text-primary uppercase tracking-wider">
+                {article.category}
+              </span>
+              <span className="text-xs text-gray-400 flex items-center gap-1">
+                <Clock size={11} />
+                {article.readTime}
+              </span>
+            </div>
+            <h4 className="text-base font-bold text-gray-900 group-hover:text-primary transition-colors line-clamp-2 mb-1.5">
+              {article.title}
+            </h4>
+            <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">
+              {article.excerpt}
+            </p>
+          </div>
+        </Link>
+      ))}
+    </div>
+  );
+}

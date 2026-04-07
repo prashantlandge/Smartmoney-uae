@@ -1,8 +1,52 @@
+import { useState, useMemo } from 'react';
+import type { ReactNode } from 'react';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
 import Layout from '@/components/layout/Layout';
+import SEOHead from '@/components/ui/SEOHead';
 import ProductCard from '@/components/products/ProductCard';
 import { useProducts } from '@/hooks/useProducts';
+import { useUserProfile } from '@/hooks/useUserProfile';
+import CategoryIllustration from '@/components/ui/CategoryIllustration';
+import { SkeletonCard } from '@/components/ui/Skeleton';
+import EmptyState from '@/components/ui/EmptyState';
+import AdSlot from '@/components/ui/AdSlot';
+import { CompareProvider } from '@/context/CompareContext';
+import CompareTray from '@/components/products/CompareTray';
+import { Package, Search, SlidersHorizontal, ChevronRight, X } from 'lucide-react';
+
+const HERO_COLORS: Record<string, string> = {
+  'credit-cards': 'from-primary via-primary to-primary-600',
+  'personal-loans': 'from-primary via-primary to-primary-600',
+  'islamic-finance': 'from-primary via-primary to-primary-600',
+  'car-insurance': 'from-primary via-primary to-primary-600',
+  'health-insurance': 'from-primary via-primary to-primary-600',
+};
+
+const HERO_DESCRIPTIONS: Record<string, string> = {
+  'credit-cards': 'Compare cashback, travel, and rewards cards from top UAE banks.',
+  'personal-loans': 'Get the best personal loan rates in the UAE from leading banks.',
+  'islamic-finance': 'Explore Shariah-compliant financial products and compare profit rates.',
+  'car-insurance': 'Protect your vehicle with the best coverage at competitive rates.',
+  'health-insurance': 'Find affordable health insurance that meets DHA/HAAD requirements.',
+};
+
+const SLUG_TO_KEY: Record<string, string> = {
+  'credit-cards': 'credit_cards',
+  'personal-loans': 'personal_loans',
+  'islamic-finance': 'islamic_finance',
+  'car-insurance': 'car_insurance',
+  'health-insurance': 'health_insurance',
+};
+
+const SORT_OPTIONS = [
+  { value: 'relevance', label: 'Recommended' },
+  { value: 'name', label: 'Name A-Z' },
+  { value: 'provider', label: 'Provider' },
+] as const;
+
+type SortBy = typeof SORT_OPTIONS[number]['value'];
 
 interface Props {
   category: string;
@@ -10,6 +54,10 @@ interface Props {
   subtitleKey: string;
   heroIcon: string;
   featureLabels?: Record<string, string>;
+  calculatorSlot?: ReactNode;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoPath?: string;
 }
 
 export default function ProductPageTemplate({
@@ -18,76 +66,258 @@ export default function ProductPageTemplate({
   subtitleKey,
   heroIcon,
   featureLabels = {},
+  calculatorSlot,
+  seoTitle,
+  seoDescription,
+  seoPath,
 }: Props) {
   const { t } = useTranslation('common');
-  const { products, loading, error } = useProducts(category);
+  const { profile } = useUserProfile();
+  const profileParams = useMemo(() => ({
+    salary: profile.monthly_salary_aed,
+    nationality: profile.nationality,
+    residency: profile.residency_status,
+    employer: profile.employer_category,
+    transfer_frequency: profile.transfer_frequency,
+  }), [profile.monthly_salary_aed, profile.nationality, profile.residency_status, profile.employer_category, profile.transfer_frequency]);
+  const { products, loading, error } = useProducts(category, profileParams);
+  const [islamicOnly, setIslamicOnly] = useState(false);
+  const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
+  const [sortBy, setSortBy] = useState<SortBy>('relevance');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const heroGradient = HERO_COLORS[category] || 'from-primary to-primary-600';
+  const categoryKey = SLUG_TO_KEY[category] || category;
+  const heroDesc = HERO_DESCRIPTIONS[category] || t(subtitleKey);
+
+  const providerNames = useMemo(
+    () => Array.from(new Set(products.map((p) => p.provider_name))).sort(),
+    [products]
+  );
+  const islamicCount = useMemo(
+    () => products.filter((p) => p.is_islamic).length,
+    [products]
+  );
+
+  const filteredProducts = useMemo(() => {
+    let result = [...products];
+    if (islamicOnly) result = result.filter((p) => p.is_islamic);
+    if (selectedProviders.length > 0) result = result.filter((p) => selectedProviders.includes(p.provider_name));
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(
+        (p) => p.product_name.toLowerCase().includes(q) || p.provider_name.toLowerCase().includes(q)
+      );
+    }
+    if (sortBy === 'name') result.sort((a, b) => a.product_name.localeCompare(b.product_name));
+    else if (sortBy === 'provider') result.sort((a, b) => a.provider_name.localeCompare(b.provider_name));
+    return result;
+  }, [products, islamicOnly, selectedProviders, searchQuery, sortBy]);
+
+  const activeFilterCount = (islamicOnly ? 1 : 0) + selectedProviders.length;
+
+  const toggleProvider = (name: string) => {
+    setSelectedProviders(prev =>
+      prev.includes(name) ? prev.filter(n => n !== name) : [...prev, name]
+    );
+  };
+
+  const clearFilters = () => {
+    setIslamicOnly(false);
+    setSelectedProviders([]);
+  };
 
   return (
-    <Layout>
-      <Head>
-        <title>{t(titleKey)} — SmartMoney UAE</title>
-        <meta name="description" content={t(subtitleKey)} />
-      </Head>
+    <CompareProvider>
+      <Layout>
+        {seoTitle && seoDescription && seoPath ? (
+          <SEOHead title={seoTitle} description={seoDescription} path={seoPath} />
+        ) : (
+          <Head>
+            <title>{t(titleKey)} — SmartMoney UAE</title>
+            <meta name="description" content={heroDesc} />
+          </Head>
+        )}
 
-      {/* Hero */}
-      <section className="bg-gradient-to-br from-brand-dark to-brand-primary text-white py-10 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <span className="text-4xl mb-3 block">{heroIcon}</span>
-          <h1 className="text-2xl sm:text-3xl font-bold mb-2">{t(titleKey)}</h1>
-          <p className="text-white/80 text-sm sm:text-base max-w-xl mx-auto">{t(subtitleKey)}</p>
-        </div>
-      </section>
-
-      {/* Products */}
-      <section className="py-8 px-4">
-        <div className="max-w-5xl mx-auto">
-          {loading && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="card animate-pulse">
-                  <div className="h-12 bg-gray-100 rounded mb-3" />
-                  <div className="h-4 bg-gray-100 rounded mb-2 w-3/4" />
-                  <div className="h-4 bg-gray-100 rounded w-1/2" />
-                  <div className="grid grid-cols-2 gap-2 mt-3">
-                    <div className="h-12 bg-gray-100 rounded" />
-                    <div className="h-12 bg-gray-100 rounded" />
-                  </div>
-                  <div className="h-9 bg-gray-100 rounded mt-4" />
-                </div>
-              ))}
-            </div>
-          )}
-
-          {error && (
-            <div className="text-center py-12">
-              <p className="text-red-500 text-sm">{t('error_message')}</p>
-            </div>
-          )}
-
-          {!loading && products.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-gray-500">{t('no_products')}</p>
-            </div>
-          )}
-
-          {products.length > 0 && (
-            <>
-              <p className="text-sm text-gray-500 mb-4">
-                {t('showing_products', { count: products.length })}
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {products.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    featureLabels={featureLabels}
-                  />
-                ))}
+        {/* Colored gradient hero — BankBazaar style */}
+        <section className={`bg-gradient-to-r ${heroGradient} text-white`}>
+          <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-5 sm:py-7">
+            <nav className="flex items-center gap-1.5 text-xs text-white/60 mb-3">
+              <Link href="/" className="hover:text-white transition-colors">{t('breadcrumb_home')}</Link>
+              <ChevronRight size={12} />
+              <span className="text-white font-medium">{t(titleKey)}</span>
+            </nav>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-card bg-white/15 flex items-center justify-center shrink-0">
+                <CategoryIllustration category={categoryKey} size={24} />
               </div>
-            </>
-          )}
+              <div>
+                <h1 className="text-lg sm:text-xl font-bold">{t(titleKey)}</h1>
+                <p className="text-body-sm text-white/80">{heroDesc}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Sticky toolbar */}
+        <section className="border-b border-gray-200 bg-white sticky top-14 z-20">
+          <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-2">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-1.5">
+              <p className="text-body-sm text-gray-500 font-medium">
+                {loading
+                  ? t('loading_products')
+                  : filteredProducts.length === products.length
+                    ? t('product_count', { count: products.length })
+                    : t('product_count_filtered', { filtered: filteredProducts.length, total: products.length })}
+              </p>
+              <div className="flex items-center gap-2">
+                <div className="relative">
+                  <Search size={14} className="absolute start-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder={t('search_products')}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="input-field text-sm py-1.5 ps-8 pe-3 w-40"
+                  />
+                </div>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as SortBy)}
+                  className="input-field text-sm py-1.5 px-2.5 w-auto"
+                >
+                  {SORT_OPTIONS.map(opt => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-hide">
+              {islamicCount > 0 && (
+                <button
+                  onClick={() => setIslamicOnly(!islamicOnly)}
+                  className={`flex items-center gap-1 px-2.5 py-1 rounded-badge text-label font-semibold whitespace-nowrap transition-all ${
+                    islamicOnly
+                      ? 'bg-emerald-600 text-white'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  {t('islamic_only')}
+                  {islamicOnly && <X size={11} />}
+                </button>
+              )}
+              {providerNames.slice(0, 8).map(name => {
+                const active = selectedProviders.includes(name);
+                return (
+                  <button
+                    key={name}
+                    onClick={() => toggleProvider(name)}
+                    className={`flex items-center gap-1 px-2.5 py-1 rounded-badge text-label font-semibold whitespace-nowrap transition-all ${
+                      active
+                        ? 'bg-primary text-white'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    }`}
+                  >
+                    {name}
+                    {active && <X size={11} />}
+                  </button>
+                );
+              })}
+              {providerNames.length > 8 && (
+                <button
+                  onClick={() => setShowMobileFilters(!showMobileFilters)}
+                  className="flex items-center gap-1 px-2.5 py-1 rounded-badge text-label font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 whitespace-nowrap"
+                >
+                  <SlidersHorizontal size={11} />
+                  {t('more_filters')}
+                </button>
+              )}
+              {activeFilterCount > 0 && (
+                <button
+                  onClick={clearFilters}
+                  className="text-label font-semibold text-primary hover:text-primary-700 whitespace-nowrap"
+                >
+                  {t('clear_all')}
+                </button>
+              )}
+            </div>
+
+            {showMobileFilters && (
+              <div className="mt-1.5 pt-1.5 border-t border-gray-100 animate-fade-in">
+                <div className="flex flex-wrap gap-1.5">
+                  {providerNames.slice(8).map(name => {
+                    const active = selectedProviders.includes(name);
+                    return (
+                      <button
+                        key={name}
+                        onClick={() => toggleProvider(name)}
+                        className={`px-2.5 py-1 rounded-badge text-label font-semibold whitespace-nowrap transition-all ${
+                          active
+                            ? 'bg-primary text-white'
+                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        }`}
+                      >
+                        {name}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Products List */}
+        <section className="bg-gray-50 min-h-[60vh]">
+          <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-5">
+            {loading && (
+              <div className="space-y-3">
+                {[1, 2, 3, 4].map((i) => <SkeletonCard key={i} />)}
+              </div>
+            )}
+
+            {error && (
+              <EmptyState title={t('error_message')} description={t('error_try_again')} />
+            )}
+
+            {!loading && products.length === 0 && (
+              <EmptyState
+                icon={Package}
+                title={t('no_products')}
+                description={t('adding_products')}
+              />
+            )}
+
+            {!loading && products.length > 0 && (
+              filteredProducts.length === 0 ? (
+                <EmptyState title={t('no_filter_match')} description={t('try_adjusting')} />
+              ) : (
+                <div className="space-y-3">
+                  {filteredProducts.map((product) => (
+                    <ProductCard key={product.id} product={product} featureLabels={featureLabels} />
+                  ))}
+                </div>
+              )
+            )}
+          </div>
+        </section>
+
+        {/* Ad slot after product list */}
+        <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-4">
+          <AdSlot slot="PRODUCT_LIST_AD_UNIT_ID" format="horizontal" />
         </div>
-      </section>
-    </Layout>
+
+        {calculatorSlot && (
+          <section className="bg-white border-t border-gray-200">
+            <div className="max-w-content-xl mx-auto px-4 sm:px-8 py-6">
+              {calculatorSlot}
+            </div>
+          </section>
+        )}
+
+        <CompareTray />
+      </Layout>
+    </CompareProvider>
   );
 }

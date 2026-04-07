@@ -46,12 +46,19 @@ async def record_affiliate_click(
 
     product_id = product_row["id"] if product_row else None
 
+    # Link to user_profiles if profile exists for this session
+    profile_row = await pool.fetchrow(
+        "SELECT id FROM user_profiles WHERE session_id = $1", session_id
+    )
+    user_profile_id = profile_row["id"] if profile_row else None
+
     await pool.execute(
         """
-        INSERT INTO affiliate_clicks (product_id, session_id, utm_source, utm_medium, utm_campaign)
-        VALUES ($1, $2, 'uae_platform', 'remittance', $3)
+        INSERT INTO affiliate_clicks (product_id, user_profile_id, session_id, utm_source, utm_medium, utm_campaign)
+        VALUES ($1, $2, $3, 'uae_platform', 'remittance', $4)
         """,
         product_id,
+        user_profile_id,
         session_id,
         provider_name.lower().replace(" ", "_"),
     )
