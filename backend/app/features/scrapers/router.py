@@ -76,6 +76,53 @@ async def get_scrape_history(limit: int = 10):
         return []
 
 
+@router.post("/run-pdf", dependencies=[Depends(verify_admin)])
+async def trigger_pdf_scrape():
+    """Manually trigger a full PDF scrape run.
+
+    Requires admin credentials. Returns scrape summary.
+    """
+    from app.features.scrapers.runner import run_all_pdf_scrapers
+
+    logger.info("Manual PDF scrape triggered via API")
+    try:
+        summary = await run_all_pdf_scrapers()
+        return summary
+    except Exception as e:
+        logger.error(f"Manual PDF scrape failed: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/health", dependencies=[Depends(verify_admin)])
+async def health_summary():
+    """Get health summary for all providers."""
+    from app.features.scrapers.alerts import ScraperAlertEngine
+
+    alert_engine = ScraperAlertEngine()
+    return await alert_engine.get_health_summary()
+
+
+@router.get("/alerts", dependencies=[Depends(verify_admin)])
+async def get_alerts(severity: str = None, limit: int = 50):
+    """Get active (unacknowledged) scraper alerts."""
+    from app.features.scrapers.alerts import ScraperAlertEngine
+
+    alert_engine = ScraperAlertEngine()
+    return await alert_engine.get_active_alerts(severity=severity, limit=limit)
+
+
+@router.post("/alerts/{alert_id}/acknowledge", dependencies=[Depends(verify_admin)])
+async def acknowledge_alert(alert_id: str):
+    """Acknowledge a scraper alert."""
+    from app.features.scrapers.alerts import ScraperAlertEngine
+
+    alert_engine = ScraperAlertEngine()
+    success = await alert_engine.acknowledge_alert(alert_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Alert not found")
+    return {"status": "acknowledged", "id": alert_id}
+
+
 @router.get("/status")
 async def scraper_status():
     """Get current scraper status (public, no auth needed)."""

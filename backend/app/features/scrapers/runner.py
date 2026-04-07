@@ -16,11 +16,39 @@ from app.features.scrapers.banks.mashreq import MashreqScraper
 from app.features.scrapers.banks.rakbank import RAKBANKScraper
 from app.features.scrapers.banks.dib import DIBScraper, ADIBScraper
 from app.features.scrapers.banks.hsbc import HSBCScraper, StandardCharteredScraper
+from app.features.scrapers.banks.emirates_islamic import EmiratesIslamicScraper
+from app.features.scrapers.banks.citibank import CitibankScraper
+from app.features.scrapers.banks.cbd import CBDScraper
+from app.features.scrapers.banks.digital_banks import LivScraper, WioScraper
+from app.features.scrapers.banks.small_banks import AjmanBankScraper, SharjahIslamicScraper
+
+# PDF scrapers
+from app.features.scrapers.pdf.banks.emirates_nbd import EmiratesNBDPDFScraper
+from app.features.scrapers.pdf.banks.fab import FABPDFScraper
+from app.features.scrapers.pdf.banks.adcb import ADCBPDFScraper
+from app.features.scrapers.pdf.banks.mashreq import MashreqPDFScraper
+from app.features.scrapers.pdf.banks.rakbank import RAKBANKPDFScraper
+from app.features.scrapers.pdf.banks.dib import DIBPDFScraper, ADIBPDFScraper
+from app.features.scrapers.pdf.banks.hsbc import HSBCPDFScraper, StandardCharteredPDFScraper
+from app.features.scrapers.pdf.banks.emirates_islamic import EmiratesIslamicPDFScraper
+from app.features.scrapers.pdf.banks.citibank import CitibankPDFScraper
+from app.features.scrapers.pdf.banks.cbd import CBDPDFScraper
+from app.features.scrapers.pdf.banks.digital_banks import LivPDFScraper, WioPDFScraper
+from app.features.scrapers.pdf.banks.small_banks import AjmanBankPDFScraper, SharjahIslamicPDFScraper
+from app.features.scrapers.pdf.banks.insurance import (
+    OmanInsurancePDFScraper, OrientInsurancePDFScraper, AXAGulfPDFScraper,
+    DamanHealthPDFScraper, SukoonInsurancePDFScraper, RSAInsurancePDFScraper,
+)
+from app.features.scrapers.pdf.banks.exchange import (
+    WisePDFScraper, RemitlyPDFScraper, WesternUnionPDFScraper,
+    AlAnsariPDFScraper, UAEExchangePDFScraper, LuluExchangePDFScraper,
+)
 
 logger = logging.getLogger("scrapers.runner")
 
-# All registered scrapers
+# All registered HTML scrapers (Tier 1 + Tier 2 banks)
 SCRAPERS = [
+    # Tier 1: Existing banks
     EmiratesNBDScraper,
     FABScraper,
     ADCBScraper,
@@ -30,6 +58,50 @@ SCRAPERS = [
     ADIBScraper,
     HSBCScraper,
     StandardCharteredScraper,
+    # Tier 2: New banks
+    EmiratesIslamicScraper,
+    CitibankScraper,
+    CBDScraper,
+    LivScraper,
+    WioScraper,
+    AjmanBankScraper,
+    SharjahIslamicScraper,
+]
+
+# All registered PDF scrapers (all tiers)
+PDF_SCRAPERS = [
+    # Tier 1: Banks with existing HTML scrapers
+    EmiratesNBDPDFScraper,
+    FABPDFScraper,
+    ADCBPDFScraper,
+    MashreqPDFScraper,
+    RAKBANKPDFScraper,
+    DIBPDFScraper,
+    ADIBPDFScraper,
+    HSBCPDFScraper,
+    StandardCharteredPDFScraper,
+    # Tier 2: New banks
+    EmiratesIslamicPDFScraper,
+    CitibankPDFScraper,
+    CBDPDFScraper,
+    LivPDFScraper,
+    WioPDFScraper,
+    AjmanBankPDFScraper,
+    SharjahIslamicPDFScraper,
+    # Tier 3: Exchange houses
+    WisePDFScraper,
+    RemitlyPDFScraper,
+    WesternUnionPDFScraper,
+    AlAnsariPDFScraper,
+    UAEExchangePDFScraper,
+    LuluExchangePDFScraper,
+    # Tier 4: Insurance companies
+    OmanInsurancePDFScraper,
+    OrientInsurancePDFScraper,
+    AXAGulfPDFScraper,
+    DamanHealthPDFScraper,
+    SukoonInsurancePDFScraper,
+    RSAInsurancePDFScraper,
 ]
 
 
@@ -259,6 +331,14 @@ async def run_all_scrapers() -> dict:
         f"in {duration:.1f}s ==="
     )
 
+    # Fire alerts for any problems
+    try:
+        from app.features.scrapers.alerts import ScraperAlertEngine
+        alert_engine = ScraperAlertEngine()
+        await alert_engine.check_post_scrape(provider_summaries)
+    except Exception as e:
+        logger.warning(f"Alert check failed: {e}")
+
     # Record scrape run in database for audit trail
     try:
         await pool.execute(
@@ -278,5 +358,122 @@ async def run_all_scrapers() -> dict:
     except Exception as e:
         # Table might not exist yet — that's ok
         logger.warning(f"Could not record scrape run: {e}")
+
+    return summary
+
+
+async def run_pdf_scraper(scraper_class, semaphore: asyncio.Semaphore) -> dict:
+    """Run a single PDF scraper with concurrency control."""
+    async with semaphore:
+        scraper_name = scraper_class.PROVIDER_NAME if hasattr(scraper_class, 'PROVIDER_NAME') else scraper_class.__name__
+        try:
+            async with scraper_class() as scraper:
+                products = await scraper.scrape_pdfs()
+                return {
+                    "provider": scraper_name,
+                    "products": products,
+                    "status": "success",
+                    "count": len(products),
+                }
+        except Exception as e:
+            logger.error(f"PDF Scraper {scraper_name} failed: {e}")
+            return {
+                "provider": scraper_name,
+                "products": [],
+                "status": "error",
+                "error": str(e),
+                "count": 0,
+            }
+
+
+async def run_all_pdf_scrapers() -> dict:
+    """Run all PDF scrapers concurrently and upsert results.
+
+    PDF data is merged into existing products via upsert_product().
+    PDF fields take priority over HTML-scraped fields for verified data.
+    """
+    start_time = datetime.now(timezone.utc)
+    logger.info("=== Starting PDF scrape run ===")
+
+    # Limit concurrent PDF downloads
+    semaphore = asyncio.Semaphore(5)
+
+    tasks = [run_pdf_scraper(cls, semaphore) for cls in PDF_SCRAPERS]
+    results = await asyncio.gather(*tasks)
+
+    pool = await get_pool()
+    total_upserted = 0
+    total_errors = 0
+    provider_summaries = []
+
+    for result in results:
+        provider_summary = {
+            "provider": result["provider"],
+            "scraped": result["count"],
+            "status": result["status"],
+            "upserted": 0,
+            "errors": 0,
+        }
+
+        if result.get("error"):
+            provider_summary["error"] = result["error"]
+
+        for product in result["products"]:
+            try:
+                await upsert_product(pool, product)
+                provider_summary["upserted"] += 1
+                total_upserted += 1
+            except Exception as e:
+                logger.error(f"Failed to upsert PDF product {product.name_en}: {e}")
+                provider_summary["errors"] += 1
+                total_errors += 1
+
+        provider_summaries.append(provider_summary)
+
+    end_time = datetime.now(timezone.utc)
+    duration = (end_time - start_time).total_seconds()
+
+    summary = {
+        "started_at": start_time.isoformat(),
+        "completed_at": end_time.isoformat(),
+        "duration_seconds": round(duration, 2),
+        "total_scraped": sum(r["count"] for r in results),
+        "total_upserted": total_upserted,
+        "total_errors": total_errors,
+        "scrape_type": "pdf",
+        "providers": provider_summaries,
+    }
+
+    logger.info(
+        f"=== PDF scrape complete: {total_upserted} upserted, {total_errors} errors "
+        f"in {duration:.1f}s ==="
+    )
+
+    # Fire alerts
+    try:
+        from app.features.scrapers.alerts import ScraperAlertEngine
+        alert_engine = ScraperAlertEngine()
+        await alert_engine.check_pdf_health(provider_summaries)
+    except Exception as e:
+        logger.warning(f"PDF alert check failed: {e}")
+
+    # Record PDF scrape run
+    try:
+        await pool.execute(
+            """
+            INSERT INTO scrape_runs (started_at, completed_at, duration_seconds,
+                                     total_scraped, total_upserted, total_errors, details)
+            VALUES ($1, $2, $3, $4, $5, $6, $7::jsonb)
+            """,
+            start_time,
+            end_time,
+            round(duration, 2),
+            summary["total_scraped"],
+            total_upserted,
+            total_errors,
+            json.dumps(provider_summaries),
+        )
+    except Exception as e:
+        logger.warning(f"Could not record PDF scrape run: {e}")
 
     return summary

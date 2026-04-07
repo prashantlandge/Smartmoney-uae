@@ -368,3 +368,22 @@ CREATE TABLE ab_conversions (
 );
 
 CREATE INDEX idx_ab_conversions_experiment ON ab_conversions(experiment_id, variant, metric_name);
+
+-- ============================================================
+-- SCRAPER ALERTS TABLE (PDF Scraper Monitoring)
+-- ============================================================
+CREATE TABLE scraper_alerts (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    alert_type VARCHAR(50) NOT NULL,
+    severity VARCHAR(20) NOT NULL CHECK (severity IN ('low', 'medium', 'high', 'critical')),
+    provider_name VARCHAR(100),
+    message TEXT NOT NULL,
+    details JSONB DEFAULT '{}',
+    acknowledged BOOLEAN DEFAULT false,
+    acknowledged_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_alerts_severity ON scraper_alerts(severity, acknowledged);
+CREATE INDEX idx_alerts_created ON scraper_alerts(created_at DESC);
+CREATE INDEX idx_alerts_provider ON scraper_alerts(provider_name);
