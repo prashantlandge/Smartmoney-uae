@@ -27,6 +27,12 @@ _validation_task: asyncio.Task | None = None
 _html_scheduler_task: asyncio.Task | None = None
 _pdf_scheduler_task: asyncio.Task | None = None
 _staleness_task: asyncio.Task | None = None
+_heartbeat_task: asyncio.Task | None = None
+
+# Track last successful run timestamps for crash detection
+_last_heartbeats: dict[str, datetime] = {}
+HEARTBEAT_CHECK_INTERVAL = 3600  # Check every hour
+TASK_TIMEOUT_HOURS = 26  # Alert if a daily task hasn't run in 26 hours
 
 
 def _seconds_until_target(hour: int, minute: int = 0) -> float:
@@ -90,6 +96,7 @@ async def _validation_loop():
             validator = ScraperValidator()
             report = await validator.validate_all()
             summary = report.get("summary", {})
+            _record_heartbeat("validation")
             logger.info(
                 f"Scheduled validation complete: "
                 f"{summary.get('urls_failing', 0)} URL failures, "
@@ -97,6 +104,7 @@ async def _validation_loop():
             )
         except Exception as e:
             logger.error(f"Scheduled validation failed: {e}", exc_info=True)
+            _record_heartbeat("validation")  # Record even on failure — task is alive
 
         await asyncio.sleep(60)
 
@@ -120,6 +128,7 @@ async def _html_scheduler_loop():
         try:
             logger.info("Starting scheduled HTML scrape run...")
             summary = await run_all_scrapers()
+            _record_heartbeat("html_scrape")
             logger.info(
                 f"Scheduled HTML scrape complete: "
                 f"{summary['total_upserted']} products updated in "
@@ -127,6 +136,7 @@ async def _html_scheduler_loop():
             )
         except Exception as e:
             logger.error(f"Scheduled HTML scrape failed: {e}", exc_info=True)
+            _record_heartbeat("html_scrape")
 
         await asyncio.sleep(60)
 
@@ -150,6 +160,7 @@ async def _pdf_scheduler_loop():
         try:
             logger.info("Starting scheduled PDF scrape run...")
             summary = await run_all_pdf_scrapers()
+            _record_heartbeat("pdf_scrape")
             logger.info(
                 f"Scheduled PDF scrape complete: "
                 f"{summary['total_upserted']} products updated in "
@@ -157,8 +168,76 @@ async def _pdf_scheduler_loop():
             )
         except Exception as e:
             logger.error(f"Scheduled PDF scrape failed: {e}", exc_info=True)
+            _record_heartbeat("pdf_scrape")
 
         await asyncio.sleep(60)
+
+
+def _record_heartbeat(task_name: str):
+    """Record that a scheduler task ran successfully."""
+    _last_heartbeats[task_name] = datetime.now(timezone.utc)
+    logger.debug(f"Heartbeat recorded: {task_name}")
+
+
+async def _heartbeat_monitor_loop():
+    """Monitor scheduler tasks for crashes. Checks every hour."""
+    from app.features.scrapers.alerts import ScraperAlertEngine
+
+    logger.info("Heartbeat monitor started (hourly checks)")
+    # Give tasks time to register their first heartbeat
+    await asyncio.sleep(300)
+
+    while True:
+        await asyncio.sleep(HEARTBEAT_CHECK_INTERVAL)
+        now = datetime.now(timezone.utc)
+        alert_engine = ScraperAlertEngine()
+
+        # Check each named task
+        tasks_to_check = {
+            "validation": _validation_task,
+            "html_scrape": _html_scheduler_task,
+            "pdf_scrape": _pdf_scheduler_task,
+            "staleness_check": _staleness_task,
+        }
+        for name, task in tasks_to_check.items():
+            if task is None:
+                continue
+            # Detect crashed tasks (done but not cancelled)
+            if task.done() and not task.cancelled():
+                exc = task.exception() if not task.cancelled() else None
+                try:
+                    await alert_engine.record_alert(
+                        alert_type="scheduler_crash",
+                        severity="critical",
+                        provider_name="SCHEDULER",
+                        message=f"Scheduler task '{name}' crashed unexpectedly",
+                        details={"exception": str(exc) if exc else "unknown"},
+                    )
+                except Exception:
+                    pass
+                logger.critical(f"Scheduler task '{name}' has crashed: {exc}")
+
+            # Detect tasks that haven't run within expected window
+            last_beat = _last_heartbeats.get(name)
+            if last_beat:
+                hours_since = (now - last_beat).total_seconds() / 3600
+                if hours_since > TASK_TIMEOUT_HOURS:
+                    logger.warning(
+                        f"Scheduler task '{name}' last ran {hours_since:.1f}h ago "
+                        f"(threshold: {TASK_TIMEOUT_HOURS}h)"
+                    )
+                    try:
+                        await alert_engine.record_alert(
+                            alert_type="scheduler_stalled",
+                            severity="high",
+                            provider_name="SCHEDULER",
+                            message=f"Task '{name}' hasn't run in {hours_since:.0f} hours",
+                            details={"last_heartbeat": last_beat.isoformat()},
+                        )
+                    except Exception:
+                        pass
+
+        logger.debug("Heartbeat check complete")
 
 
 async def _staleness_check_loop():
@@ -174,9 +253,11 @@ async def _staleness_check_loop():
         try:
             alert_engine = ScraperAlertEngine()
             await alert_engine.check_staleness()
+            _record_heartbeat("staleness_check")
             logger.info("Staleness check complete")
         except Exception as e:
             logger.error(f"Staleness check failed: {e}", exc_info=True)
+            _record_heartbeat("staleness_check")
 
         await asyncio.sleep(60)
 
@@ -186,7 +267,7 @@ def start_scheduler():
 
     Call this during FastAPI lifespan startup.
     """
-    global _validation_task, _html_scheduler_task, _pdf_scheduler_task, _staleness_task
+    global _validation_task, _html_scheduler_task, _pdf_scheduler_task, _staleness_task, _heartbeat_task
 
     if _validation_task is None or _validation_task.done():
         _validation_task = asyncio.create_task(_validation_loop())
@@ -204,19 +285,24 @@ def start_scheduler():
         _staleness_task = asyncio.create_task(_staleness_check_loop())
         logger.info("Staleness check scheduler task created")
 
+    if _heartbeat_task is None or _heartbeat_task.done():
+        _heartbeat_task = asyncio.create_task(_heartbeat_monitor_loop())
+        logger.info("Heartbeat monitor task created")
+
 
 def stop_scheduler():
     """Stop all background scraper schedulers.
 
     Call this during FastAPI lifespan shutdown.
     """
-    global _validation_task, _html_scheduler_task, _pdf_scheduler_task, _staleness_task
+    global _validation_task, _html_scheduler_task, _pdf_scheduler_task, _staleness_task, _heartbeat_task
 
     for task_name, task in [
         ("Validation", _validation_task),
         ("HTML", _html_scheduler_task),
         ("PDF", _pdf_scheduler_task),
         ("Staleness", _staleness_task),
+        ("Heartbeat", _heartbeat_task),
     ]:
         if task and not task.done():
             task.cancel()

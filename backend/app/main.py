@@ -1,9 +1,25 @@
+import logging
+import sys
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.db.connection import create_pool, close_pool
+
+# ── Logging Configuration ──────────────────────────────────────────
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    stream=sys.stdout,
+)
+# Reduce noise from third-party libraries
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("httpcore").setLevel(logging.WARNING)
+logging.getLogger("asyncpg").setLevel(logging.WARNING)
+
+logger = logging.getLogger("app.main")
 from app.utils.redis_client import close_redis
 from app.features.remittance.router import router as remittance_router
 from app.features.profile.router import router as profile_router
@@ -26,10 +42,29 @@ from app.features.personalization.router import router as personalization_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await create_pool()
-    start_scheduler()
-    start_intelligence_scheduler()
+    # Database — required for the app to function
+    try:
+        await create_pool()
+        logger.info("Database pool initialized")
+    except Exception as e:
+        logger.critical(f"FATAL: Database connection failed on startup: {e}")
+        raise  # App cannot function without DB
+
+    # Schedulers — non-critical, app can serve requests without them
+    try:
+        start_scheduler()
+        logger.info("Scraper scheduler started")
+    except Exception as e:
+        logger.error(f"Scraper scheduler failed to start (non-fatal): {e}")
+
+    try:
+        start_intelligence_scheduler()
+        logger.info("Intelligence scheduler started")
+    except Exception as e:
+        logger.error(f"Intelligence scheduler failed to start (non-fatal): {e}")
+
     yield
+
     stop_intelligence_scheduler()
     stop_scheduler()
     await close_pool()
@@ -70,4 +105,13 @@ app.include_router(personalization_router, prefix="/api/personalize", tags=["per
 
 @app.get("/api/health")
 async def health_check():
-    return {"status": "ok"}
+    """Health check that verifies DB connectivity — not just process alive."""
+    from app.db.connection import check_pool_health
+
+    db_health = await check_pool_health()
+    db_ok = db_health.get("status") == "healthy"
+
+    return {
+        "status": "ok" if db_ok else "degraded",
+        "database": db_health,
+    }

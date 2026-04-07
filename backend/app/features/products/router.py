@@ -1,9 +1,21 @@
 import json
+import logging
 from typing import List, Optional
 from fastapi import APIRouter, HTTPException, Query
 from app.db.connection import get_pool
 from app.features.products.schemas import ProductResponse
 from app.features.products.insights import generate_insight
+
+logger = logging.getLogger("products.router")
+
+VALID_CATEGORIES = {
+    "credit-cards", "credit_cards", "credit_card",
+    "personal-loans", "personal_loans", "personal_loan",
+    "islamic-finance", "islamic_finance",
+    "car-insurance", "car_insurance",
+    "health-insurance", "health_insurance",
+    "remittance",
+}
 
 
 def _parse_features(raw) -> dict:
@@ -32,7 +44,12 @@ async def list_products(
     transfer_frequency: Optional[str] = Query(None, description="Transfer frequency"),
 ):
     """List products by category with optional personalized insights."""
-    pool = await get_pool()
+    # Validate category early — don't silently return empty for typos
+    if category not in VALID_CATEGORIES:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid category '{category}'. Valid: credit-cards, personal-loans, islamic-finance, car-insurance, health-insurance, remittance",
+        )
 
     # Map URL slugs to DB category values
     category_map = {
@@ -50,7 +67,14 @@ async def list_products(
 
     db_category = category_map.get(category, category)
 
-    rows = await pool.fetch(
+    try:
+        pool = await get_pool()
+    except Exception as e:
+        logger.error(f"Database connection failed in list_products: {e}")
+        raise HTTPException(status_code=503, detail="Database temporarily unavailable")
+
+    try:
+        rows = await pool.fetch(
         """
         SELECT p.id, pr.name_en as provider_name, pr.logo_url as provider_logo,
                p.name_en as product_name, p.category as product_type,
@@ -62,8 +86,14 @@ async def list_products(
         WHERE p.category = $1 AND p.active = true
         ORDER BY pr.name_en
         """,
-        db_category,
-    )
+            db_category,
+        )
+    except Exception as e:
+        logger.error(f"Database query failed for category '{db_category}': {e}")
+        raise HTTPException(status_code=503, detail="Failed to fetch products")
+
+    if not rows:
+        logger.warning(f"No products found for category '{db_category}' — may indicate missing data")
 
     results = []
     for row in rows:
@@ -115,7 +145,11 @@ async def search_products(
     Understands spending categories like 'petrol', 'dining', 'groceries', 'travel'
     by expanding queries to match related keywords in product features.
     """
-    pool = await get_pool()
+    try:
+        pool = await get_pool()
+    except Exception as e:
+        logger.error(f"Database connection failed in search_products: {e}")
+        raise HTTPException(status_code=503, detail="Database temporarily unavailable")
 
     # Expand common spending category synonyms so "petrol" also matches "fuel", etc.
     KEYWORD_EXPANSIONS: dict[str, list[str]] = {
@@ -177,13 +211,17 @@ async def search_products(
         LIMIT $3
     """
 
-    rows = await pool.fetch(
-        query_sql,
-        search_term,
-        category_term,
-        limit,
-        *feature_terms,
-    )
+    try:
+        rows = await pool.fetch(
+            query_sql,
+            search_term,
+            category_term,
+            limit,
+            *feature_terms,
+        )
+    except Exception as e:
+        logger.error(f"Search query failed for '{q}': {e}")
+        raise HTTPException(status_code=503, detail="Search failed")
 
     return [
         ProductResponse(
@@ -213,7 +251,11 @@ async def get_product(product_id: str):
     except (ValueError, AttributeError):
         raise HTTPException(status_code=404, detail="Product not found")
 
-    pool = await get_pool()
+    try:
+        pool = await get_pool()
+    except Exception as e:
+        logger.error(f"Database connection failed in get_product: {e}")
+        raise HTTPException(status_code=503, detail="Database temporarily unavailable")
 
     row = await pool.fetchrow(
         """

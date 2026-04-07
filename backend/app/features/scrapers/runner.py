@@ -105,13 +105,44 @@ PDF_SCRAPERS = [
 ]
 
 
+def _validate_product(product: ScrapedProduct) -> list[str]:
+    """Validate a scraped product before upsert. Returns list of issues."""
+    issues = []
+    if not product.provider_id:
+        issues.append("missing provider_id")
+    if not product.name_en or len(product.name_en.strip()) < 3:
+        issues.append(f"invalid name_en: '{product.name_en}'")
+    if not product.category:
+        issues.append("missing category")
+    if product.representative_rate is not None and (product.representative_rate < 0 or product.representative_rate > 100):
+        issues.append(f"representative_rate out of range: {product.representative_rate}")
+    if product.min_salary_aed is not None and product.min_salary_aed < 0:
+        issues.append(f"negative min_salary_aed: {product.min_salary_aed}")
+    try:
+        if isinstance(product.provider_id, str):
+            uuid.UUID(product.provider_id)
+    except (ValueError, AttributeError):
+        issues.append(f"invalid provider_id UUID: {product.provider_id}")
+    return issues
+
+
 async def upsert_product(pool, product: ScrapedProduct) -> Optional[str]:
     """Upsert a scraped product into the database.
 
     Uses (provider_id, name_en) as the unique key.
     Updates existing products; inserts new ones.
     Returns the product ID.
+
+    Raises ValueError for invalid products, Exception for DB errors.
     """
+    # Validate before touching the database
+    issues = _validate_product(product)
+    if issues:
+        raise ValueError(
+            f"Product validation failed for '{product.name_en}' "
+            f"(provider={product.provider_id}): {'; '.join(issues)}"
+        )
+
     # Convert provider_id string to UUID for asyncpg
     provider_uuid = uuid.UUID(product.provider_id) if isinstance(product.provider_id, str) else product.provider_id
 
@@ -306,8 +337,19 @@ async def run_all_scrapers() -> dict:
                 await upsert_product(pool, product)
                 provider_summary["upserted"] += 1
                 total_upserted += 1
+            except ValueError as e:
+                # Validation failure — data issue, not DB issue
+                logger.warning(
+                    f"[{result['provider']}] Product validation failed: {e}"
+                )
+                provider_summary["errors"] += 1
+                total_errors += 1
             except Exception as e:
-                logger.error(f"Failed to upsert {product.name_en}: {e}")
+                logger.error(
+                    f"[{result['provider']}] DB upsert failed for "
+                    f"'{product.name_en}' (category={product.category}, "
+                    f"source={product.data_source}): {type(e).__name__}: {e}"
+                )
                 provider_summary["errors"] += 1
                 total_errors += 1
 
@@ -336,8 +378,9 @@ async def run_all_scrapers() -> dict:
         from app.features.scrapers.alerts import ScraperAlertEngine
         alert_engine = ScraperAlertEngine()
         await alert_engine.check_post_scrape(provider_summaries)
+        await alert_engine.check_data_integrity()
     except Exception as e:
-        logger.warning(f"Alert check failed: {e}")
+        logger.error(f"Alert check failed (alerts system broken): {e}")
 
     # Record scrape run in database for audit trail
     try:
@@ -423,8 +466,18 @@ async def run_all_pdf_scrapers() -> dict:
                 await upsert_product(pool, product)
                 provider_summary["upserted"] += 1
                 total_upserted += 1
+            except ValueError as e:
+                logger.warning(
+                    f"[{result['provider']}] PDF product validation failed: {e}"
+                )
+                provider_summary["errors"] += 1
+                total_errors += 1
             except Exception as e:
-                logger.error(f"Failed to upsert PDF product {product.name_en}: {e}")
+                logger.error(
+                    f"[{result['provider']}] PDF DB upsert failed for "
+                    f"'{product.name_en}' (category={product.category}): "
+                    f"{type(e).__name__}: {e}"
+                )
                 provider_summary["errors"] += 1
                 total_errors += 1
 
@@ -454,8 +507,9 @@ async def run_all_pdf_scrapers() -> dict:
         from app.features.scrapers.alerts import ScraperAlertEngine
         alert_engine = ScraperAlertEngine()
         await alert_engine.check_pdf_health(provider_summaries)
+        await alert_engine.check_data_integrity()
     except Exception as e:
-        logger.warning(f"PDF alert check failed: {e}")
+        logger.error(f"PDF alert check failed (alerts system broken): {e}")
 
     # Record PDF scrape run
     try:

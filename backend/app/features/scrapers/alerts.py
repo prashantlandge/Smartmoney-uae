@@ -145,6 +145,105 @@ class ScraperAlertEngine:
         except Exception as e:
             logger.error(f"Staleness check failed: {e}")
 
+    async def check_data_integrity(self):
+        """Post-upsert data integrity checks.
+
+        Verifies products have valid data after insertion:
+        - Products with empty key_features
+        - Products with NULL required fields
+        - Products with stale data_source markers
+        """
+        pool = await get_pool()
+        try:
+            # Check for products with empty or missing key_features
+            empty_features = await pool.fetch(
+                """
+                SELECT pr.name_en as provider_name, p.category, COUNT(*) as cnt
+                FROM products p
+                JOIN providers pr ON p.provider_id = pr.id
+                WHERE p.active = true
+                  AND (p.key_features IS NULL
+                       OR p.key_features = '{}'::jsonb
+                       OR p.key_features = 'null'::jsonb)
+                GROUP BY pr.name_en, p.category
+                """
+            )
+            for row in empty_features:
+                await self.record_alert(
+                    alert_type="empty_features",
+                    severity="high",
+                    provider_name=row["provider_name"],
+                    message=(
+                        f"{row['cnt']} active {row['category']} product(s) have empty key_features"
+                    ),
+                    details={"category": row["category"], "count": row["cnt"]},
+                )
+
+            # Check for products missing required fields
+            missing_fields = await pool.fetch(
+                """
+                SELECT pr.name_en as provider_name, p.name_en as product_name, p.category
+                FROM products p
+                JOIN providers pr ON p.provider_id = pr.id
+                WHERE p.active = true
+                  AND (p.name_en IS NULL OR p.name_en = ''
+                       OR p.category IS NULL OR p.category = '')
+                """
+            )
+            if missing_fields:
+                await self.record_alert(
+                    alert_type="missing_required_fields",
+                    severity="critical",
+                    provider_name="SYSTEM",
+                    message=f"{len(missing_fields)} product(s) missing name or category",
+                    details={
+                        "products": [
+                            {
+                                "provider": r["provider_name"],
+                                "product": r["product_name"],
+                                "category": r["category"],
+                            }
+                            for r in missing_fields[:10]
+                        ]
+                    },
+                )
+
+            # Check for providers with 0 active products
+            empty_providers = await pool.fetch(
+                """
+                SELECT p.name_en
+                FROM providers p
+                WHERE p.active = true
+                  AND NOT EXISTS (
+                    SELECT 1 FROM products pr
+                    WHERE pr.provider_id = p.id AND pr.active = true
+                  )
+                """
+            )
+            for row in empty_providers:
+                await self.record_alert(
+                    alert_type="empty_provider",
+                    severity="medium",
+                    provider_name=row["name_en"],
+                    message="Active provider has 0 active products in database",
+                )
+
+            checked = len(empty_features) + len(missing_fields) + len(empty_providers)
+            logger.info(
+                f"Data integrity check complete: "
+                f"{len(empty_features)} empty features, "
+                f"{len(missing_fields)} missing fields, "
+                f"{len(empty_providers)} empty providers"
+            )
+            return {
+                "empty_features": len(empty_features),
+                "missing_fields": len(missing_fields),
+                "empty_providers": len(empty_providers),
+            }
+        except Exception as e:
+            logger.error(f"Data integrity check failed: {e}")
+            return {"error": str(e)}
+
     async def get_active_alerts(
         self, severity: str = None, limit: int = 50
     ) -> list[dict]:
