@@ -61,7 +61,8 @@ class PDFScraper(ABC):
                 resp = await self.client.get(url)
                 resp.raise_for_status()
                 content_type = resp.headers.get("content-type", "")
-                if "pdf" not in content_type and not url.lower().endswith(".pdf"):
+                url_lower = url.lower()
+                if "pdf" not in content_type and not url_lower.endswith(".pdf") and not url_lower.endswith(".ashx"):
                     logger.warning(
                         f"[{self.PROVIDER_NAME}] URL may not be PDF: {url} "
                         f"(content-type: {content_type})"
@@ -130,6 +131,10 @@ class PDFScraper(ABC):
         for doc_info in pdf_urls:
             url = doc_info.get("url", "")
             if not url:
+                continue
+            # Skip web-only entries (no downloadable PDF)
+            if doc_info.get("is_webpage"):
+                logger.info(f"[{self.PROVIDER_NAME}] Skipping webpage (not PDF): {url}")
                 continue
 
             logger.info(f"[{self.PROVIDER_NAME}] Downloading PDF: {doc_info.get('name', url)}")
